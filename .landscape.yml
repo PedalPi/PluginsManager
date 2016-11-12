@@ -1,0 +1,5 @@
+max-line-length: 120
+ignore-paths:
+    - lib
+python-targets:
+    - 3

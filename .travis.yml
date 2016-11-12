@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6-dev"
+  - "nightly"
+  - "pypy3"
+script:
+  - coverage3 run --source=model,mod_host,model/lv2,util setup.py test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
