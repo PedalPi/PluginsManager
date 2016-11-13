@@ -19,6 +19,7 @@ class ProtocolParser:
         e.g.::
 
             add http://lv2plug.in/plugins/eg-amp 0
+
         instance_number must be any value between 0 ~ 9999, inclusively
 
         :param Lv2Effect effect: Effect will be added
