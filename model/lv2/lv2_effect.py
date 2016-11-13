@@ -20,8 +20,8 @@ class Lv2Effect(Effect):
         self.plugin = plugin
 
         self._params = tuple([Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]])
-        self._inputs = tuple([Lv2Input(self, input) for input in plugin['ports']['audio']['input']])
-        self._outputs = tuple([Lv2Output(self, output) for output in plugin['ports']['audio']['output']])
+        self._inputs = tuple([Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']])
+        self._outputs = tuple([Lv2Output(self, effect_output) for effect_output in plugin['ports']['audio']['output']])
 
         self.instance = None
 

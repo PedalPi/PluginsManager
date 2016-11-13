@@ -3,11 +3,15 @@ from mod_host.mod_host import ModHost
 
 from model.bank import Bank
 from model.patch import Patch
+from model.connection import Connection
 
 from model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
+from model.system.system_effect import SystemEffect
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
+if True:
+    sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
     manager = BanksManager()
 
     bank = Bank('Bank 1')
@@ -41,6 +45,9 @@ if __name__ == "__main__":
     fuzz.toggle()
 
     patch.effects.remove(fuzz)
+
+    patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+    patch.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
 
     for connection in list(patch.connections):
         patch.connections.remove(connection)

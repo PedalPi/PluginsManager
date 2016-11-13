@@ -1,14 +1,14 @@
 from model.input import Input
 
 
-class Lv2Input(Input):
+class SystemInput(Input):
 
     def __init__(self, effect, input):
-        super(Lv2Input, self).__init__(effect)
+        super(SystemInput, self).__init__(effect)
         self._input = input
 
     def __str__(self):
-        return self._input['name']
+        return self._input
 
     def __repr__(self):
         return "<{} object as {} at 0x{:x}>".format(
@@ -19,8 +19,8 @@ class Lv2Input(Input):
 
     @property
     def __dict__(self):
-        dictionary = super(Lv2Input, self).__dict__
-        dictionary['index'] = self._input['index']
-        dictionary['symbol'] = self._input['symbol']
+        dictionary = super(SystemInput, self).__dict__
+        del dictionary['index']
+        dictionary['symbol'] = str(self)
 
         return dictionary

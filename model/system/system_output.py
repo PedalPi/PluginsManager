@@ -1,14 +1,14 @@
 from model.output import Output
 
 
-class Lv2Output(Output):
+class SystemOutput(Output):
 
     def __init__(self, effect, output):
-        super(Lv2Output, self).__init__(effect)
+        super(SystemOutput, self).__init__(effect)
         self._output = output
 
     def __str__(self):
-        return self._output['name']
+        return self._output
 
     def __repr__(self):
         return "<{} object as {} at 0x{:x}>".format(
@@ -19,8 +19,8 @@ class Lv2Output(Output):
 
     @property
     def __dict__(self):
-        dictionary = super(Lv2Output, self).__dict__
-        dictionary['index'] = self._output['index']
-        dictionary['symbol'] = self._output['symbol']
+        dictionary = super(SystemOutput, self).__dict__
+        del dictionary['index']
+        dictionary['symbol'] = str(self)
 
         return dictionary

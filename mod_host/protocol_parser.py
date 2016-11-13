@@ -1,3 +1,5 @@
+from model.system.system_input import SystemInput
+from model.system.system_output import SystemOutput
 
 
 class ProtocolParser:
@@ -70,13 +72,20 @@ class ProtocolParser:
     @staticmethod
     def _get_out_name_of(effect_output):
         effect = effect_output.effect
-        symbol = effect_output._output['symbol']
 
+        if isinstance(effect_output, SystemOutput):
+            return '{}:{}'.format(effect, effect_output)
+
+        symbol = effect_output._output['symbol']
         return 'effect_{}:{}'.format(effect.instance, symbol)
 
     @staticmethod
     def _get_in_name_of(effect_input):
         effect = effect_input.effect
+
+        if isinstance(effect_input, SystemInput):
+            return '{}:{}'.format(effect, effect_input)
+
         symbol = effect_input._input['symbol']
 
         return 'effect_{}:{}'.format(effect.instance, symbol)
@@ -255,3 +264,4 @@ class ProtocolParser:
         bye!
         """
         return 'quit'
+
