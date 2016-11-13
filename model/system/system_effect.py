@@ -22,6 +22,7 @@ class SystemEffect(Effect):
     >>> sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
 
     Unlike effects that should be added in the patch, SystemEffects MUST NOT::
+
     >>> builder = Lv2EffectBuilder()
 
     >>> patch = Patch('Rocksmith')
@@ -29,9 +30,11 @@ class SystemEffect(Effect):
     >>> patch.append(reverb)
 
     However the patch must have the connections::
+
     >>> patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
 
     An bypass example::
+
     >>> patch = Patch('Bypass example')
     >>> sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
     >>> patch.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))

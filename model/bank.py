@@ -90,8 +90,10 @@ class Bank(object):
         Add a :class:`Patch` in this bank
 
         This works same as::
+
         >>> bank.patches.append(patch)
         or::
+
         >>> bank.patches.insert(len(bank.patches), patch)
 
         :param Patch patch: Patch that will be added

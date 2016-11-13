@@ -6,6 +6,14 @@ from model.lv2.lv2_effect import Lv2Effect
 
 
 class Lv2EffectBuilder(object):
+    """
+    Generate lv2 audio plugins instance (as :class:`Lv2Effect` object).
+
+    .. note::
+
+        In the current implementation, the data plugins are persisted
+        in *plugins.json*.
+    """
 
     def __init__(self):
         self.plugins = {}

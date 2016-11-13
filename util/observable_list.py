@@ -22,8 +22,8 @@ class ObservableList(object):
         """
         View `append` :class:`list` method
 
-        Calls observer `self.observer(UpdateType.CREATED, item, index)` where
-        _index_ is _item position_
+        Calls observer ``self.observer(UpdateType.CREATED, item, index)`` where
+        **index** is *item position*
         """
         self._list.append(item)
         self.observer(UpdateType.CREATED, item, len(self._list)-1)
@@ -32,8 +32,8 @@ class ObservableList(object):
         """
         View `remove` :class:`list` method
 
-        Calls observer `self.observer(UpdateType.DELETED, item, index)` where _index_ is
-        _item position_
+        Calls observer ``self.observer(UpdateType.DELETED, item, index)`` where
+        **index** is *item position*
         """
         index = self.index(item)
         self._list.remove(item)
@@ -46,7 +46,7 @@ class ObservableList(object):
         """
         View `insert` :class:`list` method
 
-        Calls observer `self.observer(UpdateType.CREATED, item, index)`
+        Calls observer ``self.observer(UpdateType.CREATED, item, index)``
         """
         self._list.insert(index, x)
         self.observer(UpdateType.CREATED, x, index)
@@ -61,8 +61,8 @@ class ObservableList(object):
         """
         View `__setitem__` :class:`list` method
 
-        Calls observer `self.observer(UpdateType.UPDATED, item, index)`
-        if `val != self[index]`
+        Calls observer ``self.observer(UpdateType.UPDATED, item, index)``
+        if ``val != self[index]``
         """
         if val == self[index]:
             return
@@ -74,8 +74,8 @@ class ObservableList(object):
         """
         View `__delitem__` :class:`list` method
 
-        Calls observer `self.observer(UpdateType.DELETED, item, index)`
-        where _item_ is `self[index]`
+        Calls observer ``self.observer(UpdateType.DELETED, item, index)``
+        where **item** is `self[index]`
         """
         item = self._list[sliced]
         del self._list[sliced]
