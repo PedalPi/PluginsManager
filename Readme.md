@@ -1,9 +1,10 @@
 # PluginsManager
 
-[![Build Status](https://travis-ci.org/PedalPi/PluginsManager.svg?branch=master)](https://travis-ci.org/PedalPi/PluginsManager) [![Code Health](https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat)](https://landscape.io/github/PedalPi/PluginsManager/master) [![codecov](https://codecov.io/gh/PedalPi/PluginsManager/branch/master/graph/badge.svg)](https://codecov.io/gh/PedalPi/PluginsManager)
+[![Build Status](https://travis-ci.org/PedalPi/PluginsManager.svg?branch=master)](https://travis-ci.org/PedalPi/PluginsManager) [![Documentation Status](https://readthedocs.org/projects/pluginsmanager/badge/?version=latest)](http://pluginsmanager.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat)](https://landscape.io/github/PedalPi/PluginsManager/master) [![codecov](https://codecov.io/gh/PedalPi/PluginsManager/branch/master/graph/badge.svg)](https://codecov.io/gh/PedalPi/PluginsManager)
 
 Pythonic management of LV2 audio plugins with [mod-host](https://github.com/moddevices/mod-host).
 
+For API documentation, see [Application Documentation](http://pluginsmanager.readthedocs.io/en/latest/?badge=latest).
 
 ```python
 manager = BanksManager()
