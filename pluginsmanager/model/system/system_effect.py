@@ -42,9 +42,9 @@ class SystemEffect(Effect):
 
     :param string representation: Audio card representation. Usually 'system'
     :param tuple(string) outputs: Tuple of outputs representation. Usually a output representation
-                                  starts with 'capture_'
+                                  starts with `capture_`
     :param tuple(string) inputs: Tuple of inputs representation. Usually a input representation
-                                 starts with 'playback_'
+                                 starts with `playback_`
     """
     def __init__(self, representation, outputs, inputs):
         super(SystemEffect, self).__init__()

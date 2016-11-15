@@ -1,9 +1,9 @@
 PedalPi - PluginsManager - Util
 ===============================
 
-ObservableList
---------------
+pluginsmanager.util.observable_list.ObservableList
+--------------------------------------------------
 
-.. autoclass:: util.observable_list.ObservableList
+.. autoclass:: pluginsmanager.util.observable_list.ObservableList
    :members:
    :special-members:

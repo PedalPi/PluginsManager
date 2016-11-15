@@ -1,10 +1,10 @@
 # PluginsManager
 
-[![Build Status](https://travis-ci.org/PedalPi/PluginsManager.svg?branch=master)](https://travis-ci.org/PedalPi/PluginsManager) [![Documentation Status](https://readthedocs.org/projects/pedalpi-pluginsmanager/badge/?version=latest)](http://pedalpi-pluginsmanager.readthedocs.io/en/latest/?badge=latest) [![Code Health](https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat)](https://landscape.io/github/PedalPi/PluginsManager/master) [![codecov](https://codecov.io/gh/PedalPi/PluginsManager/branch/master/graph/badge.svg)](https://codecov.io/gh/PedalPi/PluginsManager)
+[![Build Status](https://travis-ci.org/PedalPi/PluginsManager.svg?branch=master)](https://travis-ci.org/PedalPi/PluginsManager) [![Documentation Status](https://readthedocs.org/projects/pedalpi-pluginsmanager/badge/?version=latest)](http://pedalpi-pluginsmanager.readthedocs.io/?badge=latest) [![Code Health](https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat)](https://landscape.io/github/PedalPi/PluginsManager/master) [![codecov](https://codecov.io/gh/PedalPi/PluginsManager/branch/master/graph/badge.svg)](https://codecov.io/gh/PedalPi/PluginsManager)
 
 Pythonic management of LV2 audio plugins with [mod-host](https://github.com/moddevices/mod-host).
 
-For API documentation, see [Application Documentation](http://pedalpi-pluginsmanager.readthedocs.io/en/latest/?badge=latest).
+For API documentation, see [Application Documentation](http://pedalpi-pluginsmanager.readthedocs.io/?badge=latest).
 
 ```python
 manager = BanksManager()
@@ -52,9 +52,24 @@ for effect in list(patch.effects):
 ## Test
 
 ```bash
-coverage3 run --source=model,mod_host,model/lv2,util setup.py test
+coverage3 run --source=pluginsmanager setup.py test
 
 coverage3 report
 coverage3 html
 firefox htmlcov/index.html
+```
+
+## Documentation
+
+This project uses [Sphinx](http://www.sphinx-doc.org/) + [Read the Docs](readthedocs.org).
+
+You can generate the documentation in your local machine: 
+
+```bash
+pip3 install coverage3
+
+cd docs
+make html
+
+firefox buils/html/index.html
 ```

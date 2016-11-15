@@ -38,14 +38,14 @@ This page contains the model classes.
 Bank
 ----
 
-.. autoclass:: model.bank.Bank
+.. autoclass:: pluginsmanager.model.bank.Bank
    :members:
    :special-members:
 
 Connection
 ----------
 
-.. autoclass:: model.connection.Connection
+.. autoclass:: pluginsmanager.model.connection.Connection
    :members:
    :special-members:
 
@@ -53,42 +53,42 @@ Connection
 Effect
 ------
 
-.. autoclass:: model.effect.Effect
+.. autoclass:: pluginsmanager.model.effect.Effect
    :members:
    :special-members:
 
 Input
 -----
 
-.. autoclass:: model.input.Input
+.. autoclass:: pluginsmanager.model.input.Input
    :members:
    :special-members:
 
 Output
 ------
 
-.. autoclass:: model.output.Output
+.. autoclass:: pluginsmanager.model.output.Output
    :members:
    :special-members:
 
 Param
 -----
 
-.. autoclass:: model.param.Param
+.. autoclass:: pluginsmanager.model.param.Param
    :members:
    :special-members:
 
 Patch
 -----
 
-.. autoclass:: model.patch.Patch
+.. autoclass:: pluginsmanager.model.patch.Patch
    :members:
    :special-members:
 
 UpdateType
 ----------
 
-.. autoclass:: model.update_type.UpdateType
+.. autoclass:: pluginsmanager.model.update_type.UpdateType
    :members:
    :special-members:
 
@@ -96,6 +96,6 @@ UpdateType
 UpdatesObserver
 ---------------
 
-.. autoclass:: model.updates_observer.UpdatesObserver
+.. autoclass:: pluginsmanager.model.updates_observer.UpdatesObserver
    :members:
    :special-members:

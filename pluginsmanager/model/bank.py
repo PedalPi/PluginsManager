@@ -92,6 +92,7 @@ class Bank(object):
         This works same as::
 
         >>> bank.patches.append(patch)
+
         or::
 
         >>> bank.patches.insert(len(bank.patches), patch)

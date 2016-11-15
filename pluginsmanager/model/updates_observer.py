@@ -89,10 +89,10 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_connection_updated(self, connection, update_type, token=None):
         """
-        Called when changes occurs in any :class:`Connection` of Patch
+        Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Patch
         (adding, updating or removing connections)
 
-        :param Connection connection: Connection changed
+        :param pluginsmanager.model.connection.Connection connection: Connection changed
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
         """
