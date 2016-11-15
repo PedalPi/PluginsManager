@@ -10,7 +10,7 @@ install:
   - pip3 install coverage
 
 script:
-  - coverage3 run --source=model,mod_host,model/lv2,util setup.py test
+  - coverage3 run --source=pluginsmanager setup.py test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
