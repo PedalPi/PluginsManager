@@ -1,4 +1,4 @@
-from model.update_type import UpdateType
+from ..model.update_type import UpdateType
 
 
 class ObservableList(object):

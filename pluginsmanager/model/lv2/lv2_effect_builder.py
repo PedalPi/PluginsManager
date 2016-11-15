@@ -1,8 +1,8 @@
 import os
 import json
 
-from model.lv2.lv2_plugin import Lv2Plugin
-from model.lv2.lv2_effect import Lv2Effect
+from pluginsmanager.model.lv2.lv2_plugin import Lv2Plugin
+from pluginsmanager.model.lv2.lv2_effect import Lv2Effect
 
 
 class Lv2EffectBuilder(object):

@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import MagicMock
 
-from model.connection import Connection
-from model.patch import Patch
-from model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.connection import Connection
+from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 
 class EffectTest(unittest.TestCase):

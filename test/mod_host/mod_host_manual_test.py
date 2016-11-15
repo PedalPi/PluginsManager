@@ -1,13 +1,13 @@
-from banks_manager import BanksManager
-from mod_host.mod_host import ModHost
+from pluginsmanager.banks_manager import BanksManager
+from pluginsmanager.mod_host.mod_host import ModHost
 
-from model.bank import Bank
-from model.patch import Patch
-from model.connection import Connection
+from pluginsmanager.model.bank import Bank
+from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.connection import Connection
 
-from model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
-from model.system.system_effect import SystemEffect
+from pluginsmanager.model.system.system_effect import SystemEffect
 
 if __name__ == "__main__":
 #if True:

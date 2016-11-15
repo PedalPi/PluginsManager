@@ -1,5 +1,5 @@
-from model.system.system_input import SystemInput
-from model.system.system_output import SystemOutput
+from pluginsmanager.model.system.system_input import SystemInput
+from pluginsmanager.model.system.system_output import SystemOutput
 
 
 class ProtocolParser:

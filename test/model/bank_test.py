@@ -1,8 +1,13 @@
 import unittest
 from unittest.mock import MagicMock
 
-from model.bank import Bank
-from model.update_type import UpdateType
+from pluginsmanager.model.bank import Bank
+from pluginsmanager.model.update_type import UpdateType
+
+from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+
+import json
 
 
 class BankTest(unittest.TestCase):
@@ -73,8 +78,7 @@ class BankTest(unittest.TestCase):
         bank.observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED)
 
     def test_json(self):
-        from model.patch import Patch
-        from model.lv2.lv2_effect_builder import Lv2EffectBuilder
+
 
         bank = Bank('Bank 1')
         patch = Patch('Rocksmith')
@@ -95,5 +99,4 @@ class BankTest(unittest.TestCase):
 
         bank.append(patch)
 
-        import json
         print(json.dumps(bank.json, sort_keys=True, indent=2))

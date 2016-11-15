@@ -1,4 +1,4 @@
-from model.updates_observer import UpdatesObserver
+from .model.updates_observer import UpdatesObserver
 
 
 class BanksManager(object):

@@ -1,7 +1,6 @@
-from .connection import Connection
-from .protocol_parser import ProtocolParser
+from pluginsmanager.model.connection import Connection
+from pluginsmanager.mod_host.protocol_parser import ProtocolParser
 
-from model.system.system_effect import SystemEffect
 
 class Host:
 

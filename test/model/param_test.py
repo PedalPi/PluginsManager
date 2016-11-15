@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from model.lv2.lv2_effect_builder import Lv2EffectBuilder
-from model.param import ParamError
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.param import ParamError
 
 
 class ParamTest(unittest.TestCase):

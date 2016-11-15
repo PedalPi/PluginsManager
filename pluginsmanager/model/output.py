@@ -1,6 +1,6 @@
 from abc import ABCMeta
 
-from model.connection import Connection
+from pluginsmanager.model.connection import Connection
 
 from unittest.mock import MagicMock
 
@@ -16,11 +16,11 @@ class Output(metaclass=ABCMeta):
     def effect(self):
         return self._effect
 
-    def connect(self, input):
-        self.effect.patch.connections.append(Connection(self, input))
+    def connect(self, effect_input):
+        self.effect.patch.connections.append(Connection(self, effect_input))
 
-    def disconnect(self, input):
-        self.effect.patch.connections.remove(Connection(self, input))
+    def disconnect(self, effect_input):
+        self.effect.patch.connections.remove(Connection(self, effect_input))
 
     @property
     def json(self):

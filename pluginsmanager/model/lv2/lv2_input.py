@@ -1,14 +1,14 @@
-from model.input import Input
+from pluginsmanager.model.input import Input
 
 
-class SystemInput(Input):
+class Lv2Input(Input):
 
     def __init__(self, effect, input):
-        super(SystemInput, self).__init__(effect)
+        super(Lv2Input, self).__init__(effect)
         self._input = input
 
     def __str__(self):
-        return self._input
+        return self._input['name']
 
     def __repr__(self):
         return "<{} object as {} at 0x{:x}>".format(
@@ -19,8 +19,8 @@ class SystemInput(Input):
 
     @property
     def __dict__(self):
-        dictionary = super(SystemInput, self).__dict__
-        del dictionary['index']
-        dictionary['symbol'] = str(self)
+        dictionary = super(Lv2Input, self).__dict__
+        dictionary['index'] = self._input['index']
+        dictionary['symbol'] = self._input['symbol']
 
         return dictionary

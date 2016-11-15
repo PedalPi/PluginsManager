@@ -1,9 +1,9 @@
-from model.updates_observer import UpdatesObserver
-from model.update_type import UpdateType
+from pluginsmanager.model.updates_observer import UpdatesObserver
+from pluginsmanager.model.update_type import UpdateType
 
-from model.connection import Connection
+from pluginsmanager.model.connection import Connection
 
-from mod_host.host import Host
+from pluginsmanager.mod_host.host import Host
 
 
 class ModHost(UpdatesObserver):

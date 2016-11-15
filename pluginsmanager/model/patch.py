@@ -1,5 +1,5 @@
-from util.observable_list import ObservableList
-from model.update_type import UpdateType
+from pluginsmanager.util.observable_list import ObservableList
+from pluginsmanager.model.update_type import UpdateType
 
 from unittest.mock import MagicMock
 

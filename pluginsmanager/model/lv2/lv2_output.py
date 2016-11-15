@@ -1,14 +1,14 @@
-from model.output import Output
+from pluginsmanager.model.output import Output
 
 
-class SystemOutput(Output):
+class Lv2Output(Output):
 
     def __init__(self, effect, output):
-        super(SystemOutput, self).__init__(effect)
+        super(Lv2Output, self).__init__(effect)
         self._output = output
 
     def __str__(self):
-        return self._output
+        return self._output['name']
 
     def __repr__(self):
         return "<{} object as {} at 0x{:x}>".format(
@@ -19,8 +19,8 @@ class SystemOutput(Output):
 
     @property
     def __dict__(self):
-        dictionary = super(SystemOutput, self).__dict__
-        del dictionary['index']
-        dictionary['symbol'] = str(self)
+        dictionary = super(Lv2Output, self).__dict__
+        dictionary['index'] = self._output['index']
+        dictionary['symbol'] = self._output['symbol']
 
         return dictionary

@@ -1,4 +1,4 @@
-from model.param import Param
+from pluginsmanager.model.param import Param
 
 
 class Lv2Param(Param):

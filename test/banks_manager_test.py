@@ -1,14 +1,14 @@
 import unittest
 from unittest.mock import MagicMock
 
-from banks_manager import BanksManager
+from pluginsmanager.banks_manager import BanksManager
 
-from model.bank import Bank
-from model.connection import Connection
-from model.patch import Patch
-from model.update_type import UpdateType
+from pluginsmanager.model.bank import Bank
+from pluginsmanager.model.connection import Connection
+from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.update_type import UpdateType
 
-from model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 
 class BanksManagerTest(unittest.TestCase):

@@ -4,7 +4,7 @@
 
 Pythonic management of LV2 audio plugins with [mod-host](https://github.com/moddevices/mod-host).
 
-For API documentation, see [Application Documentation](http://pluginsmanager.readthedocs.io/en/latest/?badge=latest).
+For API documentation, see [Application Documentation](http://pedalpi-pluginsmanager.readthedocs.io/en/latest/?badge=latest).
 
 ```python
 manager = BanksManager()

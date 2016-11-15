@@ -1,7 +1,7 @@
-from model.effect import Effect
-from model.lv2.lv2_param import Lv2Param
-from model.lv2.lv2_input import Lv2Input
-from model.lv2.lv2_output import Lv2Output
+from pluginsmanager.model.effect import Effect
+from pluginsmanager.model.lv2.lv2_param import Lv2Param
+from pluginsmanager.model.lv2.lv2_input import Lv2Input
+from pluginsmanager.model.lv2.lv2_output import Lv2Output
 
 
 class Lv2Effect(Effect):

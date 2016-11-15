@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from model.patch import Patch
-from model.update_type import UpdateType
+from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.update_type import UpdateType
 
-from model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 
 class PatchTest(unittest.TestCase):
