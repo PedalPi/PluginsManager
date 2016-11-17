@@ -19,8 +19,7 @@ class SystemInput(Input):
 
     @property
     def __dict__(self):
-        dictionary = super(SystemInput, self).__dict__
-        del dictionary['index']
+        dictionary = {}
         dictionary['symbol'] = str(self)
 
         return dictionary

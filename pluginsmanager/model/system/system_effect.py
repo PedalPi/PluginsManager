@@ -2,6 +2,8 @@ from pluginsmanager.model.effect import Effect
 from pluginsmanager.model.system.system_input import SystemInput
 from pluginsmanager.model.system.system_output import SystemOutput
 
+from pluginsmanager.util.dict_tuple import DictTuple
+
 
 class SystemEffect(Effect):
     """
@@ -52,29 +54,12 @@ class SystemEffect(Effect):
         self.representation = representation
 
         self._params = tuple()
-        self._inputs = tuple([SystemInput(self, effect_input) for effect_input in inputs])
-        self._outputs = tuple([SystemOutput(self, effect_output) for effect_output in outputs])
 
-    @property
-    def params(self):
-        """
-        :return list[Param]: Params of effect
-        """
-        return self._params
+        inputs = [SystemInput(self, effect_input) for effect_input in inputs]
+        self._inputs = DictTuple(inputs, lambda _input: str(_input))
 
-    @property
-    def inputs(self):
-        """
-        :return list[Input]: Inputs of effect
-        """
-        return self._inputs
-
-    @property
-    def outputs(self):
-        """
-        :return list[Output]: Outputs of effect
-        """
-        return self._outputs
+        outputs = [SystemOutput(self, effect_output) for effect_output in outputs]
+        self._outputs = DictTuple(outputs, lambda _output: str(_output))
 
     def __str__(self):
         return self.representation

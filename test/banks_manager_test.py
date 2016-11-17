@@ -69,4 +69,3 @@ class BanksManagerTest(unittest.TestCase):
 
         fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
         observer.on_param_value_changed.assert_called_with(fuzz.params[0], None)
-

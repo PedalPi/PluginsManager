@@ -15,6 +15,10 @@ class Effect(metaclass=ABCMeta):
         self.patch = patch
         self._active = True
 
+        self._params = ()
+        self._inputs = ()
+        self._outputs = ()
+
         self._observer = MagicMock()
 
     @property
@@ -29,28 +33,25 @@ class Effect(metaclass=ABCMeta):
             param.observer = self.observer
 
     @property
-    @abstractmethod
     def params(self):
         """
         :return list[Param]: Params of effect
         """
-        ...
+        return self._params
 
     @property
-    @abstractmethod
     def inputs(self):
         """
         :return list[Input]: Inputs of effect
         """
-        ...
+        return self._inputs
 
     @property
-    @abstractmethod
     def outputs(self):
         """
         :return list[Output]: Outputs of effect
         """
-        ...
+        return self._outputs
 
     @property
     def active(self):
@@ -104,4 +105,4 @@ class Effect(metaclass=ABCMeta):
     @property
     @abstractmethod
     def __dict__(self):
-        ...
+        pass

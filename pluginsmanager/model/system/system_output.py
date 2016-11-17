@@ -19,8 +19,7 @@ class SystemOutput(Output):
 
     @property
     def __dict__(self):
-        dictionary = super(SystemOutput, self).__dict__
-        del dictionary['index']
+        dictionary = {}
         dictionary['symbol'] = str(self)
 
         return dictionary

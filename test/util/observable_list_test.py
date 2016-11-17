@@ -77,6 +77,20 @@ class ObservableListTest(unittest.TestCase):
 
         lista.observer.assert_called_with(UpdateType.DELETED, 456, index)
 
+    def test_contains(self):
+        lista = ObservableList()
+
+        lista.append(123)
+        lista.append(456)
+        lista.append(789)
+
+        self.assertTrue(123 in lista)
+        self.assertTrue(456 in lista)
+        self.assertTrue(789 in lista)
+
+        self.assertFalse(987 in lista)
+        self.assertTrue(987 not in lista)
+
     def test_swap(self):
         a = {'key': 'value'}
         b = {'key2': 'value2'}

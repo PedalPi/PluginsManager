@@ -59,12 +59,12 @@ class Param(metaclass=ABCMeta):
     @property
     @abstractmethod
     def minimum(self):
-        ...
+        pass
 
     @property
     @abstractmethod
     def maximum(self):
-        ...
+        pass
 
     def __repr__(self, *args, **kargs):
         return "<{} object as value={} [{} - {}] at 0x{:x}>".format(

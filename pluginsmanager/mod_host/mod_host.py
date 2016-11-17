@@ -54,7 +54,7 @@ class ModHost(UpdatesObserver):
             self.on_effect_updated(effect, UpdateType.CREATED)
 
     def on_bank_update(self, bank, update_type, token=None):
-        ...
+        pass
 
     def on_patch_updated(self, patch, update_type, token=None):
         self.on_current_patch_change(patch)

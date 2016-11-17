@@ -3,6 +3,8 @@ from pluginsmanager.model.lv2.lv2_param import Lv2Param
 from pluginsmanager.model.lv2.lv2_input import Lv2Input
 from pluginsmanager.model.lv2.lv2_output import Lv2Output
 
+from pluginsmanager.util.dict_tuple import DictTuple
+
 
 class Lv2Effect(Effect):
     """
@@ -20,31 +22,14 @@ class Lv2Effect(Effect):
         self.plugin = plugin
 
         self._params = tuple([Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]])
-        self._inputs = tuple([Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']])
-        self._outputs = tuple([Lv2Output(self, effect_output) for effect_output in plugin['ports']['audio']['output']])
+
+        inputs = [Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']]
+        self._inputs = DictTuple(inputs, lambda _input: _input._input['symbol'])
+
+        outputs = [Lv2Output(self, effect_output) for effect_output in plugin['ports']['audio']['output']]
+        self._outputs = DictTuple(outputs, lambda _output: _output._output['symbol'])
 
         self.instance = None
-
-    @property
-    def params(self):
-        """
-        :return list[Param]: Params of effect
-        """
-        return self._params
-
-    @property
-    def inputs(self):
-        """
-        :return list[Input]: Inputs of effect
-        """
-        return self._inputs
-
-    @property
-    def outputs(self):
-        """
-        :return list[Output]: Outputs of effect
-        """
-        return self._outputs
 
     def __str__(self):
         return str(self.plugin)
