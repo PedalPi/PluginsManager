@@ -19,6 +19,7 @@ class BanksManager(object):
 
     def append(self, bank):
         bank.observer = self.observer_manager
+        self.banks.append(bank)
 
 
 class ObserverManager(UpdatesObserver):

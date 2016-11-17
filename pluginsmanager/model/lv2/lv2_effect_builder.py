@@ -15,10 +15,13 @@ class Lv2EffectBuilder(object):
         in *plugins.json*.
     """
 
-    def __init__(self):
+    def __init__(self, plugins_json=None):
         self.plugins = {}
 
-        with open(os.path.dirname(__file__) + '/plugins.json') as data_file:
+        if plugins_json is None:
+            plugins_json = os.path.dirname(__file__) + '/plugins.json'
+
+        with open(plugins_json) as data_file:
             data = json.load(data_file)
 
         for plugin in data:
