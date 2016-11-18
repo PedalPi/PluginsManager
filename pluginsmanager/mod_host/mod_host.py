@@ -105,5 +105,4 @@ class ModHost(UpdatesObserver):
         if update_type == UpdateType.CREATED:
             self.host.connect(connection)
         elif update_type == UpdateType.DELETED:
-            print('deleting', connection)
             self.host.disconnect(connection)

@@ -3,16 +3,17 @@ from .model.updates_observer import UpdatesObserver
 
 class BanksManager(object):
     """
-    :param dict data:
+    :param list[Bank] banks:
     """
 
-    def __init__(self, data=None):
+    def __init__(self, banks=None):
         self.banks = []
+
+        banks = [] if banks is None else banks
         self.observer_manager = ObserverManager()
 
-        data = {'banks': []} if data is None else data
-        #for bank_data in data['banks']:
-        #    self.banks.append(bank_data)
+        for bank in banks:
+            self.append(bank)
 
     def register(self, observer):
         self.observer_manager.append(observer)
