@@ -17,7 +17,7 @@ class Connection(object):
 
     def __init__(self, effect_output, effect_input):
         if effect_output.effect == effect_input.effect:
-            ConnectionError('Effect of output and effect of input are equals')
+            raise ConnectionError('Effect of output and effect of input are equals')
 
         self._output = effect_output
         self._input = effect_input

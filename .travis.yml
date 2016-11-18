@@ -8,6 +8,8 @@ python:
 
 install:
   - pip3 install coverage
+  - pip3 install cffi
+  - pip3 install JACK-Client
 
 script:
   - coverage3 run --source=pluginsmanager setup.py test

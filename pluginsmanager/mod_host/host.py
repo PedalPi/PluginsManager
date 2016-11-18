@@ -1,4 +1,4 @@
-from pluginsmanager.model.connection import Connection
+from pluginsmanager.mod_host.connection import Connection
 from pluginsmanager.mod_host.protocol_parser import ProtocolParser
 
 

@@ -3,9 +3,9 @@ from pluginsmanager.model.input import Input
 
 class Lv2Input(Input):
 
-    def __init__(self, effect, input):
+    def __init__(self, effect, effect_input):
         super(Lv2Input, self).__init__(effect)
-        self._input = input
+        self._input = effect_input
 
     def __str__(self):
         return self._input['name']

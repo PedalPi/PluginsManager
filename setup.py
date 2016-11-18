@@ -1,14 +1,13 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 def readme():
     with open('Readme.md') as f:
         return f.read()
 
 setup(
-    name='PedalPi - PluginsManager',
+    name='PedalPi-PluginsManager',
     version='0.0.1',
     long_description=readme(),
-    #packages=find_packages('pluginsmanager'),
     packages=[
         'pluginsmanager',
 

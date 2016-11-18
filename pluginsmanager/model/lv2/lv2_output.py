@@ -3,9 +3,9 @@ from pluginsmanager.model.output import Output
 
 class Lv2Output(Output):
 
-    def __init__(self, effect, output):
+    def __init__(self, effect, effect_output):
         super(Lv2Output, self).__init__(effect)
-        self._output = output
+        self._output = effect_output
 
     def __str__(self):
         return self._output['name']

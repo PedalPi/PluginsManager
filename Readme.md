@@ -4,7 +4,17 @@
 
 Pythonic management of LV2 audio plugins with [mod-host](https://github.com/moddevices/mod-host).
 
-For API documentation, see [Application Documentation](http://pedalpi-pluginsmanager.readthedocs.io/?badge=latest).
+**Documentation:**
+   http://pedalpi-pluginsmanager.readthedocs.io/
+
+**Code:**
+   https://github.com/PedalPi/PluginsManager
+
+**Python Package Index:**
+   https://github.com/PedalPi/PluginsManager/tarball/master#egg=PedalPi-PluginsManager
+
+**License:**
+   Not yet
 
 ```python
 manager = BanksManager()
@@ -66,7 +76,7 @@ This project uses [Sphinx](http://www.sphinx-doc.org/) + [Read the Docs](readthe
 You can generate the documentation in your local machine: 
 
 ```bash
-pip3 install coverage3
+pip3 install sphinx
 
 cd docs
 make html

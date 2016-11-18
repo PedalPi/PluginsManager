@@ -54,7 +54,17 @@ class Bank(object):
         self.patches = ObservableList()
         self.patches.observer = self._patches_observer
 
-        self.observer = MagicMock()
+        self._observer = MagicMock()
+
+    @property
+    def observer(self):
+        return self._observer
+
+    @observer.setter
+    def observer(self, observer):
+        self._observer = observer
+        for patch in self.patches:
+            patch.observer = observer
 
     def _patches_observer(self, update_type, patch, index):
         if update_type == UpdateType.CREATED \

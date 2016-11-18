@@ -19,7 +19,18 @@ class Patch(object):
         self.effects.observer = self._effects_observer
         self.connections.observer = self._connections_observer
 
-        self.observer = MagicMock()
+        self._observer = MagicMock()
+
+    @property
+    def observer(self):
+        return self._observer
+
+    @observer.setter
+    def observer(self, observer):
+        self._observer = observer
+
+        for effect in self.effects:
+            effect.observer = observer
 
     def _effects_observer(self, update_type, effect, index):
         if update_type == UpdateType.CREATED \
