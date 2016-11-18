@@ -28,6 +28,8 @@ mod_host.connect()
 manager.register(mod_host)
 
 patch = Patch('Rocksmith')
+mod_host.patch = patch
+
 bank.append(patch)
 
 builder = Lv2EffectBuilder()

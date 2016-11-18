@@ -1,6 +1,14 @@
 PedalPi - PluginsManager - Model - System
 =========================================
 
+SystemEffectBuilder
+----------------
+
+.. autoclass:: pluginsmanager.model.system.system_effect_builder.SystemEffectBuilder
+   :members:
+   :special-members:
+
+
 SystemEffect
 ------------
 

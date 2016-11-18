@@ -45,6 +45,10 @@ Play!
     manager.register(mod_host)
 
     patch = Patch('Rocksmith')
+
+    # Set mod_host current-patch to patch
+    mod_host.patch = patch
+
     bank.append(patch)
 
     builder = Lv2EffectBuilder()

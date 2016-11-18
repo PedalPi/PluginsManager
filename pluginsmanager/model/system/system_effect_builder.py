@@ -5,7 +5,7 @@ from pluginsmanager.model.system.system_effect import SystemEffect
 
 class SystemEffectBuilder(object):
     """
-    Automatic system physical ports dettection
+    Automatic system physical ports detection
     """
     def __init__(self, no_start_server=True):
         self.client = jack.Client("SystemEffectBuilder", no_start_server=no_start_server)
