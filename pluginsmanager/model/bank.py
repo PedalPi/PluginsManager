@@ -49,10 +49,13 @@ class Bank(object):
     :param string name: Bank name
     """
     def __init__(self, name):
-        self.index = -1
         self.name = name
         self.patches = ObservableList()
         self.patches.observer = self._patches_observer
+
+        self.index = -1
+
+        self.manager = None
 
         self._observer = MagicMock()
 

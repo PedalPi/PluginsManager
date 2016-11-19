@@ -14,17 +14,17 @@ from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 class BanksManagerTest(unittest.TestCase):
 
     def test_observers(self):
-        manager = BanksManager()
         observer = MagicMock()
+
+        manager = BanksManager()
+        manager.register(observer)
 
         bank = Bank('Bank 1')
         manager.append(bank)
-
-        manager.register(observer)
+        observer.on_bank_updated.assert_called_with(bank, UpdateType.CREATED, None)
 
         patch = Patch('Rocksmith')
         bank.append(patch)
-
         observer.on_patch_updated.assert_called_with(patch, UpdateType.CREATED, None)
 
         builder = Lv2EffectBuilder()
@@ -69,3 +69,13 @@ class BanksManagerTest(unittest.TestCase):
 
         fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
         observer.on_param_value_changed.assert_called_with(fuzz.params[0], None)
+
+        del bank.patches[0]
+        observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, None)
+
+        bank2 = Bank('Bank 2')
+        manager.banks[0] = bank2
+        observer.on_bank_updated.assert_called_with(bank2, UpdateType.UPDATED, None)
+
+        manager.banks.remove(bank2)
+        observer.on_bank_updated.assert_called_with(bank2, UpdateType.DELETED, None)

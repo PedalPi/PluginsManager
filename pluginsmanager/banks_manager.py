@@ -1,4 +1,9 @@
-from .model.updates_observer import UpdatesObserver
+from pluginsmanager.model.updates_observer import UpdatesObserver
+from pluginsmanager.model.update_type import UpdateType
+
+from pluginsmanager.util.observable_list import ObservableList
+
+from unittest.mock import MagicMock
 
 
 class BanksManager(object):
@@ -7,7 +12,8 @@ class BanksManager(object):
     """
 
     def __init__(self, banks=None):
-        self.banks = []
+        self.banks = ObservableList()
+        self.banks.observer = self._banks_observer
 
         banks = [] if banks is None else banks
         self.observer_manager = ObserverManager()
@@ -19,8 +25,19 @@ class BanksManager(object):
         self.observer_manager.append(observer)
 
     def append(self, bank):
-        bank.observer = self.observer_manager
         self.banks.append(bank)
+
+    def _banks_observer(self, update_type, bank, index):
+        if update_type == UpdateType.CREATED \
+        or update_type == UpdateType.UPDATED:
+            bank.manager = self
+            bank.observer = self.observer_manager
+
+        self.observer_manager.on_bank_updated(bank, update_type)
+
+        if update_type == UpdateType.DELETED:
+            bank.manager = None
+            bank.observer_manager = MagicMock()
 
 
 class ObserverManager(UpdatesObserver):
@@ -35,9 +52,9 @@ class ObserverManager(UpdatesObserver):
         for observer in self.observers:
             observer.on_current_patch_change(patch, token)
 
-    def on_bank_update(self, bank, update_type, token=None):
+    def on_bank_updated(self, bank, update_type, token=None):
         for observer in self.observers:
-            observer.on_bank_update(bank, update_type, token)
+            observer.on_bank_updated(bank, update_type, token)
 
     def on_patch_updated(self, patch, update_type, token=None):
         for observer in self.observers:

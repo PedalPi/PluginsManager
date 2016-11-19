@@ -23,8 +23,6 @@ class PersistenceTest(unittest.TestCase):
         sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
 
         bank = Bank('Bank 1')
-        bank.index = 3
-
         patch = Patch('Patch 1')
 
         bank.append(patch)

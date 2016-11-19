@@ -59,8 +59,9 @@ class ModHost(UpdatesObserver):
         for effect in patch.effects:
             self.on_effect_updated(effect, UpdateType.CREATED)
 
-    def on_bank_update(self, bank, update_type, token=None):
-        if bank != self.patch.bank:
+    def on_bank_updated(self, bank, update_type, token=None):
+        if self.patch is not None \
+        and bank != self.patch.bank:
             return
         pass
 

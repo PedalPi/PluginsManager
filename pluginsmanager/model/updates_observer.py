@@ -34,7 +34,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_bank_update(self, bank, update_type, token=None):
+    def on_bank_updated(self, bank, update_type, token=None):
         """
         Called when changes occurs in any :class:`Bank`
 
