@@ -21,6 +21,8 @@ class Patch(object):
 
         self._observer = MagicMock()
 
+        self.bank = None
+
     @property
     def observer(self):
         return self._observer
