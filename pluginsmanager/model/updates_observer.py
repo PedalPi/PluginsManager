@@ -34,35 +34,41 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_bank_updated(self, bank, update_type, token=None):
+    def on_bank_updated(self, bank, update_type, token=None, **kwargs):
         """
         Called when changes occurs in any :class:`Bank`
 
         :param Bank bank: Bank changed.
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
+        :param int index: Bank index (or old index if update_type == UpdateType.DELETED)
+        :param BanksManager origin: BanksManager that the bank is (or has) contained
         """
         pass
 
     @abstractmethod
-    def on_patch_updated(self, patch, update_type, token=None):
+    def on_patch_updated(self, patch, update_type, token=None, **kwargs):
         """
         Called when changes occurs in any :class:`Patch`
 
         :param Patch patch: Patch changed
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
+        :param int index: Patch index (or old index if update_type == UpdateType.DELETED)
+        :param Bank origin: Bank that the patch is (or has) contained
         """
         pass
 
     @abstractmethod
-    def on_effect_updated(self, effect, update_type, token=None):
+    def on_effect_updated(self, effect, update_type, token=None, **kwargs):
         """
         Called when changes occurs in any :class:`Effect`
 
         :param Effect effect: Effect changed
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
+        :param int index: Effect index (or old index if update_type == UpdateType.DELETED)
+        :param Patch origin: Patch that the effect is (or has) contained
         """
         pass
 

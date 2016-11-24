@@ -15,7 +15,7 @@ from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.system.system_effect import SystemEffect
 
 
-class PersistenceTest(unittest.TestCase):
+class ModHostTest(unittest.TestCase):
     builder = None
 
     @classmethod

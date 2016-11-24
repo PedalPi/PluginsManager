@@ -23,12 +23,12 @@ class BankTest(unittest.TestCase):
         bank.patches.append(patch1)
         self.assertEqual(patch1.bank, bank)
         self.assertEqual(bank.patches[0], patch1)
-        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED)
+        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED, index=0, origin=bank)
 
         bank.patches.append(patch2)
         self.assertEqual(patch2.bank, bank)
         self.assertEqual(bank.patches[1], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED)
+        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED, index=1, origin=bank)
 
     def test_add_patch(self):
         bank = Bank('Bank 1')
@@ -41,12 +41,12 @@ class BankTest(unittest.TestCase):
         bank.append(patch1)
         self.assertEqual(patch1.bank, bank)
         self.assertEqual(bank.patches[0], patch1)
-        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED)
+        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED, index=0, origin=bank)
 
         bank.append(patch2)
         self.assertEqual(patch2.bank, bank)
         self.assertEqual(bank.patches[1], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED)
+        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED, index=1, origin=bank)
 
     def test_update_patch(self):
         bank = Bank('Bank 1')
@@ -61,7 +61,7 @@ class BankTest(unittest.TestCase):
 
         self.assertEqual(patch2.bank, bank)
         self.assertEqual(bank.patches[0], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.UPDATED)
+        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.UPDATED, index=0, origin=bank)
 
     def test_delete_patch(self):
         bank = Bank('Bank 1')
@@ -75,11 +75,9 @@ class BankTest(unittest.TestCase):
 
         self.assertEqual(patch.bank, None)
         self.assertEqual(len(bank.patches), 0)
-        bank.observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED)
+        bank.observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, index=0, origin=bank)
 
     def test_json(self):
-
-
         bank = Bank('Bank 1')
         patch = Patch('Rocksmith')
 

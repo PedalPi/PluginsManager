@@ -70,16 +70,20 @@ class Bank(object):
             patch.observer = observer
 
     def _patches_observer(self, update_type, patch, index):
+        kwargs = {
+            'index': index,
+            'origin': self
+        }
+
         if update_type == UpdateType.CREATED \
         or update_type == UpdateType.UPDATED:
             patch.bank = self
             patch.observer = self.observer
-
-        self.observer.on_patch_updated(patch, update_type)
-
-        if update_type == UpdateType.DELETED:
+        elif update_type == UpdateType.DELETED:
             patch.bank = None
             patch.observer = MagicMock()
+
+        self.observer.on_patch_updated(patch, update_type, **kwargs)
 
     @property
     def json(self):

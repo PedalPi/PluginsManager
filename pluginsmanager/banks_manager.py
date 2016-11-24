@@ -32,12 +32,11 @@ class BanksManager(object):
         or update_type == UpdateType.UPDATED:
             bank.manager = self
             bank.observer = self.observer_manager
-
-        self.observer_manager.on_bank_updated(bank, update_type)
-
-        if update_type == UpdateType.DELETED:
+        elif update_type == UpdateType.DELETED:
             bank.manager = None
             bank.observer_manager = MagicMock()
+
+        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self)
 
 
 class ObserverManager(UpdatesObserver):
@@ -52,15 +51,15 @@ class ObserverManager(UpdatesObserver):
         for observer in self.observers:
             observer.on_current_patch_change(patch, token)
 
-    def on_bank_updated(self, bank, update_type, token=None):
+    def on_bank_updated(self, bank, update_type, token=None, **kwargs):
         for observer in self.observers:
-            observer.on_bank_updated(bank, update_type, token)
+            observer.on_bank_updated(bank, update_type, token, **kwargs)
 
-    def on_patch_updated(self, patch, update_type, token=None):
+    def on_patch_updated(self, patch, update_type, token=None, **kwargs):
         for observer in self.observers:
-            observer.on_patch_updated(patch, update_type, token)
+            observer.on_patch_updated(patch, update_type, token, **kwargs)
 
-    def on_effect_updated(self, effect, update_type, token=None):
+    def on_effect_updated(self, effect, update_type, token=None, **kwargs):
         for observer in self.observers:
             observer.on_effect_updated(effect, update_type, token)
 

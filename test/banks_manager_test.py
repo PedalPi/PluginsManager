@@ -21,11 +21,11 @@ class BanksManagerTest(unittest.TestCase):
 
         bank = Bank('Bank 1')
         manager.append(bank)
-        observer.on_bank_updated.assert_called_with(bank, UpdateType.CREATED, None)
+        observer.on_bank_updated.assert_called_with(bank, UpdateType.CREATED, None, index=0, origin=manager)
 
         patch = Patch('Rocksmith')
         bank.append(patch)
-        observer.on_patch_updated.assert_called_with(patch, UpdateType.CREATED, None)
+        observer.on_patch_updated.assert_called_with(patch, UpdateType.CREATED, None, index=0, origin=bank)
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
@@ -71,11 +71,11 @@ class BanksManagerTest(unittest.TestCase):
         observer.on_param_value_changed.assert_called_with(fuzz.params[0], None)
 
         del bank.patches[0]
-        observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, None)
+        observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, None, index=0, origin=bank)
 
         bank2 = Bank('Bank 2')
         manager.banks[0] = bank2
-        observer.on_bank_updated.assert_called_with(bank2, UpdateType.UPDATED, None)
+        observer.on_bank_updated.assert_called_with(bank2, UpdateType.UPDATED, None, index=0, origin=manager)
 
         manager.banks.remove(bank2)
-        observer.on_bank_updated.assert_called_with(bank2, UpdateType.DELETED, None)
+        observer.on_bank_updated.assert_called_with(bank2, UpdateType.DELETED, None, index=0, origin=manager)

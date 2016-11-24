@@ -35,19 +35,23 @@ class Patch(object):
             effect.observer = observer
 
     def _effects_observer(self, update_type, effect, index):
+        kwargs = {
+            'index': index,
+            'origin': self
+        }
+
         if update_type == UpdateType.CREATED \
         or update_type == UpdateType.UPDATED:
             effect.patch = self
             effect.observer = self.observer
-
-        self.observer.on_effect_updated(effect, update_type)
-
-        if update_type == UpdateType.DELETED:
+        elif update_type == UpdateType.DELETED:
             for connection in effect.connections:
                 self.connections.remove(connection)
 
             effect.patch = None
             effect.observer = MagicMock()
+
+        self.observer.on_effect_updated(effect, update_type, **kwargs)
 
     def _connections_observer(self, update_type, connection, index):
         self.observer.on_connection_updated(connection, update_type)
