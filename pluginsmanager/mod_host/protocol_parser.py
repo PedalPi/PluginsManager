@@ -81,7 +81,7 @@ class ProtocolParser:
 
             connect system:capture_1 plugin_0:in
 
-        :param model.Connection connection: Connection with a valid
+        :param pluginsmanager.model.connection.Connection connection: Connection with a valid
                :class:`Output` and :class:`Input`
         """
         return ProtocolParser._connect_message(
@@ -125,7 +125,7 @@ class ProtocolParser:
 
             disconnect system:capture_1 plugin_0:in
 
-        :param model.Connection connection: Connection with a valid
+        :param pluginsmanager.model.connection.Connection connection: Connection with a valid
                :class:`Output` and :class:`Input`
         """
         return 'disconnect {} {}'.format(

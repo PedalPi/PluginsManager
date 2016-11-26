@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 class Effect(metaclass=ABCMeta):
     """
-    Representation of a audio plugin instance.
+    Representation of a audio plugin instance - LV2 plugin encapsulated as a jack client.
 
     Effect contains a `active` status (off=bypass), a list of :class:`Param`,
     a list of :class:`Input` and a list of :class:`Connection`
@@ -56,21 +56,16 @@ class Effect(metaclass=ABCMeta):
     @property
     def active(self):
         """
-        Is effect active?
-        ``Active false = Inactive = bypass``
+        Effect status: active or bypass
 
-        :return bool: Effect status.
+        :getter: Current effect status
+        :setter: Set the effect Status
+        :type: bool
         """
         return self._active
 
     @active.setter
     def active(self, status):
-        """
-        Set effect status
-
-        :param bool status: Effect status when ``True`` is active
-                            ``False`` is inactive (bypass)
-        """
         if status == self._active:
             return
 
@@ -86,7 +81,7 @@ class Effect(metaclass=ABCMeta):
     @property
     def connections(self):
         """
-        :return list: Connections that this effects is present (with input or output port)
+        :return list[Connection]: Connections that this effects is present (with input or output port)
         """
         function = lambda connection: connection.input.effect == self \
                                    or connection.output.effect == self

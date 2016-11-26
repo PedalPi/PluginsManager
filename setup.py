@@ -1,12 +1,13 @@
 from setuptools import setup
 
+
 def readme():
-    with open('Readme.md') as f:
+    with open('Readme.rst') as f:
         return f.read()
 
 setup(
     name='PedalPi-PluginsManager',
-    version='0.0.1',
+    version='0.0.2',
     long_description=readme(),
     packages=[
         'pluginsmanager',
