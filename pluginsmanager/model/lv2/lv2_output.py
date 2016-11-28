@@ -18,9 +18,12 @@ class Lv2Output(Output):
         )
 
     @property
+    def symbol(self):
+        return self._output['symbol']
+
+    @property
     def __dict__(self):
         dictionary = super(Lv2Output, self).__dict__
         dictionary['index'] = self._output['index']
-        dictionary['symbol'] = self._output['symbol']
 
         return dictionary

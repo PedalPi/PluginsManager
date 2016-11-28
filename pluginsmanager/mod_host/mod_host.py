@@ -8,7 +8,7 @@ from pluginsmanager.mod_host.host import Host
 
 class ModHost(UpdatesObserver):
     """
-    Python port for mod-host::
+    **Python port for mod-host**
         `Mod-host`_ is a `LV2`_ host for Jack controllable via socket or command line.
 
     This class offers the mod-host control in a python API::

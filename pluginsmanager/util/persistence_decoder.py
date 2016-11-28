@@ -5,11 +5,11 @@ from pluginsmanager.model.connection import Connection
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 
-class PersistenceError(Exception):
+class PersistenceDecoderError(Exception):
     pass
 
 
-class Persistence(object):
+class PersistenceDecoder(object):
 
     def __init__(self, system_effect):
         self.system_effect = system_effect
@@ -67,7 +67,7 @@ class EffectReader(Reader):
         if json['technology'] == 'lv2':
             return self.read_lv2(json)
 
-        raise PersistenceError('Unkown effect technology: ' + json['technology'])
+        raise PersistenceDecoderError('Unkown effect technology: ' + json['technology'])
 
     def read_lv2(self, json):
         effect = self.builder.build(json['plugin'])
@@ -87,12 +87,12 @@ class ConnectionReader(Reader):
         self.patch = patch
 
     def read(self, json):
-        if 'index' in json['output']:
+        if 'effect' in json['output']:
             connection_output = self.read_output(json['output'])
         else:
             connection_output = self.read_system_output(json['output'])
 
-        if 'index' in json['input']:
+        if 'effect' in json['input']:
             connection_input = self.read_input(json['input'])
         else:
             connection_input = self.read_system_input(json['input'])
@@ -116,6 +116,7 @@ class ConnectionReader(Reader):
         return effect.inputs[index]
 
     def read_system_output(self, json):
+        print(json['symbol'])
         return self.system_effect.outputs[json['symbol']]
 
     def read_system_input(self, json):

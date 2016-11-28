@@ -18,9 +18,12 @@ class Lv2Input(Input):
         )
 
     @property
+    def symbol(self):
+        return self._input['symbol']
+
+    @property
     def __dict__(self):
         dictionary = super(Lv2Input, self).__dict__
         dictionary['index'] = self._input['index']
-        dictionary['symbol'] = self._input['symbol']
 
         return dictionary

@@ -32,7 +32,20 @@ This page contains the model classes.
        SystemOutput->Output;
 
        Lv2Param->Param;
+
+       BanksManager->Bank [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+       BanksManager->ObserverManager [dir="forward", arrowhead="none", arrowtail="normal"];
+       ObserverManager->UpdatesObserver [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+       ModHost->UpdatesObserver
    }
+
+
+BanksManager
+------------
+
+.. autoclass:: pluginsmanager.banks_manager.BanksManager
+   :members:
+   :special-members:
 
 
 Bank

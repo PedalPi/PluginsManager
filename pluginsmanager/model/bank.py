@@ -39,7 +39,7 @@ class Bank(object):
     True
 
     >>> del bank.patches[0]
-    >>> bank.patches[0] == californication
+    >>> bank.patches[0] == californication # Patch Can't stop rermoved, first is now the californication
     True
 
     You can also toggle patches into different banks::

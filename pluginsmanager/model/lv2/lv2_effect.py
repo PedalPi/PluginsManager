@@ -21,13 +21,14 @@ class Lv2Effect(Effect):
 
         self.plugin = plugin
 
-        self._params = tuple([Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]])
+        params = [Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]]
+        self._params = DictTuple(params, lambda param: param.symbol)
 
         inputs = [Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']]
-        self._inputs = DictTuple(inputs, lambda _input: _input._input['symbol'])
+        self._inputs = DictTuple(inputs, lambda _input: _input.symbol)
 
         outputs = [Lv2Output(self, effect_output) for effect_output in plugin['ports']['audio']['output']]
-        self._outputs = DictTuple(outputs, lambda _output: _output._output['symbol'])
+        self._outputs = DictTuple(outputs, lambda _output: _output.symbol)
 
         self.instance = None
 

@@ -18,8 +18,12 @@ class SystemOutput(Output):
         )
 
     @property
-    def __dict__(self):
-        dictionary = {}
-        dictionary['symbol'] = str(self)
+    def symbol(self):
+        return str(self)
 
-        return dictionary
+    @property
+    def __dict__(self):
+        return {
+            'symbol': self.symbol,
+            'index': self.effect.outputs.index(self),
+        }

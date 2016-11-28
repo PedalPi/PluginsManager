@@ -100,8 +100,7 @@ class ProtocolParser:
         if isinstance(effect_output, SystemOutput):
             return '{}:{}'.format(effect, effect_output)
 
-        symbol = effect_output._output['symbol']
-        return 'effect_{}:{}'.format(effect.instance, symbol)
+        return 'effect_{}:{}'.format(effect.instance, effect_output.symbol)
 
     @staticmethod
     def _get_in_name_of(effect_input):
@@ -110,9 +109,7 @@ class ProtocolParser:
         if isinstance(effect_input, SystemInput):
             return '{}:{}'.format(effect, effect_input)
 
-        symbol = effect_input._input['symbol']
-
-        return 'effect_{}:{}'.format(effect.instance, symbol)
+        return 'effect_{}:{}'.format(effect.instance, effect_input.symbol)
 
     @staticmethod
     def disconnect(connection):
@@ -198,10 +195,8 @@ class ProtocolParser:
         :param Lv2Param param: Parameter that will be updated your value
         """
         instance = param.effect
-        symbol = param._param['symbol']
-        value = param.value
 
-        return 'param_set {} {} {}'.format(instance, symbol, value)
+        return 'param_set {} {} {}'.format(instance, param.symbol, param.value)
 
     @staticmethod
     def param_get(param):
@@ -217,9 +212,8 @@ class ProtocolParser:
         :param Lv2Param param: Parameter that will be get your current value
         """
         instance = param.effect
-        symbol = param._param['symbol']
 
-        return 'param_get {} {}'.format(instance, symbol)
+        return 'param_get {} {}'.format(instance, param.symbol)
 
     @staticmethod
     def param_monitor():

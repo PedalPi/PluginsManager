@@ -16,11 +16,14 @@ class ObservableList(object):
         self.observer = lambda *args: ...
 
     def __str__(self):
+        """
+        See ``__str__`` :class:`list`
+        """
         return repr(self._list)
 
     def append(self, item):
         """
-        View `append` :class:`list` method
+        See ``append`` :class:`list` method
 
         Calls observer ``self.observer(UpdateType.CREATED, item, index)`` where
         **index** is *item position*
@@ -30,7 +33,7 @@ class ObservableList(object):
 
     def remove(self, item):
         """
-        View `remove` :class:`list` method
+        See ``remove`` :class:`list` method
 
         Calls observer ``self.observer(UpdateType.DELETED, item, index)`` where
         **index** is *item position*
@@ -44,7 +47,7 @@ class ObservableList(object):
 
     def insert(self, index, x):
         """
-        View `insert` :class:`list` method
+        See ``insert`` :class:`list` method
 
         Calls observer ``self.observer(UpdateType.CREATED, item, index)``
         """
@@ -59,7 +62,7 @@ class ObservableList(object):
 
     def __setitem__(self, index, val):
         """
-        View `__setitem__` :class:`list` method
+        See ``__setitem__`` :class:`list` method
 
         Calls observer ``self.observer(UpdateType.UPDATED, item, index)``
         if ``val != self[index]``
@@ -72,7 +75,7 @@ class ObservableList(object):
 
     def __delitem__(self, sliced):
         """
-        View `__delitem__` :class:`list` method
+        See ``__delitem__`` :class:`list` method
 
         Calls observer ``self.observer(UpdateType.DELETED, item, index)``
         where **item** is `self[index]`
@@ -82,7 +85,13 @@ class ObservableList(object):
         self.observer(UpdateType.DELETED, item, sliced)
 
     def __contains__(self, item):
+        """
+        See ``__contains__`` :class:`list`
+        """
         return item in self._list
 
     def __iter__(self):
+        """
+        See ``__iter__`` :class:`list`
+        """
         return iter(self._list)

@@ -9,6 +9,8 @@ class Effect(metaclass=ABCMeta):
 
     Effect contains a `active` status (off=bypass), a list of :class:`Param`,
     a list of :class:`Input` and a list of :class:`Connection`
+
+    :param Patch patch: Patch where the effect lies.
     """
 
     def __init__(self, patch=None):

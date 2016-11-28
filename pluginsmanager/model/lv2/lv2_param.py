@@ -6,7 +6,7 @@ class Lv2Param(Param):
     :class:`Param` is an object representation of an Lv2 Audio Plugin
     Parameter
 
-    :param value: Param value
+    :param param: Param value
     """
 
     def __init__(self, effect, param):
@@ -22,18 +22,5 @@ class Lv2Param(Param):
         return self._param['ranges']['minimum']
 
     @property
-    def json(self):
-        """
-        Get a json decodable representation of this param
-
-        :return dict: json representation
-        """
-        return self.__dict__
-
-    @property
-    def __dict__(self):
-        return {
-            'index': self._param['index'],
-            'symbol': self._param['symbol'],
-            'value': self.value,
-        }
+    def symbol(self):
+        return self._param['symbol']

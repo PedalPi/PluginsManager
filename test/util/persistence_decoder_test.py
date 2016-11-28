@@ -5,7 +5,7 @@ from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.patch import Patch
 from pluginsmanager.model.connection import Connection
 
-from pluginsmanager.util.persistence import Persistence, PersistenceError
+from pluginsmanager.util.persistence_decoder import PersistenceDecoder, PersistenceDecoderError
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
@@ -52,7 +52,7 @@ class PersistenceTest(unittest.TestCase):
     def test_read(self):
         system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
 
-        util = Persistence(system_effect)
+        util = PersistenceDecoder(system_effect)
 
         bank = self.bank
         bank_readed = util.read(bank.json)
@@ -79,15 +79,15 @@ class PersistenceTest(unittest.TestCase):
             "name": "Patch 1",
             "connections": []}]}
 
-        with self.assertRaises(PersistenceError):
-            Persistence(system_effect).read(bank_data)
+        with self.assertRaises(PersistenceDecoderError):
+            PersistenceDecoder(system_effect).read(bank_data)
 
     @unittest.skip
     @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
     def test_read_system_builder(self):
         system_effect = SystemEffectBuilder(False).build()
 
-        util = Persistence(system_effect)
+        util = PersistenceDecoder(system_effect)
 
         bank = self.bank
         bank_readed = util.read(bank.json)

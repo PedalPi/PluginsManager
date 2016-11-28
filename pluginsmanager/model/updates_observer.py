@@ -3,11 +3,22 @@ from abc import ABCMeta, abstractmethod
 
 class UpdatesObserver(metaclass=ABCMeta):
     """
-    :class:`NotificationObserver` notifies all :class:`UpdatesObserver`
-    registered then occurs any change in Bank, Patch, Effect, etc.
+    The :class:`UpdatesObserver` is an abstract class definition for
+    treatment of changes in some class model. Your methods are called
+    when occurs any change in Bank, Patch, Effect, etc.
 
-    The :class:`UpdatesObserver` methods are called when your respective
-    change occurs if your ``token`` are different of the requisitor token
+    To do this, it is necessary that the :class:`UpdateObserver` objects
+    be registered in some manager, so that it reports the changes. An
+    example of a manager is :class:`BanksManager`.
+
+    :class:`UpdateObserver` objects needs a Token, an *change identifier*:
+    Some change managers can report changes that have occurred to observers
+    who did not take action. This is useful for synchronizing views. Because
+    the change-making information needs to be explicit, BanksManager does not
+    implement this. As example, `Application`_ offers a manager with
+    token support.
+
+    .. _Application: https://github.com/PedalPi/Application
     """
     def __init__(self):
         self._token = None
@@ -15,7 +26,10 @@ class UpdatesObserver(metaclass=ABCMeta):
     @property
     def token(self):
         """
-        :return string: Observer token
+        :getter: Observer token
+        :setter: Set the token observer. A good place to do this is
+        in the constructor
+        :type: string
         """
         return self._token
 
