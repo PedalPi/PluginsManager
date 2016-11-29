@@ -6,52 +6,52 @@ from unittest.mock import MagicMock
 
 class Bank(object):
     """
-    Bank is a data structure that contains :class:`Patch`. It's useful
-    for group common patches, like "Patches will be used in
+    Bank is a data structure that contains :class:`Pedalboard`. It's useful
+    for group common pedalboards, like "Pedalboards will be used in
     the Sunday show"
 
     A fast bank overview::
 
     >>> bank = Bank('RHCP')
-    >>> californication = Patch('Californication')
+    >>> californication = Pedalboard('Californication')
 
-    >>> # Add patch in bank - mode A
+    >>> # Add pedalboard in bank - mode A
     >>> bank.append(californication)
     >>> californication.bank == bank
     True
 
-    >>> bank.patches[0] == californication
+    >>> bank.pedalboards[0] == californication
     True
 
-    >>> # Add patch in bank - mode B
-    >>> bank.patches.append(Patch('Dark Necessities'))
-    >>> bank.patches[1].bank == bank
+    >>> # Add pedalboard in bank - mode B
+    >>> bank.pedalboards.append(Pedalboard('Dark Necessities'))
+    >>> bank.pedalboards[1].bank == bank
     True
 
-    >>> # If you needs change patches order (swap), use pythonic mode
-    >>> bank.patches[1], bank.patches[0] = bank.patches[0], bank.patches[1]
-    >>> bank.patches[1] == californication
+    >>> # If you needs change pedalboards order (swap), use pythonic mode
+    >>> bank.pedalboards[1], bank.pedalboards[0] = bank.pedalboards[0], bank.pedalboards[1]
+    >>> bank.pedalboards[1] == californication
     True
 
-    >>> # Set patch
-    >>> bank.patches[0] = Patch('Can't Stop')
-    >>> bank.patches[0].bank == bank
+    >>> # Set pedalboard
+    >>> bank.pedalboards[0] = Pedalboard('Can't Stop')
+    >>> bank.pedalboards[0].bank == bank
     True
 
-    >>> del bank.patches[0]
-    >>> bank.patches[0] == californication # Patch Can't stop rermoved, first is now the californication
+    >>> del bank.pedalboards[0]
+    >>> bank.pedalboards[0] == californication # Pedalboard Can't stop rermoved, first is now the californication
     True
 
-    You can also toggle patches into different banks::
+    You can also toggle pedalboards into different banks::
 
-    >>> bank1.patches[0], bank2.patches[2] = bank2.patches[0], bank1.patches[2]
+    >>> bank1.pedalboards[0], bank2.pedalboards[2] = bank2.pedalboards[0], bank1.pedalboards[2]
 
     :param string name: Bank name
     """
     def __init__(self, name):
         self.name = name
-        self.patches = ObservableList()
-        self.patches.observer = self._patches_observer
+        self.pedalboards = ObservableList()
+        self.pedalboards.observer = self._pedalboards_observer
 
         self.index = -1
 
@@ -66,10 +66,10 @@ class Bank(object):
     @observer.setter
     def observer(self, observer):
         self._observer = observer
-        for patch in self.patches:
-            patch.observer = observer
+        for pedalboard in self.pedalboards:
+            pedalboard.observer = observer
 
-    def _patches_observer(self, update_type, patch, index):
+    def _pedalboards_observer(self, update_type, pedalboard, index):
         kwargs = {
             'index': index,
             'origin': self
@@ -77,13 +77,13 @@ class Bank(object):
 
         if update_type == UpdateType.CREATED \
         or update_type == UpdateType.UPDATED:
-            patch.bank = self
-            patch.observer = self.observer
+            pedalboard.bank = self
+            pedalboard.observer = self.observer
         elif update_type == UpdateType.DELETED:
-            patch.bank = None
-            patch.observer = MagicMock()
+            pedalboard.bank = None
+            pedalboard.observer = MagicMock()
 
-        self.observer.on_patch_updated(patch, update_type, **kwargs)
+        self.observer.on_pedalboard_updated(pedalboard, update_type, **kwargs)
 
     @property
     def json(self):
@@ -99,21 +99,21 @@ class Bank(object):
         return {
             'index': self.index,
             'name': self.name,
-            'patches': [patch.json for patch in self.patches]
+            'pedalboards': [pedalboard.json for pedalboard in self.pedalboards]
         }
 
-    def append(self, patch):
+    def append(self, pedalboard):
         """
-        Add a :class:`Patch` in this bank
+        Add a :class:`Pedalboard` in this bank
 
         This works same as::
 
-        >>> bank.patches.append(patch)
+        >>> bank.pedalboards.append(pedalboard)
 
         or::
 
-        >>> bank.patches.insert(len(bank.patches), patch)
+        >>> bank.pedalboards.insert(len(bank.pedalboards), pedalboard)
 
-        :param Patch patch: Patch that will be added
+        :param Pedalboard pedalboard: Pedalboard that will be added
         """
-        self.patches.append(patch)
+        self.pedalboards.append(pedalboard)

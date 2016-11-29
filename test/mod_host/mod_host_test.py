@@ -7,7 +7,7 @@ from pluginsmanager.banks_manager import BanksManager
 from pluginsmanager.mod_host.mod_host import ModHost
 
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.connection import Connection
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
@@ -35,19 +35,19 @@ class ModHostTest(unittest.TestCase):
         mod_host.connect()
         manager.register(mod_host)
 
-        patch = Patch('Rocksmith')
+        pedalboard = Pedalboard('Rocksmith')
 
-        mod_host.patch = patch
+        mod_host.pedalboard = pedalboard
 
-        bank.append(patch)
+        bank.append(pedalboard)
 
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = self.builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
-        patch.append(fuzz)
-        patch.append(reverb2)
+        pedalboard.append(reverb)
+        pedalboard.append(fuzz)
+        pedalboard.append(reverb2)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         reverb.outputs[1].connect(fuzz.inputs[0])
@@ -60,16 +60,16 @@ class ModHostTest(unittest.TestCase):
         fuzz.outputs[0].disconnect(reverb2.inputs[0])
         fuzz.toggle()
 
-        patch.effects.remove(fuzz)
+        pedalboard.effects.remove(fuzz)
 
-        patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
-        patch.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
+        pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+        pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
 
-        for connection in list(patch.connections):
-            patch.connections.remove(connection)
+        for connection in list(pedalboard.connections):
+            pedalboard.connections.remove(connection)
 
-        for effect in list(patch.effects):
-            patch.effects.remove(effect)
+        for effect in list(pedalboard.effects):
+            pedalboard.effects.remove(effect)
 
         #mod_host.auto_connect()
 
@@ -85,19 +85,19 @@ class ModHostTest(unittest.TestCase):
         mod_host.host = MagicMock()
         manager.register(mod_host)
 
-        patch = Patch('Rocksmith')
+        pedalboard = Pedalboard('Rocksmith')
 
-        mod_host.patch = patch
+        mod_host.pedalboard = pedalboard
 
-        bank.append(patch)
+        bank.append(pedalboard)
 
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = self.builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
-        patch.append(fuzz)
-        patch.append(reverb2)
+        pedalboard.append(reverb)
+        pedalboard.append(fuzz)
+        pedalboard.append(reverb2)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         reverb.outputs[1].connect(fuzz.inputs[0])
@@ -110,20 +110,20 @@ class ModHostTest(unittest.TestCase):
         fuzz.outputs[0].disconnect(reverb2.inputs[0])
         fuzz.toggle()
 
-        patch.effects.remove(fuzz)
+        pedalboard.effects.remove(fuzz)
 
-        patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
-        patch.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
+        pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+        pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
 
-        for connection in list(patch.connections):
-            patch.connections.remove(connection)
+        for connection in list(pedalboard.connections):
+            pedalboard.connections.remove(connection)
 
-        for effect in list(patch.effects):
-            patch.effects.remove(effect)
+        for effect in list(pedalboard.effects):
+            pedalboard.effects.remove(effect)
 
             # mod_host.auto_connect()
 
-    def test_set_patch(self):
+    def test_set_pedalboard(self):
         """Test only coverage"""
         manager = BanksManager()
 
@@ -134,20 +134,20 @@ class ModHostTest(unittest.TestCase):
         mod_host.host = MagicMock()
         manager.register(mod_host)
 
-        patch = Patch('test_set_patch_1')
-        bank.append(patch)
+        pedalboard = Pedalboard('test_set_pedalboard_1')
+        bank.append(pedalboard)
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        patch.append(reverb)
+        pedalboard.append(reverb)
 
-        patch2 = Patch('test_set_patch_2')
+        pedalboard2 = Pedalboard('test_set_pedalboard_2')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        bank.append(patch)
-        patch2.append(reverb2)
+        bank.append(pedalboard)
+        pedalboard2.append(reverb2)
 
-        mod_host.patch = patch
-        mod_host.patch = patch2
+        mod_host.pedalboard = pedalboard
+        mod_host.pedalboard = pedalboard2
 
-    def test_effect_status_not_current_patch(self):
+    def test_effect_status_not_current_pedalboard(self):
         """Test only coverage"""
         manager = BanksManager()
 
@@ -158,20 +158,20 @@ class ModHostTest(unittest.TestCase):
         mod_host.host = MagicMock()
         manager.register(mod_host)
 
-        patch = Patch('test_set_patch_1')
-        patch.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard = Pedalboard('test_set_pedalboard_1')
+        pedalboard.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        patch2 = Patch('test_set_patch_2')
-        patch2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard2 = Pedalboard('test_set_pedalboard_2')
+        pedalboard2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        bank.append(patch)
-        bank.append(patch2)
+        bank.append(pedalboard)
+        bank.append(pedalboard2)
 
-        mod_host.patch = patch
+        mod_host.pedalboard = pedalboard
 
-        patch2.effects[0].toggle()
+        pedalboard2.effects[0].toggle()
 
-    def test_param_value_not_current_patch(self):
+    def test_param_value_not_current_pedalboard(self):
         """Test only coverage"""
         manager = BanksManager()
 
@@ -182,20 +182,20 @@ class ModHostTest(unittest.TestCase):
         mod_host.host = MagicMock()
         manager.register(mod_host)
 
-        patch = Patch('test_set_patch_1')
-        patch.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard = Pedalboard('test_set_pedalboard_1')
+        pedalboard.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        patch2 = Patch('test_set_patch_2')
-        patch2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard2 = Pedalboard('test_set_pedalboard_2')
+        pedalboard2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        bank.append(patch)
-        bank.append(patch2)
+        bank.append(pedalboard)
+        bank.append(pedalboard2)
 
-        mod_host.patch = patch
+        mod_host.pedalboard = pedalboard
 
-        patch2.effects[0].params[0].value = patch2.effects[0].params[0].maximum
+        pedalboard2.effects[0].params[0].value = pedalboard2.effects[0].params[0].maximum
 
-    def test_connection_not_current_patch(self):
+    def test_connection_not_current_pedalboard(self):
         """Test only coverage"""
         manager = BanksManager()
 
@@ -206,16 +206,16 @@ class ModHostTest(unittest.TestCase):
         mod_host.host = MagicMock()
         manager.register(mod_host)
 
-        patch = Patch('test_set_patch_1')
-        patch.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard = Pedalboard('test_set_pedalboard_1')
+        pedalboard.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        patch2 = Patch('test_set_patch_2')
-        patch2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
-        patch2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard2 = Pedalboard('test_set_pedalboard_2')
+        pedalboard2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
+        pedalboard2.append(self.builder.build('http://calf.sourceforge.net/plugins/Reverb'))
 
-        bank.append(patch)
-        bank.append(patch2)
+        bank.append(pedalboard)
+        bank.append(pedalboard2)
 
-        mod_host.patch = patch
+        mod_host.pedalboard = pedalboard
 
-        patch2.effects[0].outputs[0].connect(patch2.effects[1].inputs[0])
+        pedalboard2.effects[0].outputs[0].connect(pedalboard2.effects[1].inputs[0])

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.update_type import UpdateType
 
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 import json
@@ -12,89 +12,89 @@ import json
 
 class BankTest(unittest.TestCase):
 
-    def test_add_patch_by_patches(self):
+    def test_add_pedalboard_by_pedalboards(self):
         bank = Bank('Bank 1')
 
-        patch1 = MagicMock()
-        patch2 = MagicMock()
+        pedalboard1 = MagicMock()
+        pedalboard2 = MagicMock()
 
         bank.observer = MagicMock()
 
-        bank.patches.append(patch1)
-        self.assertEqual(patch1.bank, bank)
-        self.assertEqual(bank.patches[0], patch1)
-        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED, index=0, origin=bank)
+        bank.pedalboards.append(pedalboard1)
+        self.assertEqual(pedalboard1.bank, bank)
+        self.assertEqual(bank.pedalboards[0], pedalboard1)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard1, UpdateType.CREATED, index=0, origin=bank)
 
-        bank.patches.append(patch2)
-        self.assertEqual(patch2.bank, bank)
-        self.assertEqual(bank.patches[1], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED, index=1, origin=bank)
+        bank.pedalboards.append(pedalboard2)
+        self.assertEqual(pedalboard2.bank, bank)
+        self.assertEqual(bank.pedalboards[1], pedalboard2)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.CREATED, index=1, origin=bank)
 
-    def test_add_patch(self):
+    def test_add_pedalboard(self):
         bank = Bank('Bank 1')
 
-        patch1 = MagicMock()
-        patch2 = MagicMock()
+        pedalboard1 = MagicMock()
+        pedalboard2 = MagicMock()
 
         bank.observer = MagicMock()
 
-        bank.append(patch1)
-        self.assertEqual(patch1.bank, bank)
-        self.assertEqual(bank.patches[0], patch1)
-        bank.observer.on_patch_updated.assert_called_with(patch1, UpdateType.CREATED, index=0, origin=bank)
+        bank.append(pedalboard1)
+        self.assertEqual(pedalboard1.bank, bank)
+        self.assertEqual(bank.pedalboards[0], pedalboard1)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard1, UpdateType.CREATED, index=0, origin=bank)
 
-        bank.append(patch2)
-        self.assertEqual(patch2.bank, bank)
-        self.assertEqual(bank.patches[1], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.CREATED, index=1, origin=bank)
+        bank.append(pedalboard2)
+        self.assertEqual(pedalboard2.bank, bank)
+        self.assertEqual(bank.pedalboards[1], pedalboard2)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.CREATED, index=1, origin=bank)
 
-    def test_update_patch(self):
+    def test_update_pedalboard(self):
         bank = Bank('Bank 1')
 
-        patch1 = MagicMock()
-        patch2 = MagicMock()
+        pedalboard1 = MagicMock()
+        pedalboard2 = MagicMock()
 
-        bank.append(patch1)
+        bank.append(pedalboard1)
 
         bank.observer = MagicMock()
-        bank.patches[0] = patch2
+        bank.pedalboards[0] = pedalboard2
 
-        self.assertEqual(patch2.bank, bank)
-        self.assertEqual(bank.patches[0], patch2)
-        bank.observer.on_patch_updated.assert_called_with(patch2, UpdateType.UPDATED, index=0, origin=bank)
+        self.assertEqual(pedalboard2.bank, bank)
+        self.assertEqual(bank.pedalboards[0], pedalboard2)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.UPDATED, index=0, origin=bank)
 
-    def test_delete_patch(self):
+    def test_delete_pedalboard(self):
         bank = Bank('Bank 1')
 
-        patch = MagicMock()
+        pedalboard = MagicMock()
 
-        bank.append(patch)
+        bank.append(pedalboard)
 
         bank.observer = MagicMock()
-        del bank.patches[0]
+        del bank.pedalboards[0]
 
-        self.assertEqual(patch.bank, None)
-        self.assertEqual(len(bank.patches), 0)
-        bank.observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, index=0, origin=bank)
+        self.assertEqual(pedalboard.bank, None)
+        self.assertEqual(len(bank.pedalboards), 0)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard, UpdateType.DELETED, index=0, origin=bank)
 
     def test_json(self):
         bank = Bank('Bank 1')
-        patch = Patch('Rocksmith')
+        pedalboard = Pedalboard('Rocksmith')
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
-        patch.append(fuzz)
-        patch.append(reverb2)
+        pedalboard.append(reverb)
+        pedalboard.append(fuzz)
+        pedalboard.append(reverb2)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         reverb.outputs[1].connect(fuzz.inputs[0])
         fuzz.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
 
-        bank.append(patch)
+        bank.append(pedalboard)
 
         print(json.dumps(bank.json, sort_keys=True, indent=2))

@@ -55,7 +55,7 @@ Play!
     from pluginsmanager.mod_host.mod_host import ModHost
 
     from pluginsmanager.model.bank import Bank
-    from pluginsmanager.model.patch import Patch
+    from pluginsmanager.model.pedalboard import Pedalboard
     from pluginsmanager.model.connection import Connection
 
     from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
@@ -80,22 +80,22 @@ Connecting with mod_host. Is necessary that the mod_host process already running
     mod_host.connect()
     manager.register(mod_host)
 
-Creating patch
+Creating pedalboard
 
 .. code-block:: python
 
-    patch = Patch('Rocksmith')
-    bank.append(patch)
+    pedalboard = Pedalboard('Rocksmith')
+    bank.append(pedalboard)
     # or
-    # bank.patches.append(patch)
+    # bank.pedalboards.append(pedalboard)
 
-Loads patch. All changes in patch are reproduced in mod_host
+Loads pedalboard. All changes in pedalboard are reproduced in mod_host
 
 .. code-block:: python
 
-    mod_host.patch = patch
+    mod_host.pedalboard = pedalboard
 
-Add effects in the patch
+Add effects in the pedalboard
 
 .. code-block:: python
 
@@ -105,11 +105,11 @@ Add effects in the patch
     fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
     reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-    patch.append(reverb)
-    patch.append(fuzz)
-    patch.append(reverb2)
+    pedalboard.append(reverb)
+    pedalboard.append(fuzz)
+    pedalboard.append(reverb2)
     # or
-    # patch.effects.append(reverb2)
+    # pedalboard.effects.append(reverb2)
 
 For obtains automatically the sound card inputs and outputs, use :class:`SystemEffectBuilder`. It requires `JACK-Client`_.
 
@@ -147,13 +147,13 @@ Connecting *mode two*:
 
 .. code-block:: python
 
-    patch.connect(Connection(reverb.outputs[0], fuzz.inputs[0]))
-    patch.connect(Connection(reverb.outputs[1], fuzz.inputs[0]))
-    patch.connect(Connection(fuzz.outputs[0], reverb2.inputs[0]))
-    patch.connect(Connection(reverb.outputs[0], reverb2.inputs[0]))
+    pedalboard.connect(Connection(reverb.outputs[0], fuzz.inputs[0]))
+    pedalboard.connect(Connection(reverb.outputs[1], fuzz.inputs[0]))
+    pedalboard.connect(Connection(fuzz.outputs[0], reverb2.inputs[0]))
+    pedalboard.connect(Connection(reverb.outputs[0], reverb2.inputs[0]))
 
-    patch.connect(reverb2.outputs[0].connect(sys_effect.inputs[0]))
-    patch.connect(reverb2.outputs[0].connect(sys_effect.inputs[1]))
+    pedalboard.connect(reverb2.outputs[0].connect(sys_effect.inputs[0]))
+    pedalboard.connect(reverb2.outputs[0].connect(sys_effect.inputs[1]))
 
 Set effect status (enable/disable bypass) and param value
 
@@ -167,10 +167,10 @@ Set effect status (enable/disable bypass) and param value
 
     fuzz.outputs[0].disconnect(reverb2.inputs[0])
     # or
-    # patch.connections.remove(Connection(fuzz.outputs[0], reverb2.inputs[0]))
+    # pedalboard.connections.remove(Connection(fuzz.outputs[0], reverb2.inputs[0]))
     # or
-    # index = patch.connections.index(Connection(fuzz.outputs[0], reverb2.inputs[0]))
-    # del patch.connections[index]
+    # index = pedalboard.connections.index(Connection(fuzz.outputs[0], reverb2.inputs[0]))
+    # del pedalboard.connections[index]
 
     reverb.toggle()
 
@@ -180,16 +180,16 @@ Removing effects and connections:
 
 .. code-block:: python
 
-    patch.effects.remove(fuzz)
+    pedalboard.effects.remove(fuzz)
 
-    for connection in list(patch.connections):
-        patch.connections.remove(connection)
+    for connection in list(pedalboard.connections):
+        pedalboard.connections.remove(connection)
 
-    for effect in list(patch.effects):
-        patch.effects.remove(effect)
+    for effect in list(pedalboard.effects):
+        pedalboard.effects.remove(effect)
     # or
-    # for index in reversed(range(len(patch.effects))):
-        # del patch.effects[index]
+    # for index in reversed(range(len(pedalboard.effects))):
+        # del pedalboard.effects[index]
 
 Maintenance
 -----------

@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.model.connection import Connection
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 
@@ -46,16 +46,16 @@ class EffectTest(unittest.TestCase):
         self.assertEqual(False, reverb.active)
 
     def test_connections_effect_remove_your_connections(self):
-        patch = Patch('Patch name')
+        pedalboard = Pedalboard('Pedalboard name')
 
         builder = EffectTest.builder
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
-        patch.append(fuzz)
-        patch.append(reverb2)
+        pedalboard.append(reverb)
+        pedalboard.append(fuzz)
+        pedalboard.append(reverb2)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         reverb.outputs[1].connect(fuzz.inputs[0])

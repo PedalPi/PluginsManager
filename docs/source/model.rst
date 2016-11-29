@@ -9,9 +9,9 @@ This page contains the model classes.
        graph [rankdir=TB];
        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Bank->Patch [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       Patch->Connection [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       Patch->Effect [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+       Bank->Pedalboard [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+       Pedalboard->Connection [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+       Pedalboard->Effect [dir="forward", arrowhead="odiamond", arrowtail="normal"];
        Param->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
        Input->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
        Output->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
@@ -91,10 +91,10 @@ Param
    :members:
    :special-members:
 
-Patch
------
+Pedalboard
+----------
 
-.. autoclass:: pluginsmanager.model.patch.Patch
+.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
    :members:
    :special-members:
 

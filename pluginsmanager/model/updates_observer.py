@@ -5,7 +5,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     """
     The :class:`UpdatesObserver` is an abstract class definition for
     treatment of changes in some class model. Your methods are called
-    when occurs any change in Bank, Patch, Effect, etc.
+    when occurs any change in Bank, Pedalboard, Effect, etc.
 
     To do this, it is necessary that the :class:`UpdateObserver` objects
     be registered in some manager, so that it reports the changes. An
@@ -38,11 +38,11 @@ class UpdatesObserver(metaclass=ABCMeta):
         self._token = token
 
     @abstractmethod
-    def on_current_patch_change(self, patch, token=None):
+    def on_current_pedalboard_change(self, pedalboard, token=None):
         """
-        Called when the current patch changes
+        Called when the current pedalboard changes
 
-        :param Patch patch: New current patch
+        :param Pedalboard pedalboard: New current pedalboard
         :param string token: Request token identifier
         """
         pass
@@ -61,15 +61,15 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_patch_updated(self, patch, update_type, token=None, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, token=None, **kwargs):
         """
-        Called when changes occurs in any :class:`Patch`
+        Called when changes occurs in any :class:`Pedalboard`
 
-        :param Patch patch: Patch changed
+        :param Pedalboard pedalboard: Pedalboard changed
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
-        :param int index: Patch index (or old index if update_type == UpdateType.DELETED)
-        :param Bank origin: Bank that the patch is (or has) contained
+        :param int index: Pedalboard index (or old index if update_type == UpdateType.DELETED)
+        :param Bank origin: Bank that the pedalboard is (or has) contained
         """
         pass
 
@@ -82,7 +82,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         :param UpdateType update_type: Change type
         :param string token: Request token identifier
         :param int index: Effect index (or old index if update_type == UpdateType.DELETED)
-        :param Patch origin: Patch that the effect is (or has) contained
+        :param Pedalboard origin: Pedalboard that the effect is (or has) contained
         """
         pass
 
@@ -109,7 +109,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_connection_updated(self, connection, update_type, token=None):
         """
-        Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Patch
+        Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Pedalboard
         (adding, updating or removing connections)
 
         :param pluginsmanager.model.connection.Connection connection: Connection changed

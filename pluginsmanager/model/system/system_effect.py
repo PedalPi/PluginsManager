@@ -23,24 +23,24 @@ class SystemEffect(Effect):
 
     >>> sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
 
-    Unlike effects that should be added in the patch, SystemEffects MUST NOT::
+    Unlike effects that should be added in the pedalboard, SystemEffects MUST NOT::
 
     >>> builder = Lv2EffectBuilder()
 
-    >>> patch = Patch('Rocksmith')
+    >>> pedalboard = Pedalboard('Rocksmith')
     >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
-    >>> patch.append(reverb)
+    >>> pedalboard.append(reverb)
 
-    However the patch must have the connections::
+    However the pedalboard must have the connections::
 
-    >>> patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+    >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
 
     An bypass example::
 
-    >>> patch = Patch('Bypass example')
+    >>> pedalboard = Pedalboard('Bypass example')
     >>> sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
-    >>> patch.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))
-    >>> patch.connections.append(Connection(sys_effect.outputs[1], sys_effect.inputs[1]))
+    >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))
+    >>> pedalboard.connections.append(Connection(sys_effect.outputs[1], sys_effect.inputs[1]))
 
     :param string representation: Audio card representation. Usually 'system'
     :param tuple(string) outputs: Tuple of outputs representation. Usually a output representation

@@ -4,12 +4,12 @@ from pluginsmanager.model.update_type import UpdateType
 from unittest.mock import MagicMock
 
 
-class Patch(object):
+class Pedalboard(object):
     """
-    Patch is a pedalboard representation: your structure contains
+    Pedalboard is a pedalboard representation: your structure contains
     :class:`Effect` and :class:`Connection`.
 
-    :param string name: Patch name
+    :param string name: Pedalboard name
     """
     def __init__(self, name):
         self.name = name
@@ -42,13 +42,13 @@ class Patch(object):
 
         if update_type == UpdateType.CREATED \
         or update_type == UpdateType.UPDATED:
-            effect.patch = self
+            effect.pedalboard = self
             effect.observer = self.observer
         elif update_type == UpdateType.DELETED:
             for connection in effect.connections:
                 self.connections.remove(connection)
 
-            effect.patch = None
+            effect.pedalboard = None
             effect.observer = MagicMock()
 
         self.observer.on_effect_updated(effect, update_type, **kwargs)
@@ -59,7 +59,7 @@ class Patch(object):
     @property
     def json(self):
         """
-        Get a json decodable representation of this patch
+        Get a json decodable representation of this pedalboard
 
         :return dict: json representation
         """
@@ -75,12 +75,15 @@ class Patch(object):
 
     def append(self, effect):
         """
-        Add a :class:`Effect` in this patch
+        Add a :class:`Effect` in this pedalboard
 
         This works same as::
-        >>> patch.effects.append(effect)
+
+            >>> pedalboard.effects.append(effect)
+
         or::
-        >>> patch.effects.insert(len(patch.effects), effect)
+
+            >>> pedalboard.effects.insert(len(pedalboard.effects), effect)
 
         :param Effect effect: Effect that will be added
         """

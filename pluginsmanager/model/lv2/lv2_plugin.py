@@ -9,7 +9,11 @@ class Lv2Plugin(object):
         :param string key: Property key
         :return: Returns a Plugin property
         """
-        return self._json[key]
+        return self.json[key]
+
+    @property
+    def json(self):
+        return self._json
 
     def __str__(self):
         return self['name']

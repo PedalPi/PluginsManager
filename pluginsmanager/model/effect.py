@@ -10,11 +10,11 @@ class Effect(metaclass=ABCMeta):
     Effect contains a `active` status (off=bypass), a list of :class:`Param`,
     a list of :class:`Input` and a list of :class:`Connection`
 
-    :param Patch patch: Patch where the effect lies.
+    :param Pedalboard pedalboard: Pedalboard where the effect lies.
     """
 
-    def __init__(self, patch=None):
-        self.patch = patch
+    def __init__(self, pedalboard=None):
+        self.pedalboard = pedalboard
         self._active = True
 
         self._params = ()
@@ -88,7 +88,7 @@ class Effect(metaclass=ABCMeta):
         function = lambda connection: connection.input.effect == self \
                                    or connection.output.effect == self
 
-        return tuple([c for c in self.patch.connections if function(c)])
+        return tuple([c for c in self.pedalboard.connections if function(c)])
 
     @property
     def json(self):

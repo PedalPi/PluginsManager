@@ -18,13 +18,13 @@ class ModHost(UpdatesObserver):
         mod_host.connect()
         banks_manager.register(mod_host)
 
-        # Set the mod_host patch for a patch that the bank
+        # Set the mod_host pedalboard for a pedalboard that the bank
         # has added in banks_manager
-        mod_host.patch = my_awesome_patch
+        mod_host.pedalboard = my_awesome_pedalboard
 
-    The changes in current patch (``mod_host.patch``) will also result in mod-host::
+    The changes in current pedalboard (``mod_host.pedalboard``) will also result in mod-host::
 
-        driver = my_awesome_patch.effects[0]
+        driver = my_awesome_pedalboard.effects[0]
         driver.active = False
 
     .. note::
@@ -70,7 +70,7 @@ class ModHost(UpdatesObserver):
         self.address = address
 
         self.host = None
-        self._patch = None
+        self._pedalboard = None
 
     def connect(self):
         """
@@ -80,16 +80,16 @@ class ModHost(UpdatesObserver):
         self.host = Host(self.address)
 
     def auto_connect(self):
-        if self.patch is None or len(self.patch.effects) == 0:
+        if self.pedalboard is None or len(self.pedalboard.effects) == 0:
             return
 
-        first = self.patch.effects[0]
-        last = self.patch.effects[-1]
+        first = self.pedalboard.effects[0]
+        last = self.pedalboard.effects[-1]
 
         self.host.connect_input_in(first.inputs[0])
 
         before = first
-        for effect in self.patch.effects[1:]:
+        for effect in self.pedalboard.effects[1:]:
             self.host.connect(Connection(before.outputs[0], effect.inputs[0]))
             before = effect
 
@@ -97,47 +97,47 @@ class ModHost(UpdatesObserver):
         self.host.connect_on_output(last.outputs[0], 2)
 
     @property
-    def patch(self):
+    def pedalboard(self):
         """
-        Currently managed patch (current patch)
+        Currently managed pedalboard (current pedalboard)
 
-        :getter: Current patch - Patch loaded by mod-host
-        :setter: Set the patch that will be loaded by mod-host
-        :type: Patch
+        :getter: Current pedalboard - Pedalboard loaded by mod-host
+        :setter: Set the pedalboard that will be loaded by mod-host
+        :type: Pedalboard
         """
-        return self._patch
+        return self._pedalboard
 
-    @patch.setter
-    def patch(self, patch):
-        self.on_current_patch_change(patch)
+    @pedalboard.setter
+    def pedalboard(self, pedalboard):
+        self.on_current_pedalboard_change(pedalboard)
 
     ####################################
     # Observer
     ####################################
-    def on_current_patch_change(self, patch, token=None):
-        if self.patch is not None:
-            for effect in self.patch.effects:
+    def on_current_pedalboard_change(self, pedalboard, token=None):
+        if self.pedalboard is not None:
+            for effect in self.pedalboard.effects:
                 self.on_effect_updated(effect, UpdateType.DELETED)
 
-        self._patch = patch
+        self._pedalboard = pedalboard
 
-        for effect in patch.effects:
+        for effect in pedalboard.effects:
             self.on_effect_updated(effect, UpdateType.CREATED)
 
     def on_bank_updated(self, bank, update_type, token=None, **kwargs):
-        if self.patch is not None \
-        and bank != self.patch.bank:
+        if self.pedalboard is not None \
+        and bank != self.pedalboard.bank:
             return
         pass
 
-    def on_patch_updated(self, patch, update_type, token=None, **kwargs):
-        if patch != self.patch:
+    def on_pedalboard_updated(self, pedalboard, update_type, token=None, **kwargs):
+        if pedalboard != self.pedalboard:
             return
 
-        self.on_current_patch_change(patch)
+        self.on_current_pedalboard_change(pedalboard)
 
     def on_effect_updated(self, effect, update_type, token=None, **kwargs):
-        if effect.patch != self.patch:
+        if effect.pedalboard != self.pedalboard:
             return
 
         if update_type == UpdateType.CREATED:
@@ -153,19 +153,19 @@ class ModHost(UpdatesObserver):
             self.on_param_value_changed(param)
 
     def on_effect_status_toggled(self, effect, token=None):
-        if effect.patch != self.patch:
+        if effect.pedalboard != self.pedalboard:
             return
 
         self.host.set_status(effect)
 
     def on_param_value_changed(self, param, token=None):
-        if param.effect.patch != self.patch:
+        if param.effect.pedalboard != self.pedalboard:
             return
 
         self.host.set_param_value(param)
 
     def on_connection_updated(self, connection, update_type, token=None):
-        if connection.input.effect.patch != self.patch:
+        if connection.input.effect.pedalboard != self.pedalboard:
             return
 
         if update_type == UpdateType.CREATED:

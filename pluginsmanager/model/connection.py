@@ -11,7 +11,7 @@ class Connection(object):
     :class:`Connection` represents a connection between two
     distinct effects by your ports (effect :class:`Output` with effect :class:`Input`)::
 
-    >>> californication = Patch('Californication')
+    >>> californication = Pedalboard('Californication')
     >>> californication.append(driver)
     >>> californication.append(reverb)
 

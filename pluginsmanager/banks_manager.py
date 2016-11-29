@@ -47,17 +47,17 @@ class ObserverManager(UpdatesObserver):
     def append(self, observer):
         self.observers.append(observer)
 
-    def on_current_patch_change(self, patch, token=None):
+    def on_current_pedalboard_change(self, pedalboard, token=None):
         for observer in self.observers:
-            observer.on_current_patch_change(patch, token)
+            observer.on_current_pedalboard_change(pedalboard, token)
 
     def on_bank_updated(self, bank, update_type, token=None, **kwargs):
         for observer in self.observers:
             observer.on_bank_updated(bank, update_type, token, **kwargs)
 
-    def on_patch_updated(self, patch, update_type, token=None, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, token=None, **kwargs):
         for observer in self.observers:
-            observer.on_patch_updated(patch, update_type, token, **kwargs)
+            observer.on_pedalboard_updated(pedalboard, update_type, token, **kwargs)
 
     def on_effect_updated(self, effect, update_type, token=None, **kwargs):
         for observer in self.observers:

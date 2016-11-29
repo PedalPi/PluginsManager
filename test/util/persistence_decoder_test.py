@@ -2,7 +2,7 @@ import unittest
 import os
 
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.connection import Connection
 
 from pluginsmanager.util.persistence_decoder import PersistenceDecoder, PersistenceDecoderError
@@ -23,26 +23,26 @@ class PersistenceTest(unittest.TestCase):
         sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
 
         bank = Bank('Bank 1')
-        patch = Patch('Patch 1')
+        pedalboard = Pedalboard('Pedalboard 1')
 
-        bank.append(patch)
-        bank.append(Patch('Pedalboard is a Patch?'))
+        bank.append(pedalboard)
+        bank.append(Pedalboard('Pedalboard is a Pedalboard?'))
 
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = self.builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
-        patch.append(fuzz)
-        patch.append(reverb2)
+        pedalboard.append(reverb)
+        pedalboard.append(fuzz)
+        pedalboard.append(reverb2)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         reverb.outputs[1].connect(fuzz.inputs[0])
         fuzz.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
 
-        patch.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
-        patch.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
+        pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+        pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
 
         fuzz.toggle()
         fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
@@ -64,7 +64,7 @@ class PersistenceTest(unittest.TestCase):
 
         bank_data = {
             "index": 3, "name": "Bank 1",
-            "patches": [{
+            "pedalboards": [{
                 "effects": [{"params": [{"index": 7, "symbol": "decay_time", "value": 1.5},
                                         {"index": 8, "symbol": "hf_damp", "value": 5000},
                                         {"index": 9, "symbol": "room_size", "value": 2},
@@ -76,7 +76,7 @@ class PersistenceTest(unittest.TestCase):
                                         {"index": 15, "symbol": "treble_cut", "value": 5000}],
                 "active": True, "technology": "ladspa",
                 "plugin": "http://calf.sourceforge.net/plugins/Reverb"}],
-            "name": "Patch 1",
+            "name": "Pedalboard 1",
             "connections": []}]}
 
         with self.assertRaises(PersistenceDecoderError):

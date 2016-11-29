@@ -1,5 +1,5 @@
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.connection import Connection
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
@@ -34,27 +34,27 @@ class BankReader(Reader):
         bank = Bank(json['name'])
         bank.index = json['index']
 
-        patch_reader = PatchReader(self.system_effect)
-        for patch_json in json['patches']:
-            bank.append(patch_reader.read(patch_json))
+        pedalboard_reader = PedalboardReader(self.system_effect)
+        for pedalboard_json in json['pedalboards']:
+            bank.append(pedalboard_reader.read(pedalboard_json))
 
         return bank
 
 
-class PatchReader(Reader):
+class PedalboardReader(Reader):
 
     def read(self, json):
-        patch = Patch(json['name'])
+        pedalboard = Pedalboard(json['name'])
 
         effect_reader = EffectReader(self.system_effect)
         for effect_json in json['effects']:
-            patch.append(effect_reader.read(effect_json))
+            pedalboard.append(effect_reader.read(effect_json))
 
-        connection_reader = ConnectionReader(patch, self.system_effect)
+        connection_reader = ConnectionReader(pedalboard, self.system_effect)
         for connection_json in json['connections']:
-            patch.connections.append(connection_reader.read(connection_json))
+            pedalboard.connections.append(connection_reader.read(connection_json))
 
-        return patch
+        return pedalboard
 
 
 class EffectReader(Reader):
@@ -82,9 +82,9 @@ class EffectReader(Reader):
 
 class ConnectionReader(Reader):
 
-    def __init__(self, patch, system_effect):
+    def __init__(self, pedalboard, system_effect):
         super(ConnectionReader, self).__init__(system_effect)
-        self.patch = patch
+        self.pedalboard = pedalboard
 
     def read(self, json):
         if 'effect' in json['output']:
@@ -103,7 +103,7 @@ class ConnectionReader(Reader):
         index = json['symbol']
 
         effect_index = json['effect']
-        effect = self.patch.effects[effect_index]
+        effect = self.pedalboard.effects[effect_index]
 
         return effect.outputs[index]
 
@@ -111,7 +111,7 @@ class ConnectionReader(Reader):
         index = json['symbol']
 
         effect_index = json['effect']
-        effect = self.patch.effects[effect_index]
+        effect = self.pedalboard.effects[effect_index]
 
         return effect.inputs[index]
 

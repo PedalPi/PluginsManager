@@ -60,7 +60,7 @@ class Output(metaclass=ABCMeta):
 
         :param Input effect_input: Input that will be connected with it
         """
-        self.effect.patch.connections.append(Connection(self, effect_input))
+        self.effect.pedalboard.connections.append(Connection(self, effect_input))
 
     def disconnect(self, effect_input):
         """
@@ -76,7 +76,7 @@ class Output(metaclass=ABCMeta):
 
         :param Input effect_input: Input that will be disconnected with it
         """
-        self.effect.patch.connections.remove(Connection(self, effect_input))
+        self.effect.pedalboard.connections.remove(Connection(self, effect_input))
 
     @property
     @abstractmethod
@@ -98,7 +98,7 @@ class Output(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'effect': self.effect.patch.effects.index(self.effect),
+            'effect': self.effect.pedalboard.effects.index(self.effect),
             'symbol': self.symbol,
             'index': self.effect.outputs.index(self),
         }

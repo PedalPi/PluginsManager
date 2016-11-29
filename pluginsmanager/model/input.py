@@ -66,7 +66,7 @@ class Input(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'effect': self.effect.patch.effects.index(self.effect),
+            'effect': self.effect.pedalboard.effects.index(self.effect),
             'symbol': self.symbol,
             'index': self.effect.inputs.index(self),
         }

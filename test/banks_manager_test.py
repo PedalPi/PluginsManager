@@ -5,7 +5,7 @@ from pluginsmanager.banks_manager import BanksManager
 
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.connection import Connection
-from pluginsmanager.model.patch import Patch
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.update_type import UpdateType
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
@@ -23,20 +23,20 @@ class BanksManagerTest(unittest.TestCase):
         manager.append(bank)
         observer.on_bank_updated.assert_called_with(bank, UpdateType.CREATED, None, index=0, origin=manager)
 
-        patch = Patch('Rocksmith')
-        bank.append(patch)
-        observer.on_patch_updated.assert_called_with(patch, UpdateType.CREATED, None, index=0, origin=bank)
+        pedalboard = Pedalboard('Rocksmith')
+        bank.append(pedalboard)
+        observer.on_pedalboard_updated.assert_called_with(pedalboard, UpdateType.CREATED, None, index=0, origin=bank)
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
-        patch.append(reverb)
+        pedalboard.append(reverb)
         observer.on_effect_updated.assert_called_with(reverb, UpdateType.CREATED, None)
-        patch.append(fuzz)
+        pedalboard.append(fuzz)
         observer.on_effect_updated.assert_called_with(fuzz, UpdateType.CREATED, None)
-        patch.append(reverb2)
+        pedalboard.append(reverb2)
         observer.on_effect_updated.assert_called_with(reverb2, UpdateType.CREATED, None)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
@@ -70,8 +70,8 @@ class BanksManagerTest(unittest.TestCase):
         fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
         observer.on_param_value_changed.assert_called_with(fuzz.params[0], None)
 
-        del bank.patches[0]
-        observer.on_patch_updated.assert_called_with(patch, UpdateType.DELETED, None, index=0, origin=bank)
+        del bank.pedalboards[0]
+        observer.on_pedalboard_updated.assert_called_with(pedalboard, UpdateType.DELETED, None, index=0, origin=bank)
 
         bank2 = Bank('Bank 2')
         manager.banks[0] = bank2
