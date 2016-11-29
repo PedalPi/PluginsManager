@@ -147,13 +147,13 @@ Connecting *mode two*:
 
 .. code-block:: python
 
-    pedalboard.connect(Connection(reverb.outputs[0], fuzz.inputs[0]))
-    pedalboard.connect(Connection(reverb.outputs[1], fuzz.inputs[0]))
-    pedalboard.connect(Connection(fuzz.outputs[0], reverb2.inputs[0]))
-    pedalboard.connect(Connection(reverb.outputs[0], reverb2.inputs[0]))
+    pedalboard.connections.append(Connection(reverb.outputs[0], fuzz.inputs[0]))
+    pedalboard.connections.append(Connection(reverb.outputs[1], fuzz.inputs[0]))
+    pedalboard.connections.append(Connection(fuzz.outputs[0], reverb2.inputs[0]))
+    pedalboard.connections.append(Connection(reverb.outputs[0], reverb2.inputs[0]))
 
-    pedalboard.connect(reverb2.outputs[0].connect(sys_effect.inputs[0]))
-    pedalboard.connect(reverb2.outputs[0].connect(sys_effect.inputs[1]))
+    pedalboard.connections.append(reverb2.outputs[0].connect(sys_effect.inputs[0]))
+    pedalboard.connections.append(reverb2.outputs[0].connect(sys_effect.inputs[1]))
 
 Set effect status (enable/disable bypass) and param value
 

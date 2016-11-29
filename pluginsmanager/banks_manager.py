@@ -8,7 +8,16 @@ from unittest.mock import MagicMock
 
 class BanksManager(object):
     """
-    :param list[Bank] banks:
+    BanksManager manager the banks. In these is possible add banks,
+    obtains the banks and register observers for will be notified when
+    occurs changes (like added new pedalboard, rename bank, set effect
+    param value or state)
+
+    For use details, view Readme.rst example documentation.
+
+    :param list[Bank] banks: Banks that will be added in this. Useful
+                             for loads banks previously loaded, like
+                             banks persisted and recovered.
     """
 
     def __init__(self, banks=None):
@@ -22,9 +31,22 @@ class BanksManager(object):
             self.append(bank)
 
     def register(self, observer):
+        """
+        Register an observer for it be notified when occurs changes.
+
+        For more details, see :class:`UpdatesObserver` and :class:`ModHost`.
+
+        :param UpdatesObserver observer: Observer that will be notified then occurs changes
+        """
         self.observer_manager.append(observer)
 
     def append(self, bank):
+        """
+        Append the bank in banks manager. It will be monitored, changes in this
+        will be notified for the notifiers.
+
+        :param Bank bank: Bank that will be added in this
+        """
         self.banks.append(bank)
 
     def _banks_observer(self, update_type, bank, index):

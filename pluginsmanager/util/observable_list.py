@@ -17,9 +17,15 @@ class ObservableList(object):
 
     def __str__(self):
         """
-        See ``__str__`` :class:`list`
+        See ``__repr__`` :class:`list`
         """
         return repr(self._list)
+
+    def __repr__(self):
+        """
+        See ``__repr__`` :class:`list`
+        """
+        return "ObservableList: " + repr(self._list)
 
     def append(self, item):
         """

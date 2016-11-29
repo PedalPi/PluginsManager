@@ -28,7 +28,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         """
         :getter: Observer token
         :setter: Set the token observer. A good place to do this is
-        in the constructor
+                 in the constructor
         :type: string
         """
         return self._token

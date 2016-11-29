@@ -6,8 +6,36 @@ from unittest.mock import MagicMock
 
 class Pedalboard(object):
     """
-    Pedalboard is a pedalboard representation: your structure contains
-    :class:`Effect` and :class:`Connection`.
+    Pedalboard is a patch representation: your structure contains
+    :class:`Effect` and :class:`Connection`::
+
+        >>> pedalboard = Pedalboard('Rocksmith')
+        >>> bank.append(pedalboard)
+
+        >>> builder = Lv2EffectBuilder()
+        >>> pedalboard.effects
+        ObservableList: []
+        >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+        >>> pedalboard.append(reverb)
+        >>> pedalboard.effects
+        ObservableList: [<Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>]
+
+        >>> fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
+        >>> pedalboard.effects.append(fuzz)
+
+        >>> pedalboard.connections
+        ObservableList: []
+        >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], fuzz.inputs[0])) # View SystemEffect for more details
+        >>> pedalboard.connections.append(Connection(fuzz.outputs[0], reverb.inputs[0]))
+        >>> # It works too
+        >>> reverb.outputs[1].connect(sys_effect.inputs[0])
+        ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
+
+    For load the pedalboard for play the songs with it::
+
+        >>> mod_host.pedalboard = pedalboard
+
+    All changes in the pedalboard will be reproduced in mod-host
 
     :param string name: Pedalboard name
     """
@@ -91,8 +119,26 @@ class Pedalboard(object):
 
     @property
     def effects(self):
+        """
+        Return the effects presents in the pedalboard
+
+        .. note::
+
+            Because the effects is an :class:`ObservableList`, it isn't settable.
+            For replace, del the effects unnecessary and add the necessary
+            effects
+        """
         return self._effects
 
     @property
     def connections(self):
+        """
+        Return the pedalboard connections list
+
+        .. note::
+
+            Because the connections is an :class:`ObservableList`, it isn't settable.
+            For replace, del the connections unnecessary and add the necessary
+            connections
+        """
         return self._connections

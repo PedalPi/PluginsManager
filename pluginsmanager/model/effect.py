@@ -8,7 +8,28 @@ class Effect(metaclass=ABCMeta):
     Representation of a audio plugin instance - LV2 plugin encapsulated as a jack client.
 
     Effect contains a `active` status (off=bypass), a list of :class:`Param`,
-    a list of :class:`Input` and a list of :class:`Connection`
+    a list of :class:`Input` and a list of :class:`Connection`::
+
+        >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+        >>> pedalboard.append(reverb)
+        >>> reverb
+        <Lv2Effect object as 'Calf Reverb' active at 0x7fd58d874ba8>
+
+        >>> reverb.active
+        True
+        >>> reverb.toggle
+        >>> reverb.active
+        False
+        >>> reverb.active = True
+        >>> reverb.active
+        True
+
+        >>> reverb.inputs
+        (<Lv2Input object as In L at 0x7fd58c583208>, <Lv2Input object as In R at 0x7fd58c587320>)
+        >>> reverb.outputs
+        (<Lv2Output object as Out L at 0x7fd58c58a438>, <Lv2Output object as Out R at 0x7fd58c58d550>)
+        >>> reverb.params
+        (<Lv2Param object as value=1.5 [0.4000000059604645 - 15.0] at 0x7fd587f77908>, <Lv2Param object as value=5000.0 [2000.0 - 20000.0] at 0x7fd587f7a9e8>, <Lv2Param object as value=2 [0 - 5] at 0x7fd587f7cac8>, <Lv2Param object as value=0.5 [0.0 - 1.0] at 0x7fd587f7eba8>, <Lv2Param object as value=0.25 [0.0 - 2.0] at 0x7fd58c576c88>, <Lv2Param object as value=1.0 [0.0 - 2.0] at 0x7fd58c578d68>, <Lv2Param object as value=0.0 [0.0 - 500.0] at 0x7fd58c57ae80>, <Lv2Param object as value=300.0 [20.0 - 20000.0] at 0x7fd58c57df98>, <Lv2Param object as value=5000.0 [20.0 - 20000.0] at 0x7fd58c5810f0>)
 
     :param Pedalboard pedalboard: Pedalboard where the effect lies.
     """

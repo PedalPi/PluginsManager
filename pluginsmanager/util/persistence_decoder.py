@@ -67,7 +67,7 @@ class EffectReader(Reader):
         if json['technology'] == 'lv2':
             return self.read_lv2(json)
 
-        raise PersistenceDecoderError('Unkown effect technology: ' + json['technology'])
+        raise PersistenceDecoderError('Unknown effect technology: ' + json['technology'])
 
     def read_lv2(self, json):
         effect = self.builder.build(json['plugin'])
@@ -116,7 +116,6 @@ class ConnectionReader(Reader):
         return effect.inputs[index]
 
     def read_system_output(self, json):
-        print(json['symbol'])
         return self.system_effect.outputs[json['symbol']]
 
     def read_system_input(self, json):
