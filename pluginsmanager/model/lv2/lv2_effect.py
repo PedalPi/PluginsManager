@@ -10,8 +10,14 @@ class Lv2Effect(Effect):
     """
     Representation of a Lv2 audio plugin instance.
 
-    Effect contains a `active` status (off=bypass), a list of :class:`Param`,
-    a list of :class:`Input` and a list of :class:`Connection`
+    For general effect use, see :class:`Effect` class documentation.
+
+    It's possible obtains the :class:`Lv2Plugin` information::
+
+        >>> reverb
+        <Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>
+        >>> reverb.plugin
+        <Lv2Plugin object as Calf Reverb at 0x7f60effb9940>
 
     :param Lv2Plugin plugin:
     """

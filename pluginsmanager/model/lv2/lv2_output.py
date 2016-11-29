@@ -2,6 +2,17 @@ from pluginsmanager.model.output import Output
 
 
 class Lv2Output(Output):
+    """
+    Representation of a Lv2 `output audio port`_ instance.
+
+    For general input use, see :class:`Output` class documentation.
+
+    .. _output audio port: http://lv2plug.in/ns/lv2core/#OutputPort
+    http://lv2plug.in/ns/lv2core/#Parameter
+
+    :param Lv2Effect effect:
+    :param dict effect_output: *output audio port* json representation
+    """
 
     def __init__(self, effect, effect_output):
         super(Lv2Output, self).__init__(effect)

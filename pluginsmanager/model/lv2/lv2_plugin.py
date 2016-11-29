@@ -13,6 +13,11 @@ class Lv2Plugin(object):
 
     @property
     def json(self):
+        """
+        Json decodable representation of this plugin based in moddevices `lilvlib`_.
+
+        .. _lilvlib: https://github.com/moddevices/lilvlib
+        """
         return self._json
 
     def __str__(self):

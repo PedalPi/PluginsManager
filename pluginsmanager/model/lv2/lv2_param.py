@@ -3,10 +3,14 @@ from pluginsmanager.model.param import Param
 
 class Lv2Param(Param):
     """
-    :class:`Param` is an object representation of an Lv2 Audio Plugin
-    Parameter
+    Representation of a Lv2 `input control port`_ instance.
 
-    :param param: Param value
+    For general input use, see :class:`Param` class documentation.
+
+    :param Lv2Effect effect:
+    :param dict param: *input control port* json representation
+
+    .. _input control port: http://lv2plug.in/ns/lv2core/#Parameter
     """
 
     def __init__(self, effect, param):

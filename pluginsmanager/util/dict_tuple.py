@@ -13,7 +13,7 @@ class DictTuple(tuple):
                                 returns your key.
     """
 
-    def __new__(self, elements, key_function):
+    def __new__(cls, elements, key_function):
         return tuple.__new__(DictTuple, tuple(elements))
 
     def __init__(self, elements, key_function):

@@ -32,13 +32,19 @@ This page contains the model classes.
        SystemOutput->Output;
 
        Lv2Param->Param;
+   }
+
+.. graphviz::
+
+   digraph classes {
+       graph [rankdir=TB];
+       node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
        BanksManager->Bank [dir="forward", arrowhead="odiamond", arrowtail="normal"];
        BanksManager->ObserverManager [dir="forward", arrowhead="none", arrowtail="normal"];
        ObserverManager->UpdatesObserver [dir="forward", arrowhead="odiamond", arrowtail="normal"];
        ModHost->UpdatesObserver
    }
-
 
 BanksManager
 ------------

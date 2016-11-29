@@ -7,7 +7,7 @@ from pluginsmanager.model.lv2.lv2_effect import Lv2Effect
 
 class Lv2EffectBuilder(object):
     """
-    Generate lv2 audio plugins instance (as :class:`Lv2Effect` object).
+    Generates lv2 audio plugins instance (as :class:`Lv2Effect` object).
 
     .. note::
 
