@@ -109,12 +109,12 @@ class ModHost(UpdatesObserver):
 
     @pedalboard.setter
     def pedalboard(self, pedalboard):
-        self.on_current_pedalboard_change(pedalboard)
+        self.on_current_pedalboard_changed(pedalboard)
 
     ####################################
     # Observer
     ####################################
-    def on_current_pedalboard_change(self, pedalboard, token=None):
+    def on_current_pedalboard_changed(self, pedalboard, token=None):
         if self.pedalboard is not None:
             for effect in self.pedalboard.effects:
                 self.on_effect_updated(effect, UpdateType.DELETED)
@@ -134,7 +134,7 @@ class ModHost(UpdatesObserver):
         if pedalboard != self.pedalboard:
             return
 
-        self.on_current_pedalboard_change(pedalboard)
+        self.on_current_pedalboard_changed(pedalboard)
 
     def on_effect_updated(self, effect, update_type, token=None, **kwargs):
         if effect.pedalboard != self.pedalboard:

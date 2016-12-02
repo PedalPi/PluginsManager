@@ -69,9 +69,9 @@ class ObserverManager(UpdatesObserver):
     def append(self, observer):
         self.observers.append(observer)
 
-    def on_current_pedalboard_change(self, pedalboard, token=None):
+    def on_current_pedalboard_changed(self, pedalboard, token=None):
         for observer in self.observers:
-            observer.on_current_pedalboard_change(pedalboard, token)
+            observer.on_current_pedalboard_changed(pedalboard, token)
 
     def on_bank_updated(self, bank, update_type, token=None, **kwargs):
         for observer in self.observers:

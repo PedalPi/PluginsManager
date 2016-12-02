@@ -38,7 +38,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         self._token = token
 
     @abstractmethod
-    def on_current_pedalboard_change(self, pedalboard, token=None):
+    def on_current_pedalboard_changed(self, pedalboard, token=None):
         """
         Called when the current pedalboard changes
 
