@@ -32,6 +32,6 @@ class Lv2Param(Param):
     @property
     def __dict__(self):
         dictionary = super(Lv2Param, self).__dict__
-        dictionary['index'] = self._param['index'];
+        dictionary['index'] = self._param['index']
 
         return dictionary

@@ -34,8 +34,8 @@ class Effect(metaclass=ABCMeta):
     :param Pedalboard pedalboard: Pedalboard where the effect lies.
     """
 
-    def __init__(self, pedalboard=None):
-        self.pedalboard = pedalboard
+    def __init__(self):
+        self.pedalboard = None
         self._active = True
 
         self._params = ()
