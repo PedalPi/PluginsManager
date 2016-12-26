@@ -54,6 +54,9 @@ class PedalboardReader(Reader):
         for connection_json in json['connections']:
             pedalboard.connections.append(connection_reader.read(connection_json))
 
+        if 'data' in json:
+            pedalboard.data = json['data']
+
         return pedalboard
 
 
@@ -100,23 +103,25 @@ class ConnectionReader(Reader):
         return Connection(connection_output, connection_input)
 
     def read_output(self, json):
-        index = json['symbol']
-
         effect_index = json['effect']
         effect = self.pedalboard.effects[effect_index]
 
-        return effect.outputs[index]
+        return self.generic_system_output(effect, json['symbol'])
 
     def read_input(self, json):
-        index = json['symbol']
-
         effect_index = json['effect']
         effect = self.pedalboard.effects[effect_index]
 
-        return effect.inputs[index]
+        return self.generic_system_input(effect, json['symbol'])
 
     def read_system_output(self, json):
-        return self.system_effect.outputs[json['symbol']]
+        return self.generic_system_output(self.system_effect, json['symbol'])
 
     def read_system_input(self, json):
-        return self.system_effect.inputs[json['symbol']]
+        return self.generic_system_input(self.system_effect, json['symbol'])
+
+    def generic_system_output(self, effect, symbol):
+        return effect.outputs[symbol]
+
+    def generic_system_input(self, effect, symbol):
+        return effect.inputs[symbol]

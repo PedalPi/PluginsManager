@@ -153,3 +153,12 @@ class PedalboardTest(unittest.TestCase):
         self.assertEqual(1, len(pedalboard.connections))
         for connection in fuzz_connections:
             pedalboard.observer.on_connection_updated.assert_any_call(connection, UpdateType.DELETED)
+
+    def test_data(self):
+        pedalboard = Pedalboard('Bank 1')
+        pedalboard.observer = MagicMock()
+
+        self.assertEqual({}, pedalboard.data)
+        data = {'my-awesome-component': True}
+        pedalboard.data = data
+        self.assertEqual(data, pedalboard.data)

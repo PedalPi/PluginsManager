@@ -28,3 +28,10 @@ class Lv2Param(Param):
     @property
     def symbol(self):
         return self._param['symbol']
+
+    @property
+    def __dict__(self):
+        dictionary = super(Lv2Param, self).__dict__
+        dictionary['index'] = self._param['index']
+
+        return dictionary
