@@ -31,11 +31,18 @@ class Pedalboard(object):
         >>> reverb.outputs[1].connect(sys_effect.inputs[0])
         ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
 
+        >>> pedalboard.data
+        {}
+        >>> pedalboard.data = {'my-awesome-component': True}
+        >>> pedalboard.data
+        {'my-awesome-component': True}
+
     For load the pedalboard for play the songs with it::
 
         >>> mod_host.pedalboard = pedalboard
 
-    All changes in the pedalboard will be reproduced in mod-host
+    All changes¹ in the pedalboard will be reproduced in mod-host.
+    ¹ Except in data attribute, changes in this does not interfere with anything.
 
     :param string name: Pedalboard name
     """
@@ -50,6 +57,8 @@ class Pedalboard(object):
         self._observer = MagicMock()
 
         self.bank = None
+
+        self.data = {}
 
     @property
     def observer(self):
@@ -98,7 +107,8 @@ class Pedalboard(object):
         return {
             'name': self.name,
             'effects': [effect.json for effect in self.effects],
-            'connections': [connection.json for connection in self.connections]
+            'connections': [connection.json for connection in self.connections],
+            'data': self.data
         }
 
     def append(self, effect):

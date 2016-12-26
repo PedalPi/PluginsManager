@@ -57,6 +57,7 @@ class PersistenceTest(unittest.TestCase):
         bank = self.bank
         bank_readed = util.read(bank.json)
 
+        self.maxDiff = None
         self.assertEqual(bank.json, bank_readed.json)
 
     def test_read_unknown_technology(self):

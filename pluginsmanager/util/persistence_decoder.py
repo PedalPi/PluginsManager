@@ -54,6 +54,9 @@ class PedalboardReader(Reader):
         for connection_json in json['connections']:
             pedalboard.connections.append(connection_reader.read(connection_json))
 
+        if 'data' in json:
+            pedalboard.data = json['data']
+
         return pedalboard
 
 
