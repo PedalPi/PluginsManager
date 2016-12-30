@@ -6,15 +6,44 @@ This page contains the model classes.
 .. graphviz::
 
    digraph classes {
-       graph [rankdir=TB];
+       graph [rankdir=TB, nodesep=1, ranksep=1];
+
        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Bank->Pedalboard [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       Pedalboard->Connection [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       Pedalboard->Effect [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       Param->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
-       Input->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
-       Output->Effect [dir="backward", arrowhead="diamond", arrowtail="normal"];
+       Bank->Pedalboard [
+           dir="forward", arrowhead="odiamond", arrowtail="normal"
+           headlabel= "       1..n", taillabel="1"
+       ];
+       Pedalboard->Effect [
+           dir="forward", arrowhead="odiamond", arrowtail="normal",
+           headlabel= "       1..n", taillabel="1"
+       ];
+       Param->Effect [
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   1", taillabel="n"
+       ];
+       Pedalboard->Connection [
+           dir="forward", arrowhead="odiamond", arrowtail="normal",
+           headlabel= "   1", taillabel="n"
+       ];
+       Input->Effect [
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   1", taillabel="n"
+       ];
+       Output->Effect [
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   1", taillabel="n"
+       ];
+
+
+       Input->Connection [
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   n", taillabel="1",
+       ];
+       Output->Connection [
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   n", taillabel="1"
+       ];
    }
 
 .. graphviz::
@@ -22,6 +51,11 @@ This page contains the model classes.
    digraph classes {
        graph [rankdir=TB];
        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+
+       Lv2Plugin->Lv2Effect[
+           dir="backward", arrowhead="diamond", arrowtail="normal",
+           headlabel= "   n", taillabel="1"
+       ];
        Lv2Effect->Effect;
        SystemEffect->Effect;
 
