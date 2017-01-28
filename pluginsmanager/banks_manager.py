@@ -1,3 +1,5 @@
+import collections
+
 from pluginsmanager.model.updates_observer import UpdatesObserver
 from pluginsmanager.model.update_type import UpdateType
 
@@ -39,6 +41,7 @@ class BanksManager(object):
         :param UpdatesObserver observer: Observer that will be notified then occurs changes
         """
         self.observer_manager.append(observer)
+        observer.manager = self
 
     def append(self, bank):
         """
@@ -60,39 +63,81 @@ class BanksManager(object):
 
         self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self)
 
+    def enter_scope(self, observer):
+        """
+        Informs that changes occurs by the ``observer`` and isn't necessary
+        informs the changes for observer
+
+        :param UpdatesObserver observer: Observer that causes changes
+        """
+        self.observer_manager.enter_scope(observer)
+
+    def exit_scope(self):
+        """
+        Closes the last observer scope added
+        """
+        self.observer_manager.exit_scope()
+
 
 class ObserverManager(UpdatesObserver):
     def __init__(self):
         super(ObserverManager, self).__init__()
         self.observers = []
+        self._observers_scope = collections.deque()
+
+    def enter_scope(self, observer):
+        """
+        Open a observer scope.
+
+        Informs that changes occurs by the ``observer`` and isn't necessary
+        informs the changes for observer
+
+        :param UpdatesObserver observer: Observer that causes changes
+        """
+        self._observers_scope.append(observer)
+
+    def exit_scope(self):
+        """
+        Closes the last observer scope added
+        """
+        self._observers_scope.pop()
+
+    @property
+    def scope(self):
+        try:
+            return self._observers_scope[-1]
+        except IndexError:
+            return None
 
     def append(self, observer):
         self.observers.append(observer)
 
-    def on_current_pedalboard_changed(self, pedalboard, token=None):
+    def on_bank_updated(self, bank, update_type, **kwargs):
         for observer in self.observers:
-            observer.on_current_pedalboard_changed(pedalboard, token)
+            if observer != self.scope:
+                observer.on_bank_updated(bank, update_type, **kwargs)
 
-    def on_bank_updated(self, bank, update_type, token=None, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, **kwargs):
         for observer in self.observers:
-            observer.on_bank_updated(bank, update_type, token, **kwargs)
+            if observer != self.scope:
+                observer.on_pedalboard_updated(pedalboard, update_type, **kwargs)
 
-    def on_pedalboard_updated(self, pedalboard, update_type, token=None, **kwargs):
+    def on_effect_updated(self, effect, update_type, **kwargs):
         for observer in self.observers:
-            observer.on_pedalboard_updated(pedalboard, update_type, token, **kwargs)
+            if observer != self.scope:
+                observer.on_effect_updated(effect, update_type)
 
-    def on_effect_updated(self, effect, update_type, token=None, **kwargs):
+    def on_effect_status_toggled(self, effect):
         for observer in self.observers:
-            observer.on_effect_updated(effect, update_type, token)
+            if observer != self.scope:
+                observer.on_effect_status_toggled(effect)
 
-    def on_effect_status_toggled(self, effect, token=None):
+    def on_param_value_changed(self, param):
         for observer in self.observers:
-            observer.on_effect_status_toggled(effect, token)
+            if observer != self.scope:
+                observer.on_param_value_changed(param)
 
-    def on_param_value_changed(self, param, token=None):
+    def on_connection_updated(self, connection, update_type):
         for observer in self.observers:
-            observer.on_param_value_changed(param, token)
-
-    def on_connection_updated(self, connection, update_type, token=None):
-        for observer in self.observers:
-            observer.on_connection_updated(connection, update_type, token)
+            if observer != self.scope:
+                observer.on_connection_updated(connection, update_type)

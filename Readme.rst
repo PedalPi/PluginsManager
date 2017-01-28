@@ -127,7 +127,7 @@ For manual input and output sound card definition, use:
 
 .. note::
 
-    **NOT ADD sys_effect** in PATCH
+    **NOT ADD sys_effect** in any Pedalboard
 
 Connecting *mode one*:
 
@@ -152,8 +152,8 @@ Connecting *mode two*:
     pedalboard.connections.append(Connection(fuzz.outputs[0], reverb2.inputs[0]))
     pedalboard.connections.append(Connection(reverb.outputs[0], reverb2.inputs[0]))
 
-    pedalboard.connections.append(reverb2.outputs[0].connect(sys_effect.inputs[0]))
-    pedalboard.connections.append(reverb2.outputs[0].connect(sys_effect.inputs[1]))
+    pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
+    pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[1]))
 
 Set effect status (enable/disable bypass) and param value
 
