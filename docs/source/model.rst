@@ -5,56 +5,46 @@ This page contains the model classes.
 
 .. graphviz::
 
-   digraph classes {
-       graph [rankdir=TB, nodesep=1, ranksep=1];
+    digraph classes {
+        graph [rankdir=BT];
 
-       node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Bank->Pedalboard [
-           dir="forward", arrowhead="odiamond", arrowtail="normal"
-           headlabel= "       1..n", taillabel="1"
-       ];
-       Pedalboard->Effect [
-           dir="forward", arrowhead="odiamond", arrowtail="normal",
-           headlabel= "       1..n", taillabel="1"
-       ];
-       Param->Effect [
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   1", taillabel="n"
-       ];
-       Pedalboard->Connection [
-           dir="forward", arrowhead="odiamond", arrowtail="normal",
-           headlabel= "   1", taillabel="n"
-       ];
-       Input->Effect [
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   1", taillabel="n"
-       ];
-       Output->Effect [
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   1", taillabel="n"
-       ];
+        Pedalboard->Bank [
+            dir="forward", arrowhead="odiamond", arrowtail="normal"
+        ];
+        Effect->Pedalboard [
+            dir="forward", arrowhead="odiamond", arrowtail="normal"
+        ];
+        Param->Effect [
+            dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
+        Connection->Pedalboard [
+            dir="forward", arrowhead="odiamond", arrowtail="normal"
+        ];
+        Input->Effect [
+            dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
+        Output->Effect [
+           dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
 
-
-       Input->Connection [
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   n", taillabel="1",
-       ];
-       Output->Connection [
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   n", taillabel="1"
-       ];
+        Input->Connection [
+            dir="backward", arrowhead="odiamond", arrowtail="normal"
+        ];
+        Output->Connection [
+            dir="backward", arrowhead="odiamond", arrowtail="normal"
+        ];
    }
 
 .. graphviz::
 
    digraph classes {
-       graph [rankdir=TB];
+       graph [rankdir=BT];
        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Lv2Plugin->Lv2Effect[
-           dir="backward", arrowhead="diamond", arrowtail="normal",
-           headlabel= "   n", taillabel="1"
+       Lv2Effect->Lv2Plugin[
+           dir="backward", arrowhead="diamond", arrowtail="normal"
        ];
        Lv2Effect->Effect;
        SystemEffect->Effect;
@@ -70,15 +60,16 @@ This page contains the model classes.
 
 .. graphviz::
 
-   digraph classes {
-       graph [rankdir=TB];
-       node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+    digraph classes {
+        graph [rankdir=BT];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       BanksManager->Bank [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       BanksManager->ObserverManager [dir="forward", arrowhead="none", arrowtail="normal"];
-       ObserverManager->UpdatesObserver [dir="forward", arrowhead="odiamond", arrowtail="normal"];
-       ModHost->UpdatesObserver
-   }
+        Bank->BanksManager [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+        BanksManager->ObserverManager [dir="forward", arrowhead="none", arrowtail="normal"];
+        UpdatesObserver->ObserverManager [dir="forward", arrowhead="odiamond", arrowtail="normal"];
+        ModHost->UpdatesObserver
+        AutoSaver->UpdatesObserver
+    }
 
 BanksManager
 ------------
