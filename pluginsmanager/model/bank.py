@@ -35,7 +35,7 @@ class Bank(object):
     True
 
     >>> # Set pedalboard
-    >>> bank.pedalboards[0] = Pedalboard('Can't Stop')
+    >>> bank.pedalboards[0] = Pedalboard("Can't Stop")
     >>> bank.pedalboards[0].bank == bank
     True
 
@@ -55,7 +55,7 @@ class Bank(object):
         self.pedalboards.observer = self._pedalboards_observer
 
         self.index = -1
-        self.uuid = str(uuid.uuid4())
+        self._uuid = str(uuid.uuid4())
 
         self.manager = None
 

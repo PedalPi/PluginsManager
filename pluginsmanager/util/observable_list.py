@@ -76,7 +76,17 @@ class ObservableList(object):
         if val == self[index]:
             return
 
-        self._list[index] = val
+        old = self._list[index]
+
+        self._list.insert(index+1, val) # Insert and not notify
+
+        exists_other_old_bank_equals = old in self._list[:index] or old in self._list[index+1+1:]
+        # Swapped
+        if exists_other_old_bank_equals:
+            del self._list[index]
+        else:
+            del self[index] # Notify old has been removed
+
         self.observer(UpdateType.UPDATED, val, index)
 
     def __delitem__(self, sliced):

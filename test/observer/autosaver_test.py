@@ -15,7 +15,7 @@ class AutoSaverTest(unittest.TestCase):
 
     def test_observers(self):
         mock = MagicMock()
-        observer = Autosaver('test/data/')
+        observer = Autosaver('data/test/')
         observer.save = mock
         observer.delete = mock
 
@@ -67,3 +67,55 @@ class AutoSaverTest(unittest.TestCase):
 
         manager.banks.remove(bank2)
         observer.delete.assert_called_with(bank2)
+
+    def test_replace_bank(self):
+        observer = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        bank1 = Bank('Bank 1')
+        pedalboard = Pedalboard('Rocksmith')
+        bank1.append(pedalboard)
+
+        manager.append(bank1)
+
+        manager.banks[0] = Bank('Bank 2')
+
+        self.validate_persisted(manager)
+
+        while manager.banks:
+            del manager.banks[0]
+
+    def test_swap_bank(self):
+        observer = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        bank1 = Bank('Bank 1')
+        bank2 = Bank('Bank 2')
+
+        manager.banks.append(bank1)
+        manager.banks.append(bank2)
+
+        manager.banks[0], manager.banks[1] = manager.banks[1], manager.banks[0]
+
+        print(manager.banks)
+        print(manager.banks[0].index)
+
+        self.validate_persisted(manager)
+
+        while manager.banks:
+            del manager.banks[0]
+
+    def validate_persisted(self, manager):
+        autosaver_validation = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+        banks = autosaver_validation.load(None)
+        print(banks)
+
+        self.assertEqual(len(manager.banks), len(banks))
+
+        for bank_manager, bank_persisted in zip(manager.banks, banks):
+            self.assertEqual(bank_manager.json, bank_persisted.json)
+
