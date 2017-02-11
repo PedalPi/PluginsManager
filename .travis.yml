@@ -6,6 +6,8 @@ python:
   - "3.6-dev"
   - "nightly"
 
+sudo: required
+
 install:
   - pip3 install coverage
   - pip3 install cffi
