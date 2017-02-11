@@ -69,7 +69,7 @@ class AutoSaverTest(unittest.TestCase):
         observer.delete.assert_called_with(bank2)
 
     def test_replace_bank(self):
-        observer = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+        observer = Autosaver('../data/test/')
 
         manager = BanksManager()
         manager.register(observer)
@@ -88,7 +88,7 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def test_swap_bank(self):
-        observer = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+        observer = Autosaver('../data/test/')
 
         manager = BanksManager()
         manager.register(observer)
@@ -107,7 +107,7 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def validate_persisted(self, manager):
-        autosaver_validation = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+        autosaver_validation = Autosaver('../data/test/')
         banks = autosaver_validation.load(None)
 
         self.assertEqual(len(manager.banks), len(banks))

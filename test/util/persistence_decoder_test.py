@@ -8,7 +8,6 @@ from pluginsmanager.model.connection import Connection
 from pluginsmanager.util.persistence_decoder import PersistenceDecoder, PersistenceDecoderError
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
-from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
 from pluginsmanager.model.system.system_effect import SystemEffect
 
 
@@ -86,6 +85,8 @@ class PersistenceTest(unittest.TestCase):
     @unittest.skip
     @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
     def test_read_system_builder(self):
+        from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
+
         system_effect = SystemEffectBuilder(False).build()
 
         util = PersistenceDecoder(system_effect)
