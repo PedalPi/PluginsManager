@@ -18,6 +18,7 @@ script:
   - mkdir data
   - cd data
   - mkdir test
+  - cd ../PluginsManager
   - coverage3 run --source=pluginsmanager setup.py test
 
 after_success:
