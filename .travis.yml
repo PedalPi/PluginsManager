@@ -9,12 +9,11 @@ python:
 sudo: required
 
 install:
-  - pip3 install coverage
+  - pip3 install coveralls
   - pip3 install cffi
   - pip3 install JACK-Client
 
 script:
-  - python setup.py develop
   - coverage3 run --source=pluginsmanager setup.py test
 
 after_success:
