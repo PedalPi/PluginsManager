@@ -69,7 +69,7 @@ class AutoSaverTest(unittest.TestCase):
         observer.delete.assert_called_with(bank2)
 
     def test_replace_bank(self):
-        observer = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
+        observer = Autosaver('../data/test/')
 
         manager = BanksManager()
         manager.register(observer)
