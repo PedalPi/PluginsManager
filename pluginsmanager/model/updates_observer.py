@@ -10,8 +10,6 @@ class UpdatesObserver(metaclass=ABCMeta):
     To do this, it is necessary that the :class:`UpdateObserver` objects
     be registered in some manager, so that it reports the changes. An
     example of a manager is :class:`BanksManager`.
-
-    .. _Application: https://github.com/PedalPi/Application
     """
 
     @abstractmethod

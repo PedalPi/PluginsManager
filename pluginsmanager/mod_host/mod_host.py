@@ -62,11 +62,8 @@ class ModHost(UpdatesObserver):
     .. _Demystifying JACK – A Beginners Guide to Getting Started with JACK: http://libremusicproduction.com/articles/demystifying-jack-%E2%80%93-beginners-guide-getting-started-jack
     """
 
-    TOKEN = 'ModHost'
-
     def __init__(self, address='localhost'):
         super(ModHost, self).__init__()
-        self.token = ModHost.TOKEN
         self.address = address
 
         self.host = None
@@ -114,7 +111,7 @@ class ModHost(UpdatesObserver):
     ####################################
     # Observer
     ####################################
-    def on_current_pedalboard_changed(self, pedalboard, token=None):
+    def on_current_pedalboard_changed(self, pedalboard):
         if self.pedalboard is not None:
             for effect in self.pedalboard.effects:
                 self.on_effect_updated(effect, UpdateType.DELETED)
@@ -124,19 +121,19 @@ class ModHost(UpdatesObserver):
         for effect in pedalboard.effects:
             self.on_effect_updated(effect, UpdateType.CREATED)
 
-    def on_bank_updated(self, bank, update_type, token=None, **kwargs):
+    def on_bank_updated(self, bank, update_type, **kwargs):
         if self.pedalboard is not None \
         and bank != self.pedalboard.bank:
             return
         pass
 
-    def on_pedalboard_updated(self, pedalboard, update_type, token=None, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, **kwargs):
         if pedalboard != self.pedalboard:
             return
 
         self.on_current_pedalboard_changed(pedalboard)
 
-    def on_effect_updated(self, effect, update_type, token=None, **kwargs):
+    def on_effect_updated(self, effect, update_type, **kwargs):
         if effect.pedalboard != self.pedalboard:
             return
 
@@ -152,19 +149,19 @@ class ModHost(UpdatesObserver):
         for param in effect.params:
             self.on_param_value_changed(param)
 
-    def on_effect_status_toggled(self, effect, token=None):
+    def on_effect_status_toggled(self, effect):
         if effect.pedalboard != self.pedalboard:
             return
 
         self.host.set_status(effect)
 
-    def on_param_value_changed(self, param, token=None):
+    def on_param_value_changed(self, param):
         if param.effect.pedalboard != self.pedalboard:
             return
 
         self.host.set_param_value(param)
 
-    def on_connection_updated(self, connection, update_type, token=None):
+    def on_connection_updated(self, connection, update_type):
         if connection.input.effect.pedalboard != self.pedalboard:
             return
 

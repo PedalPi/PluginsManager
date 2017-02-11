@@ -101,9 +101,6 @@ class AutoSaverTest(unittest.TestCase):
 
         manager.banks[0], manager.banks[1] = manager.banks[1], manager.banks[0]
 
-        print(manager.banks)
-        print(manager.banks[0].index)
-
         self.validate_persisted(manager)
 
         while manager.banks:
@@ -112,7 +109,6 @@ class AutoSaverTest(unittest.TestCase):
     def validate_persisted(self, manager):
         autosaver_validation = Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/data/test/')
         banks = autosaver_validation.load(None)
-        print(banks)
 
         self.assertEqual(len(manager.banks), len(banks))
 
