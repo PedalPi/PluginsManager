@@ -37,6 +37,8 @@ Pythonic management of LV2 audio plugins with `mod-host`_.
 Example
 -------
 
+This examples uses `Calf`_ and `Guitarix`_ audio plugins
+
 Download and install `mod-host`_. For more information: :class:`Mod-host`
 
 Start audio process
@@ -102,7 +104,7 @@ Add effects in the pedalboard
     builder = Lv2EffectBuilder()
 
     reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
-    fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
+    fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzz_#fuzz_')
     reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
     pedalboard.append(reverb)
@@ -117,13 +119,14 @@ For obtains automatically the sound card inputs and outputs, use :class:`SystemE
 
 .. code-block:: python
 
+    from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
     sys_effect = SystemEffectBuilder()
 
 For manual input and output sound card definition, use:
 
 .. code-block:: python
 
-    sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+    sys_effect = SystemEffect('system', ['capture_1', 'capture_2'], ['playback_1', 'playback_2'])
 
 .. note::
 
@@ -133,7 +136,10 @@ Connecting *mode one*:
 
 .. code-block:: python
 
-    sys_effect.outputs[0].connect(reverb.inputs[0])
+    # For connect output system effects, use
+    pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+    # Instead of
+    #sys_effect.outputs[0].connect(reverb.inputs[0])
 
     reverb.outputs[0].connect(fuzz.inputs[0])
     reverb.outputs[1].connect(fuzz.inputs[0])
@@ -146,6 +152,8 @@ Connecting *mode one*:
 Connecting *mode two*:
 
 .. code-block:: python
+
+    pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
 
     pedalboard.connections.append(Connection(reverb.outputs[0], fuzz.inputs[0]))
     pedalboard.connections.append(Connection(reverb.outputs[1], fuzz.inputs[0]))
@@ -225,3 +233,5 @@ You can generate the documentation in your local machine:
 
 .. _Sphinx: http://www.sphinx-doc.org/
 .. _Read the Docs: http://readthedocs.org
+.. _Calf: http://calf-studio-gear.org/
+.. _Guitarix: http://guitarix.org/
