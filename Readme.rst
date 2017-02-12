@@ -136,7 +136,6 @@ Connecting *mode one*:
 
 .. code-block:: python
 
-    # For connect output system effects, use
     sys_effect.outputs[0].connect(reverb.inputs[0])
 
     reverb.outputs[0].connect(fuzz.inputs[0])
