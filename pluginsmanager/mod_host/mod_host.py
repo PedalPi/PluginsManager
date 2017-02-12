@@ -109,7 +109,8 @@ class ModHost(UpdatesObserver):
         self.on_current_pedalboard_changed(pedalboard)
 
     def __del__(self):
-        self._remove_pedalboard(self.pedalboard)
+        if self.pedalboard:
+            self._remove_pedalboard(self.pedalboard)
 
     ####################################
     # Observer
@@ -168,7 +169,8 @@ class ModHost(UpdatesObserver):
         self.host.set_param_value(param)
 
     def on_connection_updated(self, connection, update_type):
-        if connection not in self.pedalboard.connections:
+        if self.pedalboard is None \
+        or connection not in self.pedalboard.connections:
             return
 
         if update_type == UpdateType.CREATED:
