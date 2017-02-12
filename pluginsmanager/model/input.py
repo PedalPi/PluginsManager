@@ -39,6 +39,8 @@ class Input(metaclass=ABCMeta):
 
         self.observer = MagicMock()
 
+        self._unique_for_all_pedalboards = False
+
     @property
     def effect(self):
         """

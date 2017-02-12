@@ -6,6 +6,9 @@ from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.pedalboard import Pedalboard
 
 from pluginsmanager.model.update_type import UpdateType
+from pluginsmanager.model.system.system_effect import SystemEffect
+
+from pluginsmanager.model.connection import ConnectionError
 
 
 class OutputTest(unittest.TestCase):
@@ -81,3 +84,21 @@ class OutputTest(unittest.TestCase):
             reverb.outputs[1].disconnect(reverb2.inputs[0])
 
         pedalboard.observer.on_connection_updated.assert_not_called()
+
+    def test_connect_system_effect(self):
+        sys_effect = SystemEffect('system', ['capture_1'], ['playback_1', 'playback_2'])
+
+        effect_output = sys_effect.outputs[0]
+        effect_input = sys_effect.inputs[0]
+
+        with self.assertRaises(ConnectionError):
+            effect_output.connect(effect_input)
+
+    def test_disconnect_system_effect(self):
+        sys_effect = SystemEffect('system', ['capture_1'], ['playback_1', 'playback_2'])
+
+        effect_output = sys_effect.outputs[0]
+        effect_input = sys_effect.inputs[0]
+
+        with self.assertRaises(ConnectionError):
+            effect_output.disconnect(effect_input)

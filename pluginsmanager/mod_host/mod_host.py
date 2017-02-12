@@ -108,18 +108,24 @@ class ModHost(UpdatesObserver):
     def pedalboard(self, pedalboard):
         self.on_current_pedalboard_changed(pedalboard)
 
+    def __del__(self):
+        self._remove_pedalboard(self.pedalboard)
+
     ####################################
     # Observer
     ####################################
     def on_current_pedalboard_changed(self, pedalboard):
         if self.pedalboard is not None:
-            for effect in self.pedalboard.effects:
-                self.on_effect_updated(effect, UpdateType.DELETED)
+            self._remove_pedalboard(self.pedalboard)
 
         self._pedalboard = pedalboard
 
         for effect in pedalboard.effects:
             self.on_effect_updated(effect, UpdateType.CREATED)
+
+    def _remove_pedalboard(self, pedalboard):
+        for effect in pedalboard.effects:
+            self.on_effect_updated(effect, UpdateType.DELETED)
 
     def on_bank_updated(self, bank, update_type, **kwargs):
         if self.pedalboard is not None \
@@ -162,7 +168,7 @@ class ModHost(UpdatesObserver):
         self.host.set_param_value(param)
 
     def on_connection_updated(self, connection, update_type):
-        if connection.input.effect.pedalboard != self.pedalboard:
+        if connection not in self.pedalboard.connections:
             return
 
         if update_type == UpdateType.CREATED:

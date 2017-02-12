@@ -12,6 +12,17 @@ class UpdatesObserver(metaclass=ABCMeta):
     example of a manager is :class:`BanksManager`.
     """
 
+    def __init__(self):
+        self.manager = None
+
+    def __enter__(self):
+        if self.manager is not None:
+            self.manager.enter_scope(self)
+
+    def __exit__(self, type, value, traceback):
+        if self.manager is not None:
+            self.manager.exit_scope()
+
     @abstractmethod
     def on_bank_updated(self, bank, update_type, **kwargs):
         """
