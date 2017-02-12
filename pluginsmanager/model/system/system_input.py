@@ -6,6 +6,7 @@ class SystemInput(Input):
     def __init__(self, effect, input):
         super(SystemInput, self).__init__(effect)
         self._input = input
+        self._unique_for_all_pedalboards = True
 
     def __str__(self):
         return self._input

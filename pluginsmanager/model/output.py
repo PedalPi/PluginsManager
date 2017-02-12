@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from pluginsmanager.model.connection import Connection
+from pluginsmanager.model.connection import Connection, ConnectionError
 
 from unittest.mock import MagicMock
 
@@ -39,6 +39,8 @@ class Output(metaclass=ABCMeta):
 
         self.observer = MagicMock()
 
+        self._unique_for_all_pedalboards = False
+
     @property
     def effect(self):
         """
@@ -58,9 +60,21 @@ class Output(metaclass=ABCMeta):
             >>> Connection(driver_output, reverb_input) in driver.effect.connections
             True
 
+        .. note::
+
+            This method does not work for all cases.
+            class:`SystemOutput` can not be connected with class:`SystemInput` this way.
+            For this case, use ::
+
+                >>> pedalboard.connections.append(Connection(system_output, system_input))
+
         :param Input effect_input: Input that will be connected with it
         """
-        self.effect.pedalboard.connections.append(Connection(self, effect_input))
+        if self._unique_for_all_pedalboards and effect_input._unique_for_all_pedalboards:
+            error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
+            raise ConnectionError(error)
+
+        effect_input.effect.pedalboard.connections.append(Connection(self, effect_input))
 
     def disconnect(self, effect_input):
         """
@@ -74,8 +88,20 @@ class Output(metaclass=ABCMeta):
             >>> Connection(driver_output, reverb_input) in driver.effect.connections
             False
 
+        .. note::
+
+            This method does not work for all cases.
+            class:`SystemOutput` can not be disconnected with class:`SystemInput` this way.
+            For this case, use ::
+
+                >>> pedalboard.connections.remove(Connection(system_output, system_input))
+
         :param Input effect_input: Input that will be disconnected with it
         """
+        if self._unique_for_all_pedalboards and effect_input._unique_for_all_pedalboards:
+            error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
+            raise ConnectionError(error)
+
         self.effect.pedalboard.connections.remove(Connection(self, effect_input))
 
     @property

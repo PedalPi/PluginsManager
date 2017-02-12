@@ -75,3 +75,11 @@ class BanksManagerTest(unittest.TestCase):
 
         manager.banks.remove(bank2)
         observer.on_bank_updated.assert_called_with(bank2, UpdateType.DELETED, index=0, origin=manager)
+
+    def test_initial_banks(self):
+        banks = [Bank('Bank 1'), Bank('Bank 1')]
+
+        manager = BanksManager(banks)
+
+        for original_bank, bank_managed in zip(banks, manager.banks):
+            self.assertEqual(original_bank, bank_managed)

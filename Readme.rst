@@ -136,10 +136,7 @@ Connecting *mode one*:
 
 .. code-block:: python
 
-    # For connect output system effects, use
-    pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
-    # Instead of
-    #sys_effect.outputs[0].connect(reverb.inputs[0])
+    sys_effect.outputs[0].connect(reverb.inputs[0])
 
     reverb.outputs[0].connect(fuzz.inputs[0])
     reverb.outputs[1].connect(fuzz.inputs[0])
@@ -162,6 +159,13 @@ Connecting *mode two*:
 
     pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
     pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[1]))
+
+.. warning::
+
+    If you need connect system_output with system_input directly (for a bypass, as example), only the
+    second mode will works::
+
+        pedalboard.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))
 
 Set effect status (enable/disable bypass) and param value
 

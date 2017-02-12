@@ -6,6 +6,7 @@ class SystemOutput(Output):
     def __init__(self, effect, output):
         super(SystemOutput, self).__init__(effect)
         self._output = output
+        self._unique_for_all_pedalboards = True
 
     def __str__(self):
         return self._output
