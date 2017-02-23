@@ -124,3 +124,13 @@ class Effect(metaclass=ABCMeta):
     @abstractmethod
     def __dict__(self):
         pass
+
+    @property
+    def index(self):
+        """
+        Returns the first occurrence of the effect in your pedalboard
+        """
+        if self.pedalboard is None:
+            raise IndexError('Effect not contains a pedalboard')
+
+        return self.pedalboard.effects.index(self)

@@ -124,7 +124,14 @@ class Output(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'effect': self.effect.pedalboard.effects.index(self.effect),
+            'effect': self.effect.index,
             'symbol': self.symbol,
-            'index': self.effect.outputs.index(self),
+            'index': self.index,
         }
+
+    @property
+    def index(self):
+        """
+        :return Output index in the your effect
+        """
+        return self.effect.outputs.index(self)

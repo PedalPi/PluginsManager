@@ -68,7 +68,14 @@ class Input(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'effect': self.effect.pedalboard.effects.index(self.effect),
+            'effect': self.effect.index,
             'symbol': self.symbol,
-            'index': self.effect.inputs.index(self),
+            'index': self.index,
         }
+
+    @property
+    def index(self):
+        """
+        :return Input index in the your effect
+        """
+        return self.effect.inputs.index(self)
