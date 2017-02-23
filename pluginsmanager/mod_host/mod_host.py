@@ -119,10 +119,12 @@ class ModHost(UpdatesObserver):
         if self.pedalboard is not None:
             self._remove_pedalboard(self.pedalboard)
 
-        self._pedalboard = pedalboard
+            for effect in pedalboard.effects:
+                self.on_effect_updated(effect, UpdateType.CREATED)
+            for connection in pedalboard.connections:
+                self.on_connection_updated(connection, UpdateType.CREATED)
 
-        for effect in pedalboard.effects:
-            self.on_effect_updated(effect, UpdateType.CREATED)
+        self._pedalboard = pedalboard
 
     def _remove_pedalboard(self, pedalboard):
         for effect in pedalboard.effects:

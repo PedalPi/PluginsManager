@@ -152,3 +152,13 @@ class Pedalboard(object):
             connections
         """
         return self._connections
+
+    @property
+    def index(self):
+        """
+        Returns the first occurrence of the pedalboard in your bank
+        """
+        if self.bank is None:
+            raise IndexError('Pedalboard not contains a bank')
+
+        return self.bank.pedalboards.index(self)
