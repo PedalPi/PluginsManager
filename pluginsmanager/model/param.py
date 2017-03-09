@@ -119,9 +119,13 @@ class Param(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'index': self.effect.params.index(self),
+            'index': self.index,
             'minimum': self.minimum,
             'maximum': self.maximum,
             'symbol': self.symbol,
             'value': self.value,
         }
+
+    @property
+    def index(self):
+        return self.effect.params.index(self)

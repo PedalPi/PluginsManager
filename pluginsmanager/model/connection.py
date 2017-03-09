@@ -38,7 +38,8 @@ class Connection(object):
     """
 
     def __init__(self, effect_output, effect_input):
-        if effect_output.effect == effect_input.effect:
+        if effect_output.effect == effect_input.effect\
+        and not effect_output.effect.is_possible_connect_itself:
             raise ConnectionError('Effect of output and effect of input are equals')
 
         self._output = effect_output

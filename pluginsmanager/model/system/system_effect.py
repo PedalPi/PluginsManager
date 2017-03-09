@@ -76,3 +76,10 @@ class SystemEffect(Effect):
         return {
             'technology': 'system',
         }
+
+    @property
+    def is_possible_connect_itself(self):
+        """
+        return bool: Is possible connect the with it self?
+        """
+        return True

@@ -134,3 +134,10 @@ class Effect(metaclass=ABCMeta):
             raise IndexError('Effect not contains a pedalboard')
 
         return self.pedalboard.effects.index(self)
+
+    @property
+    def is_possible_connect_itself(self):
+        """
+        return bool: Is possible connect the with it self?
+        """
+        return False
