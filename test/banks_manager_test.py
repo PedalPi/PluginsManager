@@ -33,31 +33,39 @@ class BanksManagerTest(unittest.TestCase):
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
-        observer.on_effect_updated.assert_called_with(reverb, UpdateType.CREATED)
+        observer.on_effect_updated.assert_called_with(reverb, UpdateType.CREATED, index=reverb.index, origin=pedalboard)
         pedalboard.append(fuzz)
-        observer.on_effect_updated.assert_called_with(fuzz, UpdateType.CREATED)
+        observer.on_effect_updated.assert_called_with(fuzz, UpdateType.CREATED, index=fuzz.index, origin=pedalboard)
         pedalboard.append(reverb2)
-        observer.on_effect_updated.assert_called_with(reverb2, UpdateType.CREATED)
+        observer.on_effect_updated.assert_called_with(reverb2, UpdateType.CREATED, index=reverb2.index, origin=pedalboard)
 
         reverb.outputs[0].connect(fuzz.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], fuzz.inputs[0]),
             UpdateType.CREATED,
+            index=len(pedalboard.connections)-1,
+            origin=pedalboard
         )
         reverb.outputs[1].connect(fuzz.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[1], fuzz.inputs[0]),
             UpdateType.CREATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
         )
         fuzz.outputs[0].connect(reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(fuzz.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
         )
         reverb.outputs[0].connect(reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
         )
 
         fuzz.toggle()

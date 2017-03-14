@@ -88,10 +88,10 @@ class Pedalboard(object):
             effect.pedalboard = None
             effect.observer = MagicMock()
 
-        self.observer.on_effect_updated(effect, update_type, **kwargs)
+        self.observer.on_effect_updated(effect, update_type, index=index, origin=self)
 
     def _connections_observer(self, update_type, connection, index):
-        self.observer.on_connection_updated(connection, update_type)
+        self.observer.on_connection_updated(connection, update_type, index=index, origin=self)
 
     @property
     def json(self):

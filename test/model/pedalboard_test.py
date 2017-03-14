@@ -92,11 +92,21 @@ class PedalboardTest(unittest.TestCase):
 
         pedalboard.connections.append(connection1)
         self.assertEqual(pedalboard.connections[0], connection1)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection1, UpdateType.CREATED)
+        pedalboard.observer.on_connection_updated.assert_called_with(
+            connection1,
+            UpdateType.CREATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
+        )
 
         pedalboard.connections.append(connection2)
         self.assertEqual(pedalboard.connections[1], connection2)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.CREATED)
+        pedalboard.observer.on_connection_updated.assert_called_with(
+            connection2,
+            UpdateType.CREATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
+        )
 
     def test_update_connection(self):
         pedalboard = Pedalboard('Pedalboard 1')
@@ -110,7 +120,12 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.connections[0] = connection2
 
         self.assertEqual(pedalboard.connections[0], connection2)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.UPDATED)
+        pedalboard.observer.on_connection_updated.assert_called_with(
+            connection2,
+            UpdateType.UPDATED,
+            index=len(pedalboard.connections) - 1,
+            origin=pedalboard
+        )
 
     def test_delete_connection(self):
         """ Other mode is by output.disconnect(input)"""
@@ -124,7 +139,12 @@ class PedalboardTest(unittest.TestCase):
         del pedalboard.connections[0]
 
         self.assertEqual(len(pedalboard.connections), 0)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection, UpdateType.DELETED)
+        pedalboard.observer.on_connection_updated.assert_called_with(
+            connection,
+            UpdateType.DELETED,
+            index=0,
+            origin=pedalboard
+        )
 
     def test_delete_effect_remove_your_connections(self):
         pedalboard = Pedalboard('Pedalboard name')
@@ -152,7 +172,12 @@ class PedalboardTest(unittest.TestCase):
 
         self.assertEqual(1, len(pedalboard.connections))
         for connection in fuzz_connections:
-            pedalboard.observer.on_connection_updated.assert_any_call(connection, UpdateType.DELETED)
+            pedalboard.observer.on_connection_updated.assert_any_call(
+                connection,
+                UpdateType.DELETED,
+                index=0,
+                origin=pedalboard
+            )
 
     def test_data(self):
         pedalboard = Pedalboard('Bank 1')

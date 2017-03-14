@@ -125,7 +125,7 @@ class ObserverManager(UpdatesObserver):
     def on_effect_updated(self, effect, update_type, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_effect_updated(effect, update_type)
+                observer.on_effect_updated(effect, update_type, **kwargs)
 
     def on_effect_status_toggled(self, effect):
         for observer in self.observers:
@@ -137,7 +137,7 @@ class ObserverManager(UpdatesObserver):
             if observer != self.scope:
                 observer.on_param_value_changed(param)
 
-    def on_connection_updated(self, connection, update_type):
+    def on_connection_updated(self, connection, update_type, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_connection_updated(connection, update_type)
+                observer.on_connection_updated(connection, update_type, **kwargs)

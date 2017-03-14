@@ -78,12 +78,14 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_connection_updated(self, connection, update_type):
+    def on_connection_updated(self, connection, update_type, **kwargs):
         """
         Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Pedalboard
         (adding, updating or removing connections)
 
         :param pluginsmanager.model.connection.Connection connection: Connection changed
         :param UpdateType update_type: Change type
+        :param int index: Connection index (or old index if update_type == UpdateType.DELETED)
+        :param Pedalboard origin: Pedalboard that the connection is (or has) contained
         """
         pass

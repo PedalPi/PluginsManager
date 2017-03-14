@@ -97,5 +97,5 @@ class Autosaver(UpdatesObserver):
     def on_param_value_changed(self, param):
         self.save(param.effect.pedalboard.bank)
 
-    def on_connection_updated(self, connection, update_type):
+    def on_connection_updated(self, connection, update_type, **kwargs):
         self.save(connection.output.effect.pedalboard.bank)

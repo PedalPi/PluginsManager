@@ -23,6 +23,8 @@ class Param(metaclass=ABCMeta):
         >>> param
         <Lv2Param object as value=1.5 [0.4000000059604645 - 15.0] at 0x7fd587f77908>
 
+        >>> param.default
+        1.5
         >>> param.value = 14
 
         >>> symbol = param.symbol
@@ -38,6 +40,7 @@ class Param(metaclass=ABCMeta):
     def __init__(self, effect, default):
         self._effect = effect
         self._value = default
+        self._default = default
 
         self.observer = MagicMock()
 
@@ -47,6 +50,17 @@ class Param(metaclass=ABCMeta):
         :return: Effect in which this parameter belongs
         """
         return self._effect
+
+    @property
+    def default(self):
+        """
+        Default parameter value.
+        Then a effect is instanced, the value initial for a parameter is
+        your default value.
+
+        :getter: Default parameter value.
+        """
+        return self._default
 
     @property
     def value(self):

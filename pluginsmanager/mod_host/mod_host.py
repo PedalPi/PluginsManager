@@ -119,16 +119,19 @@ class ModHost(UpdatesObserver):
         if self.pedalboard is not None:
             self._remove_pedalboard(self.pedalboard)
 
-            for effect in pedalboard.effects:
-                self.on_effect_updated(effect, UpdateType.CREATED)
-            for connection in pedalboard.connections:
-                self.on_connection_updated(connection, UpdateType.CREATED)
-
         self._pedalboard = pedalboard
 
+        # Changes are only updated if self._pedalboard = pedalboard
+        if pedalboard is not None:
+            for index, effect in enumerate(pedalboard.effects):
+                self.on_effect_updated(effect, UpdateType.CREATED, index=index, origin=pedalboard)
+
+            for index, connection in enumerate(pedalboard.connections):
+                self.on_connection_updated(connection, UpdateType.CREATED, index=index, origin=pedalboard)
+
     def _remove_pedalboard(self, pedalboard):
-        for effect in pedalboard.effects:
-            self.on_effect_updated(effect, UpdateType.DELETED)
+        for index, effect in enumerate(pedalboard.effects):
+            self.on_effect_updated(effect, UpdateType.DELETED, index=index, origin=pedalboard)
 
     def on_bank_updated(self, bank, update_type, **kwargs):
         if self.pedalboard is not None \
@@ -142,8 +145,8 @@ class ModHost(UpdatesObserver):
 
         self.on_current_pedalboard_changed(pedalboard)
 
-    def on_effect_updated(self, effect, update_type, **kwargs):
-        if effect.pedalboard != self.pedalboard:
+    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
+        if origin != self.pedalboard:
             return
 
         if update_type == UpdateType.CREATED:
@@ -156,7 +159,8 @@ class ModHost(UpdatesObserver):
 
     def _load_params_of(self, effect):
         for param in effect.params:
-            self.on_param_value_changed(param)
+            if param.value != param.default:
+                self._set_param_value(param)
 
     def on_effect_status_toggled(self, effect):
         if effect.pedalboard != self.pedalboard:
@@ -168,14 +172,16 @@ class ModHost(UpdatesObserver):
         if param.effect.pedalboard != self.pedalboard:
             return
 
-        self.host.set_param_value(param)
+        self._set_param_value(param)
 
-    def on_connection_updated(self, connection, update_type):
-        if self.pedalboard is None \
-        or connection not in self.pedalboard.connections:
+    def on_connection_updated(self, connection, update_type, index, origin, **kwargs):
+        if origin != self.pedalboard:
             return
 
         if update_type == UpdateType.CREATED:
             self.host.connect(connection)
         elif update_type == UpdateType.DELETED:
             self.host.disconnect(connection)
+
+    def _set_param_value(self, param):
+        self.host.set_param_value(param)
