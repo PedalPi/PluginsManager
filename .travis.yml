@@ -9,6 +9,7 @@ python:
 sudo: required
 
 install:
+  - apt-get install lilv-utils
   - pip3 install coveralls
   - pip3 install cffi
   - pip3 install JACK-Client
