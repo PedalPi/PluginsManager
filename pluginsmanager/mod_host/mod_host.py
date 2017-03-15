@@ -126,8 +126,8 @@ class ModHost(UpdatesObserver):
             for index, effect in enumerate(pedalboard.effects):
                 self.on_effect_updated(effect, UpdateType.CREATED, index=index, origin=pedalboard)
 
-            for index, connection in enumerate(pedalboard.connections):
-                self.on_connection_updated(connection, UpdateType.CREATED, index=index, origin=pedalboard)
+            for connection in pedalboard.connections:
+                self.on_connection_updated(connection, UpdateType.CREATED, pedalboard=pedalboard)
 
     def _remove_pedalboard(self, pedalboard):
         for index, effect in enumerate(pedalboard.effects):
@@ -174,8 +174,8 @@ class ModHost(UpdatesObserver):
 
         self._set_param_value(param)
 
-    def on_connection_updated(self, connection, update_type, index, origin, **kwargs):
-        if origin != self.pedalboard:
+    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
+        if pedalboard != self.pedalboard:
             return
 
         if update_type == UpdateType.CREATED:

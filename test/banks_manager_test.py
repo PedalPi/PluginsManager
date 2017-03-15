@@ -43,29 +43,25 @@ class BanksManagerTest(unittest.TestCase):
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], fuzz.inputs[0]),
             UpdateType.CREATED,
-            index=len(pedalboard.connections)-1,
-            origin=pedalboard
+            pedalboard=pedalboard
         )
         reverb.outputs[1].connect(fuzz.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[1], fuzz.inputs[0]),
             UpdateType.CREATED,
-            index=len(pedalboard.connections) - 1,
-            origin=pedalboard
+            pedalboard=pedalboard
         )
         fuzz.outputs[0].connect(reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(fuzz.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
-            index=len(pedalboard.connections) - 1,
-            origin=pedalboard
+            pedalboard=pedalboard
         )
         reverb.outputs[0].connect(reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
-            index=len(pedalboard.connections) - 1,
-            origin=pedalboard
+            pedalboard=pedalboard
         )
 
         fuzz.toggle()

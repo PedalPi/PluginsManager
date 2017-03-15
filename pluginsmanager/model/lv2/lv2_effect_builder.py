@@ -24,8 +24,15 @@ class Lv2EffectBuilder(object):
         with open(plugins_json) as data_file:
             data = json.load(data_file)
 
+        supported_plugins = self._supported_plugins
         for plugin in data:
-            self.plugins[plugin['uri']] = Lv2Plugin(plugin)
+            if plugin['uri'] in supported_plugins:
+                self.plugins[plugin['uri']] = Lv2Plugin(plugin)
+
+    @property
+    def _supported_plugins(self):
+        import subprocess
+        return str(subprocess.check_output(['lv2ls'])).split('\\n')
 
     @property
     def all(self):

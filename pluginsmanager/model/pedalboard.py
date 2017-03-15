@@ -91,7 +91,7 @@ class Pedalboard(object):
         self.observer.on_effect_updated(effect, update_type, index=index, origin=self)
 
     def _connections_observer(self, update_type, connection, index):
-        self.observer.on_connection_updated(connection, update_type, index=index, origin=self)
+        self.observer.on_connection_updated(connection, update_type, pedalboard=self)
 
     @property
     def json(self):

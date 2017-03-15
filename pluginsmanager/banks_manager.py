@@ -112,32 +112,32 @@ class ObserverManager(UpdatesObserver):
     def append(self, observer):
         self.observers.append(observer)
 
-    def on_bank_updated(self, bank, update_type, **kwargs):
+    def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_bank_updated(bank, update_type, **kwargs)
+                observer.on_bank_updated(bank, update_type, index=index, origin=origin, **kwargs)
 
-    def on_pedalboard_updated(self, pedalboard, update_type, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_pedalboard_updated(pedalboard, update_type, **kwargs)
+                observer.on_pedalboard_updated(pedalboard, update_type, index=index, origin=origin, **kwargs)
 
-    def on_effect_updated(self, effect, update_type, **kwargs):
+    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_effect_updated(effect, update_type, **kwargs)
+                observer.on_effect_updated(effect, update_type, index=index, origin=origin, **kwargs)
 
-    def on_effect_status_toggled(self, effect):
+    def on_effect_status_toggled(self, effect, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_effect_status_toggled(effect)
+                observer.on_effect_status_toggled(effect, **kwargs)
 
-    def on_param_value_changed(self, param):
+    def on_param_value_changed(self, param, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_param_value_changed(param)
+                observer.on_param_value_changed(param, **kwargs)
 
-    def on_connection_updated(self, connection, update_type, **kwargs):
+    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_connection_updated(connection, update_type, **kwargs)
+                observer.on_connection_updated(connection, update_type, pedalboard=pedalboard, **kwargs)

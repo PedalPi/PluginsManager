@@ -34,23 +34,13 @@ class OutputTest(unittest.TestCase):
         self.assertEqual(1, len(pedalboard.connections))
 
         new_connection = pedalboard.connections[0]
-        pedalboard.observer.on_connection_updated.assert_called_with(
-            new_connection,
-            UpdateType.CREATED,
-            index=len(pedalboard.connections) - 1,
-            origin=pedalboard
-        )
+        pedalboard.observer.on_connection_updated.assert_called_with(new_connection, UpdateType.CREATED, pedalboard=pedalboard)
 
         reverb.outputs[1].connect(reverb2.inputs[1])
         self.assertEqual(2, len(pedalboard.connections))
 
         new_connection = pedalboard.connections[-1]
-        pedalboard.observer.on_connection_updated.assert_called_with(
-            new_connection,
-            UpdateType.CREATED,
-            index=len(pedalboard.connections) - 1,
-            origin=pedalboard
-        )
+        pedalboard.observer.on_connection_updated.assert_called_with(new_connection, UpdateType.CREATED, pedalboard=pedalboard)
 
     def test_disconnect(self):
         pedalboard = Pedalboard('Pedalboard name')
@@ -71,22 +61,12 @@ class OutputTest(unittest.TestCase):
         disconnected = pedalboard.connections[-1]
         reverb.outputs[1].disconnect(reverb2.inputs[0])
         self.assertEqual(1, len(pedalboard.connections))
-        pedalboard.observer.on_connection_updated.assert_called_with(
-            disconnected,
-            UpdateType.DELETED,
-            index=len(pedalboard.connections),
-            origin=pedalboard
-        )
+        pedalboard.observer.on_connection_updated.assert_called_with(disconnected, UpdateType.DELETED, pedalboard=pedalboard)
 
         disconnected = pedalboard.connections[-1]
         reverb.outputs[0].disconnect(reverb2.inputs[0])
         self.assertEqual(0, len(pedalboard.connections))
-        pedalboard.observer.on_connection_updated.assert_called_with(
-            disconnected,
-            UpdateType.DELETED,
-            index=len(pedalboard.connections),
-            origin=pedalboard
-        )
+        pedalboard.observer.on_connection_updated.assert_called_with(disconnected, UpdateType.DELETED, pedalboard=pedalboard)
 
     def test_disconnect_connection_not_created(self):
         pedalboard = Pedalboard('Pedalboard name')

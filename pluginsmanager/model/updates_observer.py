@@ -24,7 +24,7 @@ class UpdatesObserver(metaclass=ABCMeta):
             self.manager.exit_scope()
 
     @abstractmethod
-    def on_bank_updated(self, bank, update_type, **kwargs):
+    def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
         """
         Called when changes occurs in any :class:`Bank`
 
@@ -36,7 +36,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_pedalboard_updated(self, pedalboard, update_type, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
         """
         Called when changes occurs in any :class:`Pedalboard`
 
@@ -48,7 +48,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_effect_updated(self, effect, update_type, **kwargs):
+    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
         """
         Called when changes occurs in any :class:`Effect`
 
@@ -60,7 +60,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_effect_status_toggled(self, effect):
+    def on_effect_status_toggled(self, effect, **kwargs):
         """
         Called when any :class:`Effect` status is toggled
 
@@ -69,7 +69,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_param_value_changed(self, param):
+    def on_param_value_changed(self, param, **kwargs):
         """
         Called when a param value change
 
@@ -78,14 +78,13 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def on_connection_updated(self, connection, update_type, **kwargs):
+    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         """
         Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Pedalboard
         (adding, updating or removing connections)
 
         :param pluginsmanager.model.connection.Connection connection: Connection changed
         :param UpdateType update_type: Change type
-        :param int index: Connection index (or old index if update_type == UpdateType.DELETED)
-        :param Pedalboard origin: Pedalboard that the connection is (or has) contained
+        :param Pedalboard pedalboard: Pedalboard that the connection is (or has) contained
         """
         pass

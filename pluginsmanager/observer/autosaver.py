@@ -16,6 +16,7 @@ class Autosaver(UpdatesObserver):
     :param string data_path: Path that banks will be saved (each bank in one file)
     """
     def __init__(self, data_path):
+        super().__init__()
         self.data_path = data_path
 
     def load(self, system_effect):
@@ -76,26 +77,26 @@ class Autosaver(UpdatesObserver):
     def _delete(url):
         os.remove(url)
 
-    def on_bank_updated(self, bank, update_type, origin=None, **kwargs):
+    def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
         if update_type == UpdateType.DELETED:
             return self.delete(bank)
 
         self.save(bank)
 
-    def on_pedalboard_updated(self, pedalboard, update_type, origin=None, **kwargs):
+    def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
         if update_type == UpdateType.DELETED:
             self.save(origin)
         else:
             self.save(pedalboard.bank)
 
-    def on_effect_updated(self, effect, update_type, **kwargs):
+    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
         self.save(effect.pedalboard.bank)
 
-    def on_effect_status_toggled(self, effect):
+    def on_effect_status_toggled(self, effect, **kwargs):
         self.save(effect.pedalboard.bank)
 
-    def on_param_value_changed(self, param):
+    def on_param_value_changed(self, param, **kwargs):
         self.save(param.effect.pedalboard.bank)
 
-    def on_connection_updated(self, connection, update_type, **kwargs):
+    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         self.save(connection.output.effect.pedalboard.bank)
