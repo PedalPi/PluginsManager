@@ -19,6 +19,9 @@ setup(
 
         'pluginsmanager/util',
     ],
+    package_data={
+        'pluginsmanager/model/lv2': ['plugins.json']
+    },
     test_suite='test',
     install_requires=['JACK-Client'],
     tests_require=['JACK-Client'],
