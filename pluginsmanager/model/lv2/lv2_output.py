@@ -22,7 +22,6 @@ class Lv2Output(Output):
     For general input use, see :class:`Output` class documentation.
 
     .. _output audio port: http://lv2plug.in/ns/lv2core/#OutputPort
-    http://lv2plug.in/ns/lv2core/#Parameter
 
     :param Lv2Effect effect:
     :param dict effect_output: *output audio port* json representation

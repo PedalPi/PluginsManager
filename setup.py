@@ -50,11 +50,11 @@ setup(
         'pluginsmanager/util',
     ],
     package_data={
-        'pluginsmanager/': ['LICENSE'],
         'pluginsmanager/model/lv2': ['plugins.json']
     },
-    test_suite='test',
     install_requires=['JACK-Client'],
+
+    test_suite='test',
     tests_require=['JACK-Client'],
 
     classifiers=[

@@ -39,7 +39,7 @@ Example
 
 This examples uses `Calf`_ and `Guitarix`_ audio plugins
 
-Download and install `mod-host`_. For more information: :class:`Mod-host`
+Download and install `mod-host`_. For more information, check the `ModHost` section.
 
 Start audio process
 
@@ -47,7 +47,7 @@ Start audio process
 
     # In this example, is starting a Zoom g3 series audio interface
     jackd -R -P70 -t2000 -dalsa -dhw:Series -p256 -n3 -r44100 -s &
-    mod-host &
+    mod-host
 
 Play!
 
@@ -113,7 +113,7 @@ Add effects in the pedalboard
     # or
     # pedalboard.effects.append(reverb2)
 
-For obtains automatically the sound card inputs and outputs, use :class:`SystemEffectBuilder`. It requires `JACK-Client`_.
+For obtains automatically the sound card inputs and outputs, use `SystemEffectBuilder`. It requires `JACK-Client`_.
 
 .. _JACK-Client: https://jackclient-python.readthedocs.io/
 
