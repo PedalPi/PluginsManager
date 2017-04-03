@@ -11,7 +11,7 @@ PedalPi - PluginsManager
 
 .. image:: https://codecov.io/gh/PedalPi/PluginsManager/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/PedalPi/PluginsManager
-    :alt: codecov
+    :alt: Code coverage
 
 .. image:: https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat
     :target: https://landscape.io/github/PedalPi/PluginsManager/master
@@ -29,10 +29,12 @@ Pythonic management of LV2 audio plugins with `mod-host`_.
    https://github.com/PedalPi/PluginsManager
 
 **Python Package Index:**
-   https://github.com/PedalPi/PluginsManager/tarball/master#egg=PedalPi-PluginsManager
+   https://pypi.org/project/PedalPi-PluginsManager
 
 **License:**
-   Open source license will be selected
+   `Apache License 2.0`_
+
+.. _Apache License 2.0: https://github.com/PedalPi/PluginsManager/blob/master/LICENSE
 
 Example
 -------
