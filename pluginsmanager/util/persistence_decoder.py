@@ -16,7 +16,9 @@ from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.connection import Connection
 
-from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder as Lv2LilvEffectBuilder
+from pluginsmanager.util.builder.lv2_json_builder import Lv2AudioPortBuilder, Lv2EffectBuilder
+from pluginsmanager.util.builder.system_json_builder import SystemAudioPortBuilder
 
 
 class PersistenceDecoderError(Exception):
@@ -78,23 +80,18 @@ class EffectReader(Reader):
 
     def __init__(self, system_effect):
         super(EffectReader, self).__init__(system_effect)
-        self.builder = Lv2EffectBuilder()
+        self.builder = Lv2LilvEffectBuilder()
 
     def read(self, json):
-        if json['technology'] == 'lv2':
-            return self.read_lv2(json)
+        return self.generate_builder(json).build(json)
 
-        raise PersistenceDecoderError('Unknown effect technology: ' + json['technology'])
+    def generate_builder(self, json):
+        technology = json['technology']
 
-    def read_lv2(self, json):
-        effect = self.builder.build(json['plugin'])
-
-        for param, param_json in zip(effect.params, json['params']):
-            param.value = param_json['value']
-
-        effect.active = json['active']
-
-        return effect
+        if technology == 'lv2':
+            return Lv2EffectBuilder(self.builder)
+        else:
+            raise PersistenceDecoderError('Unknown effect technology: ' + technology)
 
 
 class ConnectionReader(Reader):
@@ -104,38 +101,16 @@ class ConnectionReader(Reader):
         self.pedalboard = pedalboard
 
     def read(self, json):
-        if 'effect' in json['output']:
-            connection_output = self.read_output(json['output'])
-        else:
-            connection_output = self.read_system_output(json['output'])
-
-        if 'effect' in json['input']:
-            connection_input = self.read_input(json['input'])
-        else:
-            connection_input = self.read_system_input(json['input'])
+        connection_output = self.generate_builder(json, 'output').build_output(json['output'])
+        connection_input = self.generate_builder(json, 'input').build_input(json['input'])
 
         return Connection(connection_output, connection_input)
 
-    def read_output(self, json):
-        effect_index = json['effect']
-        effect = self.pedalboard.effects[effect_index]
-
-        return self.generic_system_output(effect, json['symbol'])
-
-    def read_input(self, json):
-        effect_index = json['effect']
-        effect = self.pedalboard.effects[effect_index]
-
-        return self.generic_system_input(effect, json['symbol'])
-
-    def read_system_output(self, json):
-        return self.generic_system_output(self.system_effect, json['symbol'])
-
-    def read_system_input(self, json):
-        return self.generic_system_input(self.system_effect, json['symbol'])
-
-    def generic_system_output(self, effect, symbol):
-        return effect.outputs[symbol]
-
-    def generic_system_input(self, effect, symbol):
-        return effect.inputs[symbol]
+    def generate_builder(self, json, audio_port):
+        """
+        :return AudioPortBuilder
+        """
+        if 'effect' in json[audio_port]:
+            return Lv2AudioPortBuilder(self.pedalboard)
+        else:
+            return SystemAudioPortBuilder(self.system_effect)
