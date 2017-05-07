@@ -74,6 +74,23 @@ class ObservableList(object):
         self._list.insert(index, x)
         self.observer(UpdateType.CREATED, x, index)
 
+    def pop(self, index=None):
+        """
+        Remove the item at the given position in the list, and return it. If no index is specified,
+        a.pop() removes and returns the last item in the list.
+
+        :param int index: element index that will be removed
+
+        :return: item removed
+        """
+        if index is None:
+            index = len(self._list) - 1
+
+        item = self[index]
+        del self[index]
+
+        return item
+
     def __len__(self):
         return len(self._list)
 

@@ -53,6 +53,46 @@ class ObservableListTest(unittest.TestCase):
 
         lista.observer.assert_called_with(UpdateType.DELETED, '2', 1)
 
+    def test_pop_empty_parameter(self):
+        lista = ObservableList()
+        a = 'a'
+        b = 'b'
+        c = 'c'
+        d = 'd'
+
+        lista.append(a)
+        lista.append(b)
+        lista.append(c)
+        lista.append(d)
+
+        lista.observer = MagicMock()
+
+        self.assertEqual(d, lista.pop())
+        self.assertEqual(3, len(lista))
+
+        lista.observer.assert_any_call(UpdateType.DELETED, d, len(lista))
+
+    def test_pop_with_parameter(self):
+        lista = ObservableList()
+        a = 'a'
+        b = 'b'
+        c = 'c'
+        d = 'd'
+
+        lista.append(a)
+        lista.append(b)
+        lista.append(c)
+        lista.append(d)
+
+        lista.observer = MagicMock()
+
+        b_index = 1
+
+        self.assertEqual(b, lista.pop(b_index))
+        self.assertEqual(3, len(lista))
+
+        lista.observer.assert_any_call(UpdateType.DELETED, b, b_index)
+
     def test__setitem__(self):
         lista = ObservableList()
 
