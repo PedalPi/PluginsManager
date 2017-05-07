@@ -208,7 +208,7 @@ class ProtocolParser:
 
         :param Lv2Param param: Parameter that will be updated your value
         """
-        instance = param.effect
+        instance = param.effect.instance
 
         return 'param_set {} {} {}'.format(instance, param.symbol, param.value)
 
@@ -225,7 +225,7 @@ class ProtocolParser:
 
         :param Lv2Param param: Parameter that will be get your current value
         """
-        instance = param.effect
+        instance = param.effect.instance
 
         return 'param_get {} {}'.format(instance, param.symbol)
 
