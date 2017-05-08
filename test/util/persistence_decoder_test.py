@@ -42,23 +42,23 @@ class PersistenceTest(unittest.TestCase):
         bank.append(Pedalboard('Pedalboard is a Pedalboard?'))
 
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        fuzz = self.builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
+        filter = self.builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
-        pedalboard.append(fuzz)
+        pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(fuzz.inputs[0])
-        reverb.outputs[1].connect(fuzz.inputs[0])
-        fuzz.outputs[0].connect(reverb2.inputs[0])
+        reverb.outputs[0].connect(filter.inputs[0])
+        reverb.outputs[1].connect(filter.inputs[0])
+        filter.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
 
         pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
         pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
 
-        fuzz.toggle()
-        fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
+        filter.toggle()
+        filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 3
 
         return bank
 

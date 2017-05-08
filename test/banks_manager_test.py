@@ -43,31 +43,31 @@ class BanksManagerTest(unittest.TestCase):
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
+        filter = builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
         observer.on_effect_updated.assert_called_with(reverb, UpdateType.CREATED, index=reverb.index, origin=pedalboard)
-        pedalboard.append(fuzz)
-        observer.on_effect_updated.assert_called_with(fuzz, UpdateType.CREATED, index=fuzz.index, origin=pedalboard)
+        pedalboard.append(filter)
+        observer.on_effect_updated.assert_called_with(filter, UpdateType.CREATED, index=filter.index, origin=pedalboard)
         pedalboard.append(reverb2)
         observer.on_effect_updated.assert_called_with(reverb2, UpdateType.CREATED, index=reverb2.index, origin=pedalboard)
 
-        reverb.outputs[0].connect(fuzz.inputs[0])
+        reverb.outputs[0].connect(filter.inputs[0])
         observer.on_connection_updated.assert_called_with(
-            Connection(reverb.outputs[0], fuzz.inputs[0]),
+            Connection(reverb.outputs[0], filter.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
-        reverb.outputs[1].connect(fuzz.inputs[0])
+        reverb.outputs[1].connect(filter.inputs[0])
         observer.on_connection_updated.assert_called_with(
-            Connection(reverb.outputs[1], fuzz.inputs[0]),
+            Connection(reverb.outputs[1], filter.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
-        fuzz.outputs[0].connect(reverb2.inputs[0])
+        filter.outputs[0].connect(reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
-            Connection(fuzz.outputs[0], reverb2.inputs[0]),
+            Connection(filter.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
@@ -78,11 +78,11 @@ class BanksManagerTest(unittest.TestCase):
             pedalboard=pedalboard
         )
 
-        fuzz.toggle()
-        observer.on_effect_status_toggled.assert_called_with(fuzz)
+        filter.toggle()
+        observer.on_effect_status_toggled.assert_called_with(filter)
 
-        fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
-        observer.on_param_value_changed.assert_called_with(fuzz.params[0])
+        filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 2
+        observer.on_param_value_changed.assert_called_with(filter.params[0])
 
         del bank.pedalboards[0]
         observer.on_pedalboard_updated.assert_called_with(pedalboard, UpdateType.DELETED, index=0, origin=bank)
