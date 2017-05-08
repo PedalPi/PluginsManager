@@ -10,6 +10,7 @@ With it you can load audio plugins, connect, manage plugins.
 For your use, is necessary download it
 
 .. code-block:: bash
+
     git clone https://github.com/moddevices/mod-host
     cd mod-host
     make

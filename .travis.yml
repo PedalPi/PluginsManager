@@ -15,6 +15,7 @@ install:
   - pip3 install JACK-Client
 
 script:
+  - lv2ls
   - cd ..
   - mkdir data
   - cd data

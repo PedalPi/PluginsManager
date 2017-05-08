@@ -97,16 +97,16 @@ class BankTest(unittest.TestCase):
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
+        filter = builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
-        pedalboard.append(fuzz)
+        pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(fuzz.inputs[0])
-        reverb.outputs[1].connect(fuzz.inputs[0])
-        fuzz.outputs[0].connect(reverb2.inputs[0])
+        reverb.outputs[0].connect(filter.inputs[0])
+        reverb.outputs[1].connect(filter.inputs[0])
+        filter.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
 
         bank.append(pedalboard)
