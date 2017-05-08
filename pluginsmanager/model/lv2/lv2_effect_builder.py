@@ -30,18 +30,26 @@ class Lv2EffectBuilder(object):
     """
 
     def __init__(self, plugins_json=None):
-        self.plugins = {}
+        self._plugins = {}
 
         if plugins_json is None:
-            plugins_json = os.path.dirname(__file__) + '/plugins.json'
+            plugins_json = os.path.dirname(os.path.abspath(__file__)) + '/plugins.json'
 
         with open(plugins_json) as data_file:
             data = json.load(data_file)
 
-        #supported_plugins = self._supported_plugins
-        for plugin in data:
-            #if plugin['uri'] in supported_plugins:
-                self.plugins[plugin['uri']] = Lv2Plugin(plugin)
+        self.reload(data)
+
+    def reload(self, metadata):
+        """
+        Loads the metadata. They will be used so that it is possible to generate lv2 audio plugins.
+
+        :param list metadata: lv2 audio plugins metadata
+        """
+        supported_plugins = self._supported_plugins
+        for plugin in metadata:
+            if plugin['uri'] in supported_plugins:
+                self._plugins[plugin['uri']] = Lv2Plugin(plugin)
 
     @property
     def _supported_plugins(self):
@@ -50,7 +58,11 @@ class Lv2EffectBuilder(object):
 
     @property
     def all(self):
-        return self.plugins
+        return self._plugins
+
+    @property
+    def plugins(self):
+        return self._plugins.keys()
 
     def build(self, lv2_uri):
         """
@@ -59,4 +71,73 @@ class Lv2EffectBuilder(object):
         :param string lv2_uri:
         :return Lv2Effect: Effect created
         """
-        return Lv2Effect(self.plugins[lv2_uri])
+        return Lv2Effect(self._plugins[lv2_uri])
+
+    def lv2_plugins_data(self):
+        """
+        Generates a file with all plugins data info. It uses the `lilvlib`_ library.
+
+        PluginsManager can manage lv2 audio plugins through previously obtained metadata
+        from the lv2 audio plugins descriptor files.
+
+        To speed up usage, data has been pre-generated and loaded into this piped packet.
+        This avoids a dependency installation in order to obtain the metadata.
+
+        However, this measure makes it not possible to manage audio plugins that were not
+        included in the list.
+
+        To work around this problem, this method - using the `lilvlib`_ library - can get
+        the information from the audio plugins. You can use this data to generate a file
+        containing the settings::
+
+            >>> builder = Lv2EffectBuilder()
+            >>> plugins_data = builder.lv2_plugins_data()
+
+            >>> import json
+            >>> with open('plugins.json', 'w') as outfile:
+            >>>     json.dump(plugins_data, outfile)
+
+        The next time you instantiate this class, you can pass the configuration file::
+
+            >>> builder = Lv2EffectBuilder(os.path.abspath('plugins.json'))
+
+        Or, if you want to load the data without having to create a new instance of this class::
+
+            >>> builder.reload(builder.lv2_plugins_data())
+
+        .. warning::
+
+            To use this method, it is necessary that the system has the `lilv`_ in a version equal
+            to or greater than `0.22.0`_. Many linux systems currently have previous versions on
+            their package lists, so you need to compile them manually.
+
+            In order to ease the work, Pedal Pi has compiled lilv for some versions of linux.
+            You can get the list of .deb packages in https://github.com/PedalPi/lilvlib/releases.
+
+            .. code-block:: bash
+
+                # Example
+                wget https://github.com/PedalPi/lilvlib/releases/download/v1.0.0/python3-lilv_0.22.1.git20160613_amd64.deb
+                sudo dpkg -i python3-lilv_0.22.1+git20160613_amd64.deb
+
+
+            If the architecture of your computer is not contemplated, moddevices provided
+            a script to generate the package.
+            Go to https://github.com/moddevices/lilvlib to get the script in its most up-to-date version.
+
+        .. _lilvlib: https://github.com/moddevices/lilvlib
+        .. _0.22.0: http://git.drobilla.net/cgit.cgi/lilv.git/tag/?id=v0.22.0
+        .. _lilv: http://drobilla.net/software/lilv
+
+        :return list: lv2 audio plugins metadata
+        """
+        import lilvlib
+
+        return lilvlib.get_plugin_info_helper('')
+
+if __name__ == '__main__':
+    builder = Lv2EffectBuilder()
+    print('Total plugins before reload:', len(builder.plugins))
+
+    builder.reload(builder.lv2_plugins_data())
+    print('Total plugins after reload:', len(builder.plugins))

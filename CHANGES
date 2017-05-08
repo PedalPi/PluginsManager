@@ -1,5 +1,12 @@
+Version 0.3.0 -- released 05//17
+================================
+ - Add lilvlib support:
+   - Add object Lv2EffectBuilder method - `lv2_plugins_data`: Scan and generate the lv2 plugins metadata
+   - Add object Lv2EffectBuilder attribute - `plugins`: List plugins
+   - Add object Lv2EffectBuilder method - `reload`: Load lv2 metadata
+
 Version 0.2.1 -- released 05/07/17
-=================================
+==================================
  - Refactor persistence_decoder: Using now design pattern;
  - Fix mod-host: Bug when changing value of a parameter from a plugin;
  - observable_list: Add method ``.pop()``.
