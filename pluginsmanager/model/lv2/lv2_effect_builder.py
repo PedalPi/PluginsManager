@@ -29,11 +29,16 @@ class Lv2EffectBuilder(object):
         in *plugins.json*.
     """
 
+    plugins_json_file = os.path.dirname(os.path.abspath(__file__)) + '/plugins.json'
+    """
+    Informs the path of the `plugins.json` file. This file contains the lv2 plugins metadata info
+    """
+
     def __init__(self, plugins_json=None):
         self._plugins = {}
 
         if plugins_json is None:
-            plugins_json = os.path.dirname(os.path.abspath(__file__)) + '/plugins.json'
+            plugins_json = Lv2EffectBuilder.plugins_json_file
 
         with open(plugins_json) as data_file:
             data = json.load(data_file)
