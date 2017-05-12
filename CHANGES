@@ -1,9 +1,13 @@
+Version 0.3.2 -- released 05/12/17
+==================================
+ - Fix `pluginsmanager.util.builder`: Add folder in pip
+
 Version 0.3.1 -- released 05/10/17
 ==================================
  - Add class method `Lv2EffectBuilder.plugins_json_file`
 
 Version 0.3.0 -- released 05/08/17
-================================
+==================================
  - Add lilvlib support:
    - Add object Lv2EffectBuilder method - `lv2_plugins_data`: Scan and generate the lv2 plugins metadata
    - Add object Lv2EffectBuilder attribute - `plugins`: List plugins
