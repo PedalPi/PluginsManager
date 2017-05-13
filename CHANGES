@@ -1,3 +1,8 @@
+Version 0.4.0 -- released 05//17
+==================================
+ - Improve coverage code
+ - Remove deprecated files (mod-host auto connect)
+
 Version 0.3.2 -- released 05/12/17
 ==================================
  - Fix `pluginsmanager.util.builder`: Add folder in pip
