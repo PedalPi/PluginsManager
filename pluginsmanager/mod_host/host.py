@@ -49,22 +49,6 @@ class Host:
         """
         self.connection.send(ProtocolParser.remove(effect))
 
-    def connect_input_in(self, effect_input):
-        """
-        .. deprecated:: 0.0
-
-           Will be removed
-        """
-        self.connection.send(ProtocolParser.connect_input_in(effect_input))
-
-    def connect_on_output(self, effect_output, index_out):
-        """
-        .. deprecated:: 0.0
-
-           Will be removed
-        """
-        self.connection.send(ProtocolParser.connect_on_output(effect_output, index_out))
-
     def connect(self, connection):
         """
         Connect two effect audio ports

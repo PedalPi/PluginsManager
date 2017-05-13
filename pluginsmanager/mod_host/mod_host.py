@@ -90,23 +90,6 @@ class ModHost(UpdatesObserver):
         """
         self.host = Host(self.address)
 
-    def auto_connect(self):
-        if self.pedalboard is None or len(self.pedalboard.effects) == 0:
-            return
-
-        first = self.pedalboard.effects[0]
-        last = self.pedalboard.effects[-1]
-
-        self.host.connect_input_in(first.inputs[0])
-
-        before = first
-        for effect in self.pedalboard.effects[1:]:
-            self.host.connect(Connection(before.outputs[0], effect.inputs[0]))
-            before = effect
-
-        self.host.connect_on_output(last.outputs[0], 1)
-        self.host.connect_on_output(last.outputs[0], 2)
-
     @property
     def pedalboard(self):
         """
