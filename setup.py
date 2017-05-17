@@ -30,7 +30,6 @@ setup(
     long_description=readme(),
 
     url='https://github.com/PedalPi/PluginsManager',
-    download_url='https://github.com/PedalPi/PluginsManager/tarball/v0.2.0',
 
     author='Paulo Mateus Moura da Silva (SrMouraSilva)',
     author_email='mateus.moura@hotmail.com',
@@ -41,6 +40,7 @@ setup(
 
     packages=[
         'pluginsmanager',
+        'pluginsmanager/jack',
 
         'pluginsmanager/mod_host',
         'pluginsmanager/model',

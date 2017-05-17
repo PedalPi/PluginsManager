@@ -41,7 +41,7 @@ Example
 
 This examples uses `Calf`_ and `Guitarix`_ audio plugins
 
-Download and install `mod-host`_. For more information, check the `ModHost` section.
+Download and install `mod-host`_. For more information, check the `ModHost section <mod_host.html>`__.
 
 Start audio process
 

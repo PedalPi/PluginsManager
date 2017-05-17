@@ -1,3 +1,11 @@
+Version 0.4.0 -- released 05//17
+==================================
+ - Improve coverage code
+ - Remove deprecated files (mod-host auto connect)
+ - Issue #23 - Add method for secure close in mod-host
+ - Issue #22 - Fastest load pedalboard
+ - Issue #19 - x-run callback. Create `pluginsmanager.jack.jack_client.JackClient`
+
 Version 0.3.2 -- released 05/12/17
 ==================================
  - Fix `pluginsmanager.util.builder`: Add folder in pip
