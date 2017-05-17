@@ -27,6 +27,10 @@ class JackClient(object):
         >>> client.xrun_callback = lambda delay: print('x-run', delay)
         >>> client.shutdown_callback = lambda status, reason: print('shutdown: ', status, reason)
 
+    When you don't use anymore, close it::
+
+        >>> client.close()
+
     :param bool no_start_server: False if starts a new JACK server
                                  True if uses a already started jack (ex: using `jackdump`)
     :param name: Jack client name. Default: `JackClient`
@@ -58,3 +62,9 @@ class JackClient(object):
 
         self.client.activate()
 
+    def close(self):
+        """
+        Deactive and closes the jack client
+        """
+        self.client.deactivate()
+        self.client.close()

@@ -115,14 +115,18 @@ Add effects in the pedalboard
     # or
     # pedalboard.effects.append(reverb2)
 
-For obtains automatically the sound card inputs and outputs, use `SystemEffectBuilder`. It requires `JACK-Client`_.
+For obtains automatically the sound card inputs and outputs, use `SystemEffectBuilder`.
+It requires a `JackClient` instance, that uses `JACK-Client`_.
 
 .. _JACK-Client: https://jackclient-python.readthedocs.io/
 
 .. code-block:: python
 
+    from pluginsmanager.jack.jack_client import JackClient
+    client = JackClient()
+
     from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
-    sys_effect = SystemEffectBuilder()
+    sys_effect = SystemEffectBuilder(client)
 
 For manual input and output sound card definition, use:
 
