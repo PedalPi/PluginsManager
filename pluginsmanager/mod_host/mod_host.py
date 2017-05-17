@@ -109,6 +109,10 @@ class ModHost(UpdatesObserver):
         if self.pedalboard:
             self._remove_pedalboard(self.pedalboard)
 
+    def close(self):
+        self.pedalboard = None
+        self.host.quit
+
     ####################################
     # Observer
     ####################################

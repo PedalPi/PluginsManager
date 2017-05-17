@@ -80,3 +80,6 @@ class Host:
         :param Lv2Effect effect: Effect with the status updated
         """
         self.connection.send(ProtocolParser.bypass(effect))
+
+    def quit(self):
+        self.connection.send(ProtocolParser.quit())
