@@ -96,12 +96,13 @@ class PersistenceTest(unittest.TestCase):
         with self.assertRaises(PersistenceDecoderError):
             PersistenceDecoder(system_effect).read(bank_data)
 
-    @unittest.skip
     @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
     def test_read_system_builder(self):
         from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
+        from pluginsmanager.jack.jack_client import JackClient
 
-        system_effect = SystemEffectBuilder(False).build()
+        client = JackClient(no_start_server=False)
+        system_effect = SystemEffectBuilder(client).build()
 
         util = PersistenceDecoder(system_effect)
 
@@ -109,3 +110,4 @@ class PersistenceTest(unittest.TestCase):
         bank_readed = util.read(bank.json)
 
         self.assertEqual(bank.json, bank_readed.json)
+        client.close()

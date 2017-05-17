@@ -57,34 +57,6 @@ class ProtocolParser:
         return 'remove {}'.format(effect.instance)
 
     @staticmethod
-    def connect_input_in(effect_input, index_in=1):
-        """
-        Connect system input (indexed in 'index_in') in effect_input
-
-        .. deprecated:: future
-
-            It will be removed
-        """
-        return ProtocolParser._connect_message(
-            'system:capture_{}'.format(index_in),
-            ProtocolParser._get_in_name_of(effect_input)
-        )
-
-    @staticmethod
-    def connect_on_output(effect_output, index_out=1):
-        """
-        Connect 'plugin' on system output indexed in 'index_out'
-
-        .. deprecated:: future
-
-            It will be removed
-        """
-        return ProtocolParser._connect_message(
-            ProtocolParser._get_out_name_of(effect_output),
-            'system:playback_{}'.format(index_out)
-        )
-
-    @staticmethod
     def connect(connection):
         """
         ``connect <origin_port> <destination_port>``
@@ -373,7 +345,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return 'save '.format(filename)
+        return 'save {}'.format(filename)
 
     @staticmethod
     def help():
