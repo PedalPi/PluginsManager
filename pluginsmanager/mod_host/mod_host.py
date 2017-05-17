@@ -15,9 +15,8 @@
 from pluginsmanager.model.updates_observer import UpdatesObserver
 from pluginsmanager.model.update_type import UpdateType
 
-from pluginsmanager.model.connection import Connection
-
 from pluginsmanager.mod_host.host import Host
+from pluginsmanager.util.pairs_list import PairsList
 
 
 class ModHost(UpdatesObserver):
@@ -83,6 +82,8 @@ class ModHost(UpdatesObserver):
         self.host = None
         self._pedalboard = None
 
+        self.pairs_list = PairsList(lambda effect: effect.plugin['uri'])
+
     def connect(self):
         """
         Connect the object with mod-host with the _address_ parameter informed in
@@ -106,37 +107,27 @@ class ModHost(UpdatesObserver):
         self.on_current_pedalboard_changed(pedalboard)
 
     def __del__(self):
-        if self.pedalboard:
-            self._remove_pedalboard(self.pedalboard)
+        self.close()
 
     def close(self):
+        """
+        Remove the audio plugins loaded
+        """
         self.pedalboard = None
-        self.host.quit
+        #self.host.quit()
 
     ####################################
     # Observer
     ####################################
     def on_current_pedalboard_changed(self, pedalboard):
-        if self.pedalboard is not None:
-            self._remove_pedalboard(self.pedalboard)
-
-        self._pedalboard = pedalboard
-
-        # Changes are only updated if self._pedalboard = pedalboard
-        if pedalboard is not None:
-            for index, effect in enumerate(pedalboard.effects):
-                self.on_effect_updated(effect, UpdateType.CREATED, index=index, origin=pedalboard)
-
-            for connection in pedalboard.connections:
-                self.on_connection_updated(connection, UpdateType.CREATED, pedalboard=pedalboard)
-
-    def _remove_pedalboard(self, pedalboard):
-        for index, effect in enumerate(pedalboard.effects):
-            self.on_effect_updated(effect, UpdateType.DELETED, index=index, origin=pedalboard)
+        if self.pedalboard is not None and pedalboard is not None:
+            self._replace_pedalboard(self.pedalboard, pedalboard)
+        else:
+            self._change_pedalboard(pedalboard)
 
     def on_bank_updated(self, bank, update_type, **kwargs):
-        if self.pedalboard is not None \
-        and bank != self.pedalboard.bank:
+        if (self.pedalboard is not None
+        and bank != self.pedalboard.bank):
             return
         pass
 
@@ -159,17 +150,21 @@ class ModHost(UpdatesObserver):
             self.host.remove(effect)
 
     def _load_params_of(self, effect):
+        """
+        Called only when a effect has created
+        Param changes calls `self.on_param_value_changed(...)`
+        """
         for param in effect.params:
             if param.value != param.default:
                 self._set_param_value(param)
 
-    def on_effect_status_toggled(self, effect):
+    def on_effect_status_toggled(self, effect, **kwargs):
         if effect.pedalboard != self.pedalboard:
             return
 
         self.host.set_status(effect)
 
-    def on_param_value_changed(self, param):
+    def on_param_value_changed(self, param, **kwargs):
         if param.effect.pedalboard != self.pedalboard:
             return
 
@@ -186,3 +181,63 @@ class ModHost(UpdatesObserver):
 
     def _set_param_value(self, param):
         self.host.set_param_value(param)
+
+    ####################################
+    # Private methods
+    ####################################
+    def _replace_pedalboard(self, current, pedalboard):
+        # Replace effects with equal plugins
+        result = self.pairs_list.calculate(current.effects, pedalboard.effects)
+
+        for current_effect, new_effect in result.pairs:
+            new_effect.instance = current_effect.instance
+
+            for parameter_old_effect, parameter_new_effect in zip(current_effect.params, new_effect.params):
+                if parameter_new_effect.value != parameter_old_effect.value:
+                    self._set_param_value(parameter_new_effect)
+
+        # Remove not equal plugins
+        current_will_remove = result.elements_not_added_a
+
+        self._remove_connections_of(current)
+        self._remove_effects(current_will_remove)
+
+        self._pedalboard = pedalboard
+
+        # Remove not equal plugins
+        # Changes are only updated if self._pedalboard = pedalboard
+        pedalboard_will_add = result.elements_not_added_b
+
+        self._add_effects(pedalboard_will_add)
+        self._add_connections_of(pedalboard)
+
+    def _change_pedalboard(self, pedalboard):
+        if self.pedalboard is not None:
+            self._remove_pedalboard(self.pedalboard)
+
+        self._pedalboard = pedalboard
+
+        # Changes are only updated if self._pedalboard = pedalboard
+        if pedalboard is not None:
+            self._add_effects(pedalboard.effects)
+            self._add_connections_of(pedalboard)
+
+    def _remove_pedalboard(self, pedalboard):
+        self._remove_effects(pedalboard.effects)
+
+    def _remove_connections_of(self, pedalboard):
+        for connection in pedalboard.connections:
+            self.on_connection_updated(connection, UpdateType.DELETED, pedalboard=pedalboard)
+
+    def _remove_effects(self, effects):
+        for effect in effects:
+            self.on_effect_updated(effect, UpdateType.DELETED, index=None, origin=effect.pedalboard)
+
+    def _add_connections_of(self, pedalboard):
+        for connection in pedalboard.connections:
+            self.on_connection_updated(connection, UpdateType.CREATED, pedalboard=pedalboard)
+
+    def _add_effects(self, effects):
+        for effect in effects:
+            self.on_effect_updated(effect, UpdateType.CREATED, index=None, origin=effect.pedalboard)
+
