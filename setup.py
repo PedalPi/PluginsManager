@@ -40,6 +40,7 @@ setup(
 
     packages=[
         'pluginsmanager',
+        'pluginsmanager/jack',
 
         'pluginsmanager/mod_host',
         'pluginsmanager/model',
