@@ -24,7 +24,7 @@ def readme():
 
 setup(
     name='PedalPi-PluginsManager',
-    version='0.4.0',
+    version='0.5.0',
 
     description='Pythonic management of LV2 audio plugins with mod-host.',
     long_description=readme(),
@@ -53,7 +53,10 @@ setup(
     package_data={
         'pluginsmanager/model/lv2': ['plugins.json']
     },
-    install_requires=['JACK-Client'],
+    install_requires=[
+        'JACK-Client',
+        'pyaudio'
+    ],
 
     test_suite='test',
     tests_require=['JACK-Client'],
