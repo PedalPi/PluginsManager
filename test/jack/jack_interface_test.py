@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 from pluginsmanager.jack.jack_interface import JackInterfaces, AudioInterface
@@ -19,6 +20,7 @@ from pluginsmanager.jack.jack_interface import JackInterfaces, AudioInterface
 
 class JackInterfaceTest(unittest.TestCase):
 
+    @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
     def test_list_audio_interfaces(self):
         audio_interfaces = JackInterfaces.audio_interfaces()
         self.assertGreater(len(audio_interfaces), 0)

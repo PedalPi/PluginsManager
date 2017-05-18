@@ -85,8 +85,6 @@ class ModHostTest(unittest.TestCase):
         for effect in list(pedalboard.effects):
             pedalboard.effects.remove(effect)
 
-        #mod_host.auto_connect()
-
     def test_observers_mock(self):
         """Test only coverage"""
         sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
