@@ -43,9 +43,9 @@ class Output(metaclass=ABCMeta):
         >>> my_awesome_effect.outputs[symbol] == output
         True
 
-    For connections between effects, view :class:`Connections`.
+    For connections between effects, view :class:`.pluginsmanager.mod_host.connection.Connection`.
 
-    :param Effect effect: Effect of output
+    :param Effect effect: Effect that contains the output
     """
 
     def __init__(self, effect):

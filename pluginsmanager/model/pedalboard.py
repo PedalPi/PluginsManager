@@ -21,7 +21,7 @@ from unittest.mock import MagicMock
 class Pedalboard(object):
     """
     Pedalboard is a patch representation: your structure contains
-    :class:`Effect` and :class:`Connection`::
+    :class:`.Effect` and :class:`pluginsmanager.mod_host.connection.Connection`::
 
         >>> pedalboard = Pedalboard('Rocksmith')
         >>> bank.append(pedalboard)
@@ -127,7 +127,7 @@ class Pedalboard(object):
 
     def append(self, effect):
         """
-        Add a :class:`Effect` in this pedalboard
+        Add a :class:`.Effect` in this pedalboard
 
         This works same as::
 
@@ -148,7 +148,7 @@ class Pedalboard(object):
 
         .. note::
 
-            Because the effects is an :class:`ObservableList`, it isn't settable.
+            Because the effects is an :class:`.ObservableList`, it isn't settable.
             For replace, del the effects unnecessary and add the necessary
             effects
         """
@@ -161,7 +161,7 @@ class Pedalboard(object):
 
         .. note::
 
-            Because the connections is an :class:`ObservableList`, it isn't settable.
+            Because the connections is an :class:`.ObservableList`, it isn't settable.
             For replace, del the connections unnecessary and add the necessary
             connections
         """

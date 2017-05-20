@@ -16,7 +16,7 @@ from pluginsmanager.util.builder.builder import AudioPortBuilder, EffectBuilder
 
 class Lv2AudioPortBuilder(AudioPortBuilder):
     """
-    Extracts the :class:`Lv2Input`s and :class:`Lv2Outputs`s of an :class:`Lv2Effect` defined in a json.
+    Extracts the :class:`.Lv2Input`s and :class:`.Lv2Outputs`s of an :class:`.Lv2Effect` defined in a json.
     """
 
     def __init__(self, pedalboard):

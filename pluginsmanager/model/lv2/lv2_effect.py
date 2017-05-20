@@ -24,9 +24,9 @@ class Lv2Effect(Effect):
     """
     Representation of a Lv2 audio plugin instance.
 
-    For general effect use, see :class:`Effect` class documentation.
+    For general effect use, see :class:`.Effect` class documentation.
 
-    It's possible obtains the :class:`Lv2Plugin` information::
+    It's possible obtains the :class:`.Lv2Plugin` information::
 
         >>> reverb
         <Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>

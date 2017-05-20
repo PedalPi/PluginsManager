@@ -21,12 +21,16 @@ class Host:
     Bridge between *mod-host* API and *mod-host* process
     """
 
-    def __init__(self, address='localhost'):
-        # mod-host works only exists 2 connections:
+    def __init__(self, address='localhost', port=5555):
+        # mod-host works if only exists two connections:
         #  - For communication
-        self.connection = Connection(5555, address)
+        try:
+            self.connection = Connection(port, address)
+        except ConnectionRefusedError as e:
+            raise ConnectionRefusedError(str(e) + '. Do you starts mod-host?') from e
+
         #  - For callback?
-        self.connection_fd = Connection(5556, address)
+        self.connection_fd = Connection(port+1, address)
 
         self.instance_index = 0
 
@@ -82,4 +86,16 @@ class Host:
         self.connection.send(ProtocolParser.bypass(effect))
 
     def quit(self):
+        """
+        Quit the connection with mod-host and
+        stop the mod-host process
+        """
         self.connection.send(ProtocolParser.quit())
+        self.close()
+
+    def close(self):
+        """
+        Quit the connection with mod-host
+        """
+        self.connection.close()
+        self.connection_fd.close()

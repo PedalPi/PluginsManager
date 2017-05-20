@@ -19,9 +19,9 @@ class Lv2Param(Param):
     """
     Representation of a Lv2 `input control port`_ instance.
 
-    For general input use, see :class:`Param` class documentation.
+    For general input use, see :class:`.Param` class documentation.
 
-    :param Lv2Effect effect:
+    :param Lv2Effect effect: Effect that contains the param
     :param dict param: *input control port* json representation
 
     .. _input control port: http://lv2plug.in/ns/lv2core/#Parameter

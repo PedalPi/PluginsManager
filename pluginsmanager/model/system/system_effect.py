@@ -25,10 +25,10 @@ class SystemEffect(Effect):
 
     System output is equivalent with audio input: You connect the
     instrument in the audio card input and it captures and send the
-    audio to :class:`SystemOutput` for you connect in a input plugins.
+    audio to :class:`.SystemOutput` for you connect in a input plugins.
 
     System input is equivalent with audio output: The audio card receives
-    the audio processed in your :class:`SystemInput` and send it to audio
+    the audio processed in your :class:`.SystemInput` and send it to audio
     card output for you connects in amplifier, headset.
 
     Because no autodetection of existing ports in audio card
