@@ -131,7 +131,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def preset_save():
@@ -148,7 +148,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def preset_show():
@@ -165,7 +165,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def param_set(param):
@@ -216,7 +216,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def monitor():
@@ -236,7 +236,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def midi_learn(self, plugin, param):

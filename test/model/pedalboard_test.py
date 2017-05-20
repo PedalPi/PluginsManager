@@ -16,6 +16,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.update_type import UpdateType
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
@@ -176,3 +177,27 @@ class PedalboardTest(unittest.TestCase):
         data = {'my-awesome-component': True}
         pedalboard.data = data
         self.assertEqual(data, pedalboard.data)
+
+
+    def test_index(self):
+        bank = Bank('My bank')
+
+        pedalboard1 = Pedalboard(name='My awesome pedalboard')
+        pedalboard2 = Pedalboard(name='My awesome pedalboard 2')
+        pedalboard3 = Pedalboard(name='My awesome pedalboard 3')
+
+        bank.append(pedalboard1)
+        bank.append(pedalboard2)
+        bank.append(pedalboard3)
+
+        self.assertEqual(0, pedalboard1.index)
+        self.assertEqual(1, pedalboard2.index)
+        self.assertEqual(2, pedalboard3.index)
+
+        bank.pedalboards.remove(pedalboard2)
+
+        self.assertEqual(0, pedalboard1.index)
+        self.assertEqual(1, pedalboard3.index)
+
+        with self.assertRaises(IndexError):
+            pedalboard2.index

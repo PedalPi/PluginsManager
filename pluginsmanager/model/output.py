@@ -88,7 +88,8 @@ class Output(metaclass=ABCMeta):
             error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
             raise ConnectionError(error)
 
-        effect_input.effect.pedalboard.connections.append(Connection(self, effect_input))
+        pedalboard = self.effect.pedalboard if not self._unique_for_all_pedalboards else effect_input.effect.pedalboard
+        pedalboard.connections.append(Connection(self, effect_input))
 
     def disconnect(self, effect_input):
         """

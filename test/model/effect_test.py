@@ -94,3 +94,26 @@ class EffectTest(unittest.TestCase):
         self.assertCountEqual(reverb_connections, reverb.connections)
         self.assertCountEqual(fuzz_connections, filter.connections)
         self.assertCountEqual(reverb2_connections, reverb2.connections)
+
+    def test_index(self):
+        builder = EffectTest.builder
+        reverb1 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+        reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+        reverb3 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+
+        pedalboard = Pedalboard(name='My awesome pedalboard')
+        pedalboard.append(reverb1)
+        pedalboard.append(reverb2)
+        pedalboard.append(reverb3)
+
+        self.assertEqual(0, reverb1.index)
+        self.assertEqual(1, reverb2.index)
+        self.assertEqual(2, reverb3.index)
+
+        pedalboard.effects.remove(reverb2)
+
+        self.assertEqual(0, reverb1.index)
+        self.assertEqual(1, reverb3.index)
+
+        with self.assertRaises(IndexError):
+            reverb2.index
