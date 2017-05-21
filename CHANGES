@@ -3,6 +3,8 @@ Version 0.5.0 -- released 05/18/17
  - Issue #29 - List audio interfaces
  - Improve Readme: Add lib requirements
  - Issue #32 - Add method to starts mod-host in ModHost instance
+ - Add banks iterator for PluginsManager
+ - Improve documentation (Issue #3)
 
 Version 0.4.0 -- released 05/17/17
 ==================================

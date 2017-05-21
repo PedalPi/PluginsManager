@@ -16,10 +16,10 @@ from pluginsmanager.util.observable_list import ObservableList
 from pluginsmanager.model.update_type import UpdateType
 
 from unittest.mock import MagicMock
-import uuid
+from pluginsmanager.observer.autosaver.indexable import Indexable
 
 
-class Bank(object):
+class Bank(Indexable):
     """
     Bank is a data structure that contains :class:`.Pedalboard`. It's useful
     for group common pedalboards, like "Pedalboards will be used in
@@ -64,12 +64,11 @@ class Bank(object):
     :param string name: Bank name
     """
     def __init__(self, name):
+        super(Bank, self).__init__()
+
         self.name = name
         self.pedalboards = ObservableList()
         self.pedalboards.observer = self._pedalboards_observer
-
-        self.index = -1
-        self._uuid = str(uuid.uuid4())
 
         self.manager = None
 
@@ -85,21 +84,32 @@ class Bank(object):
         for pedalboard in self.pedalboards:
             pedalboard.observer = observer
 
-    def _pedalboards_observer(self, update_type, pedalboard, index):
-        kwargs = {
-            'index': index,
-            'origin': self
-        }
+    def _pedalboards_observer(self, update_type, pedalboard, index, **kwargs):
+        kwargs['index'] = index
+        kwargs['origin'] = self
 
-        if update_type == UpdateType.CREATED \
-        or update_type == UpdateType.UPDATED:
-            pedalboard.bank = self
-            pedalboard.observer = self.observer
+        if update_type == UpdateType.CREATED:
+            self._init_pedalboard(pedalboard)
+
+        elif update_type == UpdateType.UPDATED:
+            self._init_pedalboard(pedalboard)
+
+            old_pedalboard = kwargs['old']
+            if old_pedalboard not in self.pedalboards:
+                self._clear_pedalboard(old_pedalboard)
+
         elif update_type == UpdateType.DELETED:
-            pedalboard.bank = None
-            pedalboard.observer = MagicMock()
+            self._clear_pedalboard(pedalboard)
 
         self.observer.on_pedalboard_updated(pedalboard, update_type, **kwargs)
+
+    def _init_pedalboard(self, pedalboard):
+        pedalboard.bank = self
+        pedalboard.observer = self.observer
+
+    def _clear_pedalboard(self, pedalboard):
+        pedalboard.bank = None
+        pedalboard.observer = MagicMock()
 
     @property
     def json(self):
@@ -112,8 +122,13 @@ class Bank(object):
 
     @property
     def __dict__(self):
+        try:
+            index = self.index
+        except IndexError:
+            index = -1
+
         return {
-            'index': self.index,
+            'index': index,
             'name': self.name,
             'pedalboards': [pedalboard.json for pedalboard in self.pedalboards]
         }
@@ -133,3 +148,17 @@ class Bank(object):
         :param Pedalboard pedalboard: Pedalboard that will be added
         """
         self.pedalboards.append(pedalboard)
+
+    @property
+    def index(self):
+        """
+        Returns the first occurrence of the bank in your :class:`.PluginsManager`
+        """
+        if self.manager is None:
+            raise IndexError('Bank not contains a manager')
+
+        return self.manager.banks.index(self)
+
+    @property
+    def simple_identifier(self):
+        return self.name

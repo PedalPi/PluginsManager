@@ -85,27 +85,38 @@ class Pedalboard(object):
         for effect in self.effects:
             effect.observer = observer
 
-    def _effects_observer(self, update_type, effect, index):
-        kwargs = {
-            'index': index,
-            'origin': self
-        }
+    def _effects_observer(self, update_type, effect, index, **kwargs):
+        kwargs['index'] = index
+        kwargs['origin'] = self
 
-        if update_type == UpdateType.CREATED \
-        or update_type == UpdateType.UPDATED:
-            effect.pedalboard = self
-            effect.observer = self.observer
+        if update_type == UpdateType.CREATED:
+            self._init_effect(effect)
+
+        elif update_type == UpdateType.UPDATED:
+            self._init_effect(effect)
+
+            old_effect = kwargs['old']
+            if old_effect not in self.effects:
+                self._clear_effect(old_effect)
+
         elif update_type == UpdateType.DELETED:
-            for connection in effect.connections:
-                self.connections.remove(connection)
-
-            effect.pedalboard = None
-            effect.observer = MagicMock()
+            self._clear_effect(effect)
 
         self.observer.on_effect_updated(effect, update_type, index=index, origin=self)
 
-    def _connections_observer(self, update_type, connection, index):
-        self.observer.on_connection_updated(connection, update_type, pedalboard=self)
+    def _init_effect(self, effect):
+        effect.pedalboard = self
+        effect.observer = self.observer
+
+    def _clear_effect(self, effect):
+        for connection in effect.connections:
+            self.connections.remove(connection)
+
+        effect.pedalboard = None
+        effect.observer = MagicMock()
+
+    def _connections_observer(self, update_type, connection, index, **kwargs):
+        self.observer.on_connection_updated(connection, update_type, pedalboard=self, **kwargs)
 
     @property
     def json(self):

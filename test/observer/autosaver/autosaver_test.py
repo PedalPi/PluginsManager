@@ -22,14 +22,18 @@ from pluginsmanager.model.pedalboard import Pedalboard
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
-from pluginsmanager.observer.autosaver import Autosaver
+from pluginsmanager.observer.autosaver.autosaver import Autosaver
 
 
 class AutoSaverTest(unittest.TestCase):
 
+    def autosaver(self, auto_save=True):
+        return Autosaver('../data/autosaver_test/', auto_save=auto_save)
+
+    @unittest.skip('asdsa')
     def test_observers(self):
         mock = MagicMock()
-        observer = Autosaver('data/test/')
+        observer = self.autosaver()
         observer.save = mock
         observer.delete = mock
 
@@ -83,7 +87,7 @@ class AutoSaverTest(unittest.TestCase):
         observer.delete.assert_called_with(bank2)
 
     def test_replace_bank(self):
-        observer = Autosaver('../data/test/')
+        observer = self.autosaver()
 
         manager = BanksManager()
         manager.register(observer)
@@ -102,7 +106,7 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def test_swap_bank(self):
-        observer = Autosaver('../data/test/')
+        observer = self.autosaver()
 
         manager = BanksManager()
         manager.register(observer)
@@ -110,8 +114,8 @@ class AutoSaverTest(unittest.TestCase):
         bank1 = Bank('Bank 1')
         bank2 = Bank('Bank 2')
 
-        manager.banks.append(bank1)
-        manager.banks.append(bank2)
+        manager.append(bank1)
+        manager.append(bank2)
 
         manager.banks[0], manager.banks[1] = manager.banks[1], manager.banks[0]
 
@@ -121,11 +125,39 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def validate_persisted(self, manager):
-        autosaver_validation = Autosaver('../data/test/')
-        banks = autosaver_validation.load(None)
+        autosaver_validation = self.autosaver()
+        banks_manager = autosaver_validation.load(None)
 
-        self.assertEqual(len(manager.banks), len(banks))
+        self.assertEqual(len(manager.banks), len(banks_manager.banks))
 
-        for bank_manager, bank_persisted in zip(manager.banks, banks):
+        for bank_manager, bank_persisted in zip(manager.banks, banks_manager.banks):
             self.assertEqual(bank_manager.json, bank_persisted.json)
 
+    def test_manual_save(self):
+        observer = self.autosaver(auto_save=False)
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        bank1 = Bank('Bank 1')
+        bank2 = Bank('Bank 2')
+
+        manager.append(bank1)
+        manager.append(bank2)
+
+        # Not saved
+        self.assertEqual(0, len(self.autosaver().load(None).banks))
+
+        # Now has saved
+        observer.save(manager)
+        self.validate_persisted(manager)
+
+        while manager.banks:
+            manager.banks.pop()
+
+        # Not saved
+        self.assertEqual(2, len(self.autosaver().load(None).banks))
+
+        # Now has saved
+        observer.save(manager)
+        self.validate_persisted(manager)

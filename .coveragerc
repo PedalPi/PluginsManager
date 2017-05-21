@@ -3,5 +3,6 @@ exclude_lines =
     def __repr__
     pass
     def __str__
+    if __name__ == .__main__.:
 [run]
 omit = pluginsmanager/model/lv2/lilvlib.py

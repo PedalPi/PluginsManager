@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 from pluginsmanager.banks_manager import BanksManager
 
@@ -27,7 +27,7 @@ from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
 class BanksManagerTest(unittest.TestCase):
 
-    def test_observers(self):
+    def test_observers_calls(self):
         observer = MagicMock()
 
         manager = BanksManager()
@@ -88,8 +88,9 @@ class BanksManagerTest(unittest.TestCase):
         observer.on_pedalboard_updated.assert_called_with(pedalboard, UpdateType.DELETED, index=0, origin=bank)
 
         bank2 = Bank('Bank 2')
+        old_bank = manager.banks[0]
         manager.banks[0] = bank2
-        observer.on_bank_updated.assert_called_with(bank2, UpdateType.UPDATED, index=0, origin=manager)
+        observer.on_bank_updated.assert_called_with(bank2, UpdateType.UPDATED, index=0, origin=manager, old=old_bank)
 
         manager.banks.remove(bank2)
         observer.on_bank_updated.assert_called_with(bank2, UpdateType.DELETED, index=0, origin=manager)
@@ -101,3 +102,42 @@ class BanksManagerTest(unittest.TestCase):
 
         for original_bank, bank_managed in zip(banks, manager.banks):
             self.assertEqual(original_bank, bank_managed)
+
+    def test_swap_banks(self):
+        manager = BanksManager()
+
+        bank1 = Bank('Bank 1')
+        bank2 = Bank('Bank 2')
+        bank3 = Bank('Bank 3')
+        bank4 = Bank('Bank 4')
+
+        manager.append(bank1)
+        manager.append(bank2)
+        manager.append(bank3)
+        manager.append(bank4)
+
+        observer = MagicMock()
+        manager.register(observer)
+
+        manager.banks[1], manager.banks[3] = manager.banks[3], manager.banks[1]
+
+        calls = [
+            call(bank4, UpdateType.UPDATED, index=1, origin=manager, old=bank2),
+            call(bank2, UpdateType.UPDATED, index=3, origin=manager, old=bank4)
+        ]
+
+        self.assertListEqual(calls, observer.on_bank_updated.call_args_list)
+
+        self.assertEqual(bank2.manager, manager)
+        self.assertEqual(bank4.manager, manager)
+
+    def test_observers(self):
+        observer1 = MagicMock()
+        observer2 = MagicMock()
+
+        manager = BanksManager()
+
+        manager.register(observer1)
+        manager.register(observer2)
+
+        self.assertListEqual([observer1, observer2], manager.observers)

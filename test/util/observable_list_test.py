@@ -17,7 +17,7 @@ import unittest
 from pluginsmanager.util.observable_list import ObservableList
 from pluginsmanager.model.update_type import UpdateType
 
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 
 class ObservableListTest(unittest.TestCase):
@@ -29,7 +29,7 @@ class ObservableListTest(unittest.TestCase):
         lista.observer = MagicMock()
         lista.append(element)
 
-        lista.observer.assert_called_with(UpdateType.CREATED, element, 0)
+        lista.observer.assert_called_once_with(UpdateType.CREATED, element, 0)
 
     def test_insert(self):
         lista = ObservableList()
@@ -39,7 +39,7 @@ class ObservableListTest(unittest.TestCase):
         lista.observer = MagicMock()
         lista.insert(1, 'a')
 
-        lista.observer.assert_called_with(UpdateType.CREATED, 'a', 1)
+        lista.observer.assert_called_once_with(UpdateType.CREATED, 'a', 1)
 
     def test_remove(self):
         lista = ObservableList()
@@ -51,7 +51,7 @@ class ObservableListTest(unittest.TestCase):
         lista.observer = MagicMock()
         lista.remove('2')
 
-        lista.observer.assert_called_with(UpdateType.DELETED, '2', 1)
+        lista.observer.assert_called_once_with(UpdateType.DELETED, '2', 1)
 
     def test_pop_empty_parameter(self):
         lista = ObservableList()
@@ -70,7 +70,7 @@ class ObservableListTest(unittest.TestCase):
         self.assertEqual(d, lista.pop())
         self.assertEqual(3, len(lista))
 
-        lista.observer.assert_any_call(UpdateType.DELETED, d, len(lista))
+        lista.observer.assert_called_once_with(UpdateType.DELETED, d, len(lista))
 
     def test_pop_with_parameter(self):
         lista = ObservableList()
@@ -91,7 +91,7 @@ class ObservableListTest(unittest.TestCase):
         self.assertEqual(b, lista.pop(b_index))
         self.assertEqual(3, len(lista))
 
-        lista.observer.assert_any_call(UpdateType.DELETED, b, b_index)
+        lista.observer.assert_called_once_with(UpdateType.DELETED, b, b_index)
 
     def test__setitem__(self):
         lista = ObservableList()
@@ -101,9 +101,12 @@ class ObservableListTest(unittest.TestCase):
         lista.append(3)
 
         lista.observer = MagicMock()
-        lista[1] = 4
+        index = 1
+        old_value = lista[index]
+        new_value = 4
+        lista[index] = new_value
 
-        lista.observer.assert_called_with(UpdateType.UPDATED, 4, 1)
+        lista.observer.assert_called_once_with(UpdateType.UPDATED, new_value, index, old=old_value)
 
     def test__setitem_equal__(self):
         lista = ObservableList()
@@ -129,7 +132,7 @@ class ObservableListTest(unittest.TestCase):
         index = 1
         del lista[index]
 
-        lista.observer.assert_called_with(UpdateType.DELETED, 456, index)
+        lista.observer.assert_called_once_with(UpdateType.DELETED, 456, index)
 
     def test_contains(self):
         lista = ObservableList()
@@ -159,8 +162,12 @@ class ObservableListTest(unittest.TestCase):
         self.assertEqual(b, lista[0])
         self.assertEqual(a, lista[1])
 
-        lista.observer.assert_any_call(UpdateType.UPDATED, lista[0], 0)
-        lista.observer.assert_any_call(UpdateType.UPDATED, lista[1], 1)
+        expected = [
+            call(UpdateType.UPDATED, lista[0], 0, old=lista[1]),
+            call(UpdateType.UPDATED, lista[1], 1, old=lista[0])
+        ]
+
+        self.assertListEqual(expected, lista.observer.call_args_list)
 
     def test_swap_2(self):
         a = {'key': 'value'}
@@ -180,5 +187,5 @@ class ObservableListTest(unittest.TestCase):
         self.assertEqual(b, lista[0])
         self.assertEqual(a, listb[0])
 
-        lista.observer.assert_called_with(UpdateType.UPDATED, lista[0], 0)
-        listb.observer.assert_called_with(UpdateType.UPDATED, listb[0], 0)
+        lista.observer.assert_called_once_with(UpdateType.UPDATED, lista[0], 0, old=listb[0])
+        listb.observer.assert_called_once_with(UpdateType.UPDATED, listb[0], 0, old=lista[0])
