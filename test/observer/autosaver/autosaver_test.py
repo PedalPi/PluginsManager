@@ -28,7 +28,7 @@ from pluginsmanager.observer.autosaver.autosaver import Autosaver
 class AutoSaverTest(unittest.TestCase):
 
     def autosaver(self, auto_save=True):
-        return Autosaver('../data/autosaver_test/', auto_save=auto_save)
+        return Autosaver('../data/autosaver_data/', auto_save=auto_save)
 
     @unittest.skip('asdsa')
     def test_observers(self):

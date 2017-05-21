@@ -22,7 +22,7 @@ script:
   - cd ..
   - mkdir data
   - cd data
-  - mkdir autosaver_test
+  - mkdir autosaver_data
   - cd ../PluginsManager
   - coverage3 run --source=pluginsmanager setup.py test
   - cd docs
