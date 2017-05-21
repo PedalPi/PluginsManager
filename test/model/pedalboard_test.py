@@ -178,7 +178,6 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.data = data
         self.assertEqual(data, pedalboard.data)
 
-
     def test_index(self):
         bank = Bank('My bank')
 

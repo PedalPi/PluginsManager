@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 from pluginsmanager.jack.jack_client import JackClient
@@ -19,6 +20,7 @@ from pluginsmanager.jack.jack_client import JackClient
 
 class JackClientTest(unittest.TestCase):
 
+    @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
     def test_assert_not_raises_error(self):
         """Assert not raises error"""
         client1 = JackClient(no_start_server=False, name="Client")
