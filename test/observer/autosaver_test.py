@@ -30,23 +30,26 @@ class AutoSaverTest(unittest.TestCase):
     def autosaver(self, auto_save=True):
         return Autosaver('../data/autosaver_data/', auto_save=auto_save)
 
-    @unittest.skip('asdsa')
     def test_observers(self):
-        mock = MagicMock()
+        save_mock = MagicMock()
+        delete_mock = MagicMock()
+
         observer = self.autosaver()
-        observer.save = mock
-        observer.delete = mock
+        observer.banks_files.save_bank = save_mock
+        observer.banks_files.delete_bank = delete_mock
 
         manager = BanksManager()
         manager.register(observer)
 
         bank = Bank('Bank 1')
         manager.append(bank)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         pedalboard = Pedalboard('Rocksmith')
         bank.append(pedalboard)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
@@ -54,37 +57,51 @@ class AutoSaverTest(unittest.TestCase):
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         pedalboard.append(filter)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         pedalboard.append(reverb2)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         reverb.outputs[0].connect(filter.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         reverb.outputs[1].connect(filter.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         filter.outputs[0].connect(reverb2.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         reverb.outputs[0].connect(reverb2.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         filter.toggle()
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 2
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         del bank.pedalboards[0]
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         bank2 = Bank('Bank 2')
         manager.banks[0] = bank2
-        observer.delete.assert_called_with(bank2)
-        observer.save.assert_called_with(bank2)
+        delete_mock.assert_called_with(bank)
+        save_mock.assert_called_with(bank2)
+
+        delete_mock.reset_mock()
+        save_mock.reset_mock()
 
         manager.banks.remove(bank2)
-        observer.delete.assert_called_with(bank2)
+        delete_mock.assert_called_with(bank2)
+        delete_mock.reset_mock()
 
     def test_replace_bank(self):
         observer = self.autosaver()
