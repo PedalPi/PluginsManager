@@ -15,11 +15,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.update_type import UpdateType
-
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class PedalboardTest(unittest.TestCase):

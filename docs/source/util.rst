@@ -9,14 +9,6 @@ pluginsmanager.util.dict_tuple.DictTuple
    :special-members:
    :exclude-members: __weakref__
 
-pluginsmanager.util.observable_list.ObservableList
---------------------------------------------------
-
-.. autoclass:: pluginsmanager.util.observable_list.ObservableList
-   :members:
-   :special-members:
-   :exclude-members: __weakref__
-
 pluginsmanager.util.pairs_list.PairsList
 ----------------------------------------
 

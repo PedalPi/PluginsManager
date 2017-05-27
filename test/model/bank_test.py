@@ -12,17 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
-
-import json
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class BankTest(unittest.TestCase):

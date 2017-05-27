@@ -14,10 +14,10 @@
 
 import unittest
 
-from pluginsmanager.mod_host.protocol_parser import ProtocolParser
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.connection import Connection
 from pluginsmanager.model.system.system_effect import SystemEffect
+from pluginsmanager.observer.mod_host.protocol_parser import ProtocolParser
 
 
 class ProtocolParserTest(unittest.TestCase):

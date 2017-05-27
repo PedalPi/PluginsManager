@@ -134,19 +134,3 @@ Pedalboard
    :members:
    :special-members:
    :exclude-members: __weakref__
-
-UpdateType
-----------
-
-.. autoclass:: pluginsmanager.model.update_type.UpdateType
-   :members:
-   :special-members:
-   :exclude-members: __weakref__
-
-UpdatesObserver
----------------
-
-.. autoclass:: pluginsmanager.model.updates_observer.UpdatesObserver
-   :members:
-   :special-members:
-   :exclude-members: __weakref__Z

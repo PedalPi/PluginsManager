@@ -13,10 +13,6 @@ PedalPi - PluginsManager
     :target: https://codecov.io/gh/PedalPi/PluginsManager
     :alt: Code coverage
 
-.. image:: https://landscape.io/github/PedalPi/PluginsManager/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/PedalPi/PluginsManager/master
-    :alt: Code Health
-
 
 Pythonic management of LV2 audio plugins with `mod-host`_.
 
@@ -59,6 +55,7 @@ To install them::
 
     pip install PedalPi-PluginsManager
 
+
 .. _lv2ls: http://drobilla.net/man/lv2ls.1.html
 .. _PortAudio: http://www.portaudio.com/
 .. _PyAudio: https://people.csail.mit.edu/hubert/pyaudio/
@@ -66,6 +63,12 @@ To install them::
 
 Example
 -------
+
+.. note::
+
+    Other examples are in the `examples folder in the repository`_.
+
+.. _examples folder in the repository: https://github.com/PedalPi/PluginsManager/tree/master/examples
 
 This examples uses `Calf`_ and `Guitarix`_ audio plugins.
 
@@ -84,7 +87,7 @@ Play!
 .. code-block:: python
 
     from pluginsmanager.banks_manager import BanksManager
-    from pluginsmanager.mod_host.mod_host import ModHost
+    from pluginsmanager.observer.mod_host.mod_host import ModHost
 
     from pluginsmanager.model.bank import Bank
     from pluginsmanager.model.pedalboard import Pedalboard
@@ -236,6 +239,32 @@ Removing effects and connections:
     # or
     # for index in reversed(range(len(pedalboard.effects))):
         # del pedalboard.effects[index]
+
+Observer
+--------
+
+:class:`.ModHost` is an **observer** (see :class:`.UpdatesObserver`).
+It is informed about all changes that
+occur in some model instance (:class:`.BanksManager`, :class:`.Bank`,
+:class:`.Pedalboard`, :class:`.Effect`, :class:`.Param`, ...),
+allowing it to communicate with the ``mod-host`` process transparently.
+
+It is possible to create observers! Some ideas are:
+
+ * Allow the use of other hosts (such as `Carla`_);
+ * Automatically persist changes;
+ * Automatically update a human-machine interface (such as LEDs and
+   displays that inform the state of the effects).
+
+How to implement and the list of Observers implemented by this
+library can be accessed in the `Observer section <observer.html>`__.
+
+.. _Carla: https://github.com/falkTX/Carla
+
+Changelog
+---------
+
+.. include:: ../../CHANGES
 
 Maintenance
 -----------

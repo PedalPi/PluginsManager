@@ -22,5 +22,8 @@ class UpdateType(Enum):
     See :class:`.UpdatesObserver` for more details
     """
     CREATED = 0
+    """ Informs that the change is caused by the creation of an object"""
     UPDATED = 1
+    """ Informs that the change is caused by the update of an object"""
     DELETED = 2
+    """ Informs that the change is caused by the removal of an object"""

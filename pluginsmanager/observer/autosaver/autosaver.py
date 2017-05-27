@@ -15,12 +15,10 @@
 from pathlib import Path
 
 from pluginsmanager.banks_manager import BanksManager
-
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.observer.autosaver.index_file import IndexFile
 from pluginsmanager.observer.autosaver.banks_files import BanksFiles
+from pluginsmanager.observer.autosaver.index_file import IndexFile
+from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.updates_observer import UpdatesObserver
 
 
 class Autosaver(UpdatesObserver):

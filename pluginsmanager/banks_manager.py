@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
-
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.util.observable_list import ObservableList
-
 from unittest.mock import MagicMock
+
+from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.observer_manager import ObserverManager
+from pluginsmanager.observer.observable_list import ObservableList
 
 
 class BanksManager(object):
@@ -41,7 +38,7 @@ class BanksManager(object):
         self.banks.observer = self._banks_observer
 
         banks = [] if banks is None else banks
-        self.observer_manager = ObserverManager()
+        self._observer_manager = ObserverManager()
 
         for bank in banks:
             self.append(bank)
@@ -61,13 +58,23 @@ class BanksManager(object):
         """
         Register an observer for it be notified when occurs changes.
 
-        For more details, see :class:`.model.updates_observer.UpdatesObserver` and
-        :class:`pluginsmanager.mod_host.mod_host.ModHost`.
+        For more details, see :class:`.UpdatesObserver`
 
         :param UpdatesObserver observer: Observer that will be notified then occurs changes
         """
-        self.observer_manager.append(observer)
+        self._observer_manager.append(observer)
         observer.manager = self
+
+    def unregister(self, observer):
+        """
+        Remove the observers of the observers list.
+        It will not receive any more notifications when occurs changes.
+
+        :param UpdatesObserver observer: Observer you will not receive any more notifications then
+                                         occurs changes.
+        """
+        self._observer_manager.observers.remove(observer)
+        observer.manager = None
 
     def append(self, bank):
         """
@@ -92,11 +99,11 @@ class BanksManager(object):
         elif update_type == UpdateType.DELETED:
             self._clear_bank(bank)
 
-        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self, **kwargs)
+        self._observer_manager.on_bank_updated(bank, update_type, index=index, origin=self, **kwargs)
 
     def _init_bank(self, bank):
         bank.manager = self
-        bank.observer = self.observer_manager
+        bank.observer = self._observer_manager
 
     def _clear_bank(self, bank):
         bank.manager = None
@@ -109,81 +116,17 @@ class BanksManager(object):
 
         :param UpdatesObserver observer: Observer that causes changes
         """
-        self.observer_manager.enter_scope(observer)
+        self._observer_manager.enter_scope(observer)
 
     def exit_scope(self):
         """
         Closes the last observer scope added
         """
-        self.observer_manager.exit_scope()
+        self._observer_manager.exit_scope()
 
     @property
     def observers(self):
         """
         :return: Observers registered in BanksManager instance
         """
-        return self.observer_manager.observers
-
-
-class ObserverManager(UpdatesObserver):
-    def __init__(self):
-        super(ObserverManager, self).__init__()
-        self.observers = []
-        self._observers_scope = collections.deque()
-
-    def enter_scope(self, observer):
-        """
-        Open a observer scope.
-
-        Informs that changes occurs by the ``observer`` and isn't necessary
-        informs the changes for observer
-
-        :param UpdatesObserver observer: Observer that causes changes
-        """
-        self._observers_scope.append(observer)
-
-    def exit_scope(self):
-        """
-        Closes the last observer scope added
-        """
-        self._observers_scope.pop()
-
-    @property
-    def scope(self):
-        try:
-            return self._observers_scope[-1]
-        except IndexError:
-            return None
-
-    def append(self, observer):
-        self.observers.append(observer)
-
-    def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_bank_updated(bank, update_type, index=index, origin=origin, **kwargs)
-
-    def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_pedalboard_updated(pedalboard, update_type, index=index, origin=origin, **kwargs)
-
-    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_effect_updated(effect, update_type, index=index, origin=origin, **kwargs)
-
-    def on_effect_status_toggled(self, effect, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_effect_status_toggled(effect, **kwargs)
-
-    def on_param_value_changed(self, param, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_param_value_changed(param, **kwargs)
-
-    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_connection_updated(connection, update_type, pedalboard=pedalboard, **kwargs)
+        return self._observer_manager.observers
