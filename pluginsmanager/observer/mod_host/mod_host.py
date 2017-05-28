@@ -187,7 +187,7 @@ class ModHost(UpdatesObserver):
     ####################################
     # Observer
     ####################################
-    def on_current_pedalboard_changed(self, pedalboard):
+    def on_current_pedalboard_changed(self, pedalboard, **kwargs):
         if self.pedalboard is not None and pedalboard is not None:
             self._replace_pedalboard(self.pedalboard, pedalboard)
         else:
