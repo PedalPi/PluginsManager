@@ -143,7 +143,8 @@ class Autosaver(UpdatesObserver):
         if not self.auto_save:
             return
 
-        self.banks_files.save_bank(effect.pedalboard.bank)
+        pedalboard = origin
+        self.banks_files.save_bank(pedalboard.bank)
 
     def on_effect_status_toggled(self, effect, **kwargs):
         if not self.auto_save:
