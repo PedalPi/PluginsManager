@@ -243,10 +243,10 @@ Removing effects and connections:
 Observer
 --------
 
-:class:`.ModHost` is an **observer** (see :class:`.UpdatesObserver`).
+``ModHost`` is an **observer** (see ``UpdatesObserver``).
 It is informed about all changes that
-occur in some model instance (:class:`.BanksManager`, :class:`.Bank`,
-:class:`.Pedalboard`, :class:`.Effect`, :class:`.Param`, ...),
+occur in some model instance (``BanksManager``, ``Bank``,
+``Pedalboard``, ``Effect``, ``Param``, ...),
 allowing it to communicate with the ``mod-host`` process transparently.
 
 It is possible to create observers! Some ideas are:
@@ -264,7 +264,7 @@ library can be accessed in the `Observer section <observer.html>`__.
 Changelog
 ---------
 
-.. include:: ../../CHANGES
+..include:: ../../CHANGES
 
 Maintenance
 -----------
