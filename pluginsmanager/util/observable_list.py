@@ -145,3 +145,20 @@ class ObservableList(object):
         See :meth:`list.__iter__()` method
         """
         return iter(self._list)
+
+    def move(self, item, new_position):
+        """
+        Moves a item list to new position
+
+        Calls observer ``self.observer(UpdateType.DELETED, item, index)``
+        and observer ``self.observer(UpdateType.CREATED, item, index)``
+        if ``val != self[index]``
+
+        :param item: Item that will be moved to new_position
+        :param new_position: Item's new position
+        """
+        if item == self[new_position]:
+            return
+
+        self.remove(item)
+        self.insert(new_position, item)

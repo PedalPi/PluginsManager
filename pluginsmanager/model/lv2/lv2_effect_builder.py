@@ -28,6 +28,8 @@ class Lv2EffectBuilder(object):
 
         In the current implementation, the data plugins are persisted
         in *plugins.json*.
+
+    :param Path plugins_json: Plugins json path file
     """
 
     plugins_json_file = os.path.dirname(os.path.abspath(__file__)) + '/plugins.json'
@@ -41,7 +43,7 @@ class Lv2EffectBuilder(object):
         if plugins_json is None:
             plugins_json = Lv2EffectBuilder.plugins_json_file
 
-        with open(plugins_json) as data_file:
+        with open(str(plugins_json)) as data_file:
             data = json.load(data_file)
 
         self.reload(data)

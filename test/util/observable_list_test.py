@@ -189,3 +189,50 @@ class ObservableListTest(unittest.TestCase):
 
         lista.observer.assert_called_once_with(UpdateType.UPDATED, lista[0], 0, old=listb[0])
         listb.observer.assert_called_once_with(UpdateType.UPDATED, listb[0], 0, old=lista[0])
+
+    def test_move(self):
+        a = {'key': 'value'}
+        b = {'key2': 'value2'}
+        c = 4
+        d = 23
+
+        lista = ObservableList()
+        lista.append(a)
+        lista.append(b)
+        lista.append(c)
+        lista.append(d)
+
+        lista.observer = MagicMock()
+
+        new_index = 2
+        old_index = lista.index(a)
+        lista.move(a, new_index)
+
+        self.assertEqual(lista.index(a), new_index)
+        self.assertListEqual([b, c, a, d], list(lista))
+
+        expected = [
+            call(UpdateType.DELETED, a, old_index),
+            call(UpdateType.CREATED, a, new_index)
+        ]
+
+        self.assertListEqual(expected, lista.observer.call_args_list)
+
+    def test_move_same_index(self):
+        a = {'key': 'value'}
+        b = {'key2': 'value2'}
+        c = 4
+        d = 23
+
+        lista = ObservableList()
+        lista.append(a)
+        lista.append(b)
+        lista.append(c)
+        lista.append(d)
+
+        lista.observer = MagicMock()
+
+        same_index = lista.index(a)
+        lista.move(a, same_index)
+
+        lista.observer.assert_not_called()

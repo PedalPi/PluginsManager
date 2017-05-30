@@ -31,7 +31,7 @@ class Effect(metaclass=ABCMeta):
 
         >>> reverb.active
         True
-        >>> reverb.toggle
+        >>> reverb.toggle()
         >>> reverb.active
         False
         >>> reverb.active = True
