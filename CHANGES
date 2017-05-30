@@ -1,4 +1,4 @@
-Version 0.5.0 -- released 05/??/17
+Version 0.5.0 -- released 05/29/17
 **********************************
  - `Issue #29`_ - List audio interfaces
  - `Issue #32`_ - Add method to starts mod-host in ModHost instance
@@ -61,6 +61,6 @@ Version 0.2.1 -- released 05/07/17
  - Fix :class:`.ModHost`: Bug when changing value of a parameter from a plugin;
  - observable_list: Add method :meth:`.ObservableList.pop`.
 
-Version 0.2.0 -- released 3/31/17
+Version 0.2.0 -- released 03/31/17
 **********************************
  - Initial release
