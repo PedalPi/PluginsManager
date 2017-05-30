@@ -1,40 +1,66 @@
-Version 0.5.0 -- released 05/18/17
-==================================
- - Issue #29 - List audio interfaces
- - Improve Readme: Add lib requirements
- - Issue #32 - Add method to starts mod-host in ModHost instance
+Version 0.5.0 -- released 05/??/17
+**********************************
+ - `Issue #29`_ - List audio interfaces
+ - `Issue #32`_ - Add method to starts mod-host in ModHost instance
  - Add banks iterator for PluginsManager
- - Improve documentation (Issue #3)
+ - Improve documentation (`Issue #3`_)
+
+   - Improve Readme: Add lib requirements
+   - Add `examples`_ folder
+   - Informs the changes in Readme (index.html)
+
+ - `Issue #39`_ - Add :meth:`.ObservableList.move` method (to change order of pedalboards in a bank and banks in a banks manager)
+ - `Issue #44`_ - Add thread support for observer scope. **Break changes:**
+
+   - Moved ``pluginsmanager.model.updates_observer`` → ``pluginsmanager.observer.updates_observer``
+   - Moved ``pluginsmanager.model.observer_type`` → ``pluginsmanager.observer.updates_observer``
+   - Moved ``pluginsmanager.util.observable_list`` → ``pluginsmanager.observer.observable_list``
+   - Moved ``pluginsmanager.modhost`` → ``pluginsmanager.modhost.observer``
+
+ - Created :meth:`.BanksManager.unregister` method
+
+
+.. _Issue #3: https://github.com/PedalPi/PluginsManager/issues/3
+.. _Issue #29: https://github.com/PedalPi/PluginsManager/issues/29
+.. _Issue #32: https://github.com/PedalPi/PluginsManager/issues/32
+.. _Issue #39: https://github.com/PedalPi/PluginsManager/issues/39
+.. _Issue #44: https://github.com/PedalPi/PluginsManager/issues/44
+.. _examples: https://github.com/PedalPi/PluginsManager/tree/master/examples
 
 Version 0.4.0 -- released 05/17/17
-==================================
+**********************************
+
  - Improve coverage code
  - Remove deprecated files (mod-host auto connect)
- - Issue #23 - Add method for secure close in mod-host
- - Issue #22 - Fastest load pedalboard
- - Issue #19 - x-run callback. Create `pluginsmanager.jack.jack_client.JackClient`
+ - `Issue #23`_ - Add method for secure close in mod-host
+ - `Issue #22`_ - Fastest load pedalboard
+ - `Issue #19`_ - x-run callback. Create :class:`.pluginsmanager.jack.jack_client.JackClient`
+
+.. _Issue #23: https://github.com/PedalPi/PluginsManager/issues/23
+.. _Issue #22: https://github.com/PedalPi/PluginsManager/issues/22
+.. _Issue #19: https://github.com/PedalPi/PluginsManager/issues/19
 
 Version 0.3.2 -- released 05/12/17
-==================================
- - Fix `pluginsmanager.util.builder`: Add folder in pip
+**********************************
+ - Fix ``pluginsmanager.util.builder``: Add folder in pip
 
 Version 0.3.1 -- released 05/10/17
-==================================
- - Add class method `Lv2EffectBuilder.plugins_json_file`
+**********************************
+ - Add class method :meth:`.Lv2EffectBuilder.plugins_json_file`
 
 Version 0.3.0 -- released 05/08/17
-==================================
+**********************************
  - Add lilvlib support:
-   - Add object Lv2EffectBuilder method - `lv2_plugins_data`: Scan and generate the lv2 plugins metadata
-   - Add object Lv2EffectBuilder attribute - `plugins`: List plugins
-   - Add object Lv2EffectBuilder method - `reload`: Load lv2 metadata
+   - Add object Lv2EffectBuilder method - :meth:`.Lv2EffectBuilder.lv2_plugins_data`: Scan and generate the lv2 plugins metadata
+   - Add object Lv2EffectBuilder attribute - :meth:`.Lv2EffectBuilder.plugins`: List plugins
+   - Add object Lv2EffectBuilder method - :meth:`.Lv2EffectBuilder.reload`: Load lv2 metadata
 
 Version 0.2.1 -- released 05/07/17
-==================================
- - Refactor persistence_decoder: Using now design pattern;
- - Fix mod-host: Bug when changing value of a parameter from a plugin;
- - observable_list: Add method ``.pop()``.
+**********************************
+ - Refactor :class:`.util.persistence_decoder.PersistenceDecoder`: Using now design pattern;
+ - Fix :class:`.ModHost`: Bug when changing value of a parameter from a plugin;
+ - observable_list: Add method :meth:`.ObservableList.pop`.
 
 Version 0.2.0 -- released 3/31/17
-=================================
+**********************************
  - Initial release

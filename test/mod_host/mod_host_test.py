@@ -18,7 +18,7 @@ from unittest.mock import MagicMock
 import os
 
 from pluginsmanager.banks_manager import BanksManager
-from pluginsmanager.mod_host.mod_host import ModHost, ModHostError
+from pluginsmanager.observer.mod_host.mod_host import ModHost, ModHostError
 
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.pedalboard import Pedalboard

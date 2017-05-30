@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.mod_host.connection import Connection
-from pluginsmanager.mod_host.protocol_parser import ProtocolParser
+from pluginsmanager.observer.mod_host.connection import Connection
+from pluginsmanager.observer.mod_host.protocol_parser import ProtocolParser
 
 
 class Host:

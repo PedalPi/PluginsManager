@@ -16,13 +16,11 @@ import unittest
 from unittest.mock import MagicMock, call
 
 from pluginsmanager.banks_manager import BanksManager
-
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.connection import Connection
-from pluginsmanager.model.pedalboard import Pedalboard
-from pluginsmanager.model.update_type import UpdateType
-
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class BanksManagerTest(unittest.TestCase):

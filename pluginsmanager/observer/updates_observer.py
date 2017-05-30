@@ -19,7 +19,8 @@ class UpdatesObserver(metaclass=ABCMeta):
     """
     The :class:`.UpdatesObserver` is an abstract class definition for
     treatment of changes in some class model. Your methods are called
-    when occurs any change in Bank, Pedalboard, Effect, etc.
+    when occurs any change in :class:`.Bank`, :class:`.Pedalboard`,
+    :class:`.Effect`, etc.
 
     To do this, it is necessary that the :class:`.UpdatesObserver` objects
     be registered in some manager, so that it reports the changes. An
@@ -46,6 +47,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         :param UpdateType update_type: Change type
         :param int index: Bank index (or old index if update_type == UpdateType.DELETED)
         :param BanksManager origin: BanksManager that the bank is (or has) contained
+        :param Bank: Contains the old bank occurs a `UpdateType.UPDATED`
         """
         pass
 
@@ -58,6 +60,7 @@ class UpdatesObserver(metaclass=ABCMeta):
         :param UpdateType update_type: Change type
         :param int index: Pedalboard index (or old index if update_type == UpdateType.DELETED)
         :param Bank origin: Bank that the pedalboard is (or has) contained
+        :param Pedalboard old: Contains the old pedalboard when occurs a `UpdateType.UPDATED`
         """
         pass
 

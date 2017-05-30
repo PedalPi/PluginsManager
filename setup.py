@@ -42,10 +42,13 @@ setup(
         'pluginsmanager',
         'pluginsmanager/jack',
 
-        'pluginsmanager/mod_host',
         'pluginsmanager/model',
         'pluginsmanager/model/lv2',
         'pluginsmanager/model/system',
+
+        'pluginsmanager/observer',
+        'pluginsmanager/observer/autosaver',
+        'pluginsmanager/observer/mod_host',
 
         'pluginsmanager/util',
         'pluginsmanager/util/builder',

@@ -14,10 +14,10 @@
 
 import subprocess
 
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
+from pluginsmanager.observer.updates_observer import UpdatesObserver
+from pluginsmanager.observer.update_type import UpdateType
 
-from pluginsmanager.mod_host.host import Host
+from pluginsmanager.observer.mod_host.host import Host
 from pluginsmanager.util.pairs_list import PairsList
 
 
@@ -187,7 +187,7 @@ class ModHost(UpdatesObserver):
     ####################################
     # Observer
     ####################################
-    def on_current_pedalboard_changed(self, pedalboard):
+    def on_current_pedalboard_changed(self, pedalboard, **kwargs):
         if self.pedalboard is not None and pedalboard is not None:
             self._replace_pedalboard(self.pedalboard, pedalboard)
         else:

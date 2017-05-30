@@ -11,14 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import unittest
-
-from pluginsmanager.observer.mod_host.host import Host
-
-
-class HostTest(unittest.TestCase):
-
-    def test_mod_host_not_started(self):
-        with self.assertRaises(ConnectionRefusedError):
-            Host()

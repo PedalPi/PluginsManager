@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from json.decoder import JSONDecodeError
 from pluginsmanager.observer.autosaver.persistence import Persistence
 
 
@@ -33,7 +32,7 @@ class IndexFile(object):
         """
         try:
             data = Persistence.read(self.path, create_file=True)
-        except JSONDecodeError:
+        except ValueError:
             data = {}
 
         return self.load_data(data, indexables)

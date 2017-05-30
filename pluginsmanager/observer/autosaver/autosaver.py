@@ -15,12 +15,10 @@
 from pathlib import Path
 
 from pluginsmanager.banks_manager import BanksManager
-
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.observer.autosaver.index_file import IndexFile
 from pluginsmanager.observer.autosaver.banks_files import BanksFiles
+from pluginsmanager.observer.autosaver.index_file import IndexFile
+from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.updates_observer import UpdatesObserver
 
 
 class Autosaver(UpdatesObserver):
@@ -145,7 +143,8 @@ class Autosaver(UpdatesObserver):
         if not self.auto_save:
             return
 
-        self.banks_files.save_bank(effect.pedalboard.bank)
+        pedalboard = origin
+        self.banks_files.save_bank(pedalboard.bank)
 
     def on_effect_status_toggled(self, effect, **kwargs):
         if not self.auto_save:
