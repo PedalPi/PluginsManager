@@ -17,10 +17,13 @@ from enum import Enum
 
 class UpdateType(Enum):
     """
-    Enumeration for informs the change type
+    Enumeration for informs the change type.
 
-    See :class:`UpdatesObserver` for more details
+    See :class:`.UpdatesObserver` for more details
     """
     CREATED = 0
+    """ Informs that the change is caused by the creation of an object"""
     UPDATED = 1
+    """ Informs that the change is caused by the update of an object"""
     DELETED = 2
+    """ Informs that the change is caused by the removal of an object"""

@@ -18,7 +18,7 @@ from unittest.mock import MagicMock
 import os
 
 from pluginsmanager.banks_manager import BanksManager
-from pluginsmanager.mod_host.mod_host import ModHost
+from pluginsmanager.observer.mod_host.mod_host import ModHost, ModHostError
 
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.pedalboard import Pedalboard
@@ -31,61 +31,48 @@ from pluginsmanager.model.system.system_effect import SystemEffect
 
 class ModHostTest(unittest.TestCase):
     builder = None
+    mod_host = None
 
     @classmethod
     def setUpClass(cls):
         cls.builder = Lv2EffectBuilder()
 
-    @unittest.skip
-    @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
-    def test_observers(self):
-        sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
-        manager = BanksManager()
+        mock = 'TRAVIS' in os.environ
+        mock = True
+        cls.mod_host = cls.generate_mod_host(mock)
 
-        bank = Bank('Bank 1')
-        manager.append(bank)
+    @classmethod
+    def tearDownClass(cls):
+        del cls.mod_host
 
+    @classmethod
+    def generate_mod_host(cls, mock=True):
         mod_host = ModHost('localhost')
-        mod_host.connect()
-        manager.register(mod_host)
+        if mock:
+            mod_host.host = MagicMock()
+        else:
+            mod_host.connect()
 
-        pedalboard = Pedalboard('Rocksmith')
+        return mod_host
 
-        mod_host.pedalboard = pedalboard
+    def test_start_remote_device(self):
+        mod_host = ModHost(address='192.168.0.1')
 
-        bank.append(pedalboard)
+        with self.assertRaises(ModHostError):
+            mod_host.start()
 
-        reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        filter = self.builder.build('http://calf.sourceforge.net/plugins/Filter')
-        reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
+    def test_start_mod_host_not_installed(self):
+        mod_host = ModHost()
+        mod_host.process = 'any-wrong-process'
 
-        pedalboard.append(reverb)
-        pedalboard.append(filter)
-        pedalboard.append(reverb2)
+        with self.assertRaises(ModHostError):
+            mod_host.start()
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+    def test_close_not_connected_mod_host(self):
+        mod_host = ModHost(address='192.168.0.1')
 
-        filter.toggle()
-        filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 2
-
-        filter.outputs[0].disconnect(reverb2.inputs[0])
-        filter.toggle()
-
-        pedalboard.effects.remove(filter)
-
-        pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
-        pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
-
-        for connection in list(pedalboard.connections):
-            pedalboard.connections.remove(connection)
-
-        for effect in list(pedalboard.effects):
-            pedalboard.effects.remove(effect)
-
-        #mod_host.auto_connect()
+        with self.assertRaises(ModHostError):
+            mod_host.close()
 
     def test_observers_mock(self):
         """Test only coverage"""
@@ -134,8 +121,6 @@ class ModHostTest(unittest.TestCase):
 
         for effect in list(pedalboard.effects):
             pedalboard.effects.remove(effect)
-
-            # mod_host.auto_connect()
 
     def test_set_pedalboard(self):
         """Test only coverage"""

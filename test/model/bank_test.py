@@ -12,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
-
-import json
+from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.model.system.system_effect import SystemEffect
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class BankTest(unittest.TestCase):
@@ -75,7 +74,7 @@ class BankTest(unittest.TestCase):
 
         self.assertEqual(pedalboard2.bank, bank)
         self.assertEqual(bank.pedalboards[0], pedalboard2)
-        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.UPDATED, index=0, origin=bank)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.UPDATED, index=0, origin=bank, old=pedalboard1)
 
     def test_delete_pedalboard(self):
         bank = Bank('Bank 1')
@@ -96,6 +95,8 @@ class BankTest(unittest.TestCase):
         pedalboard = Pedalboard('Rocksmith')
 
         builder = Lv2EffectBuilder()
+        system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         filter = builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
@@ -104,10 +105,12 @@ class BankTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
+        system_effect.outputs[0].connect(reverb.inputs[0])
         reverb.outputs[0].connect(filter.inputs[0])
         reverb.outputs[1].connect(filter.inputs[0])
         filter.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
+        reverb.outputs[0].connect(system_effect.inputs[0])
 
         bank.append(pedalboard)
 

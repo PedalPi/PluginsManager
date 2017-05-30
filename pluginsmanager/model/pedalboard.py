@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.util.observable_list import ObservableList
-from pluginsmanager.model.update_type import UpdateType
+from pluginsmanager.observer.observable_list import ObservableList
+from pluginsmanager.observer.update_type import UpdateType
 
 from unittest.mock import MagicMock
 
@@ -21,7 +21,7 @@ from unittest.mock import MagicMock
 class Pedalboard(object):
     """
     Pedalboard is a patch representation: your structure contains
-    :class:`Effect` and :class:`Connection`::
+    :class:`.Effect` and :class:`pluginsmanager.mod_host.connection.Connection`::
 
         >>> pedalboard = Pedalboard('Rocksmith')
         >>> bank.append(pedalboard)
@@ -85,27 +85,38 @@ class Pedalboard(object):
         for effect in self.effects:
             effect.observer = observer
 
-    def _effects_observer(self, update_type, effect, index):
-        kwargs = {
-            'index': index,
-            'origin': self
-        }
+    def _effects_observer(self, update_type, effect, index, **kwargs):
+        kwargs['index'] = index
+        kwargs['origin'] = self
 
-        if update_type == UpdateType.CREATED \
-        or update_type == UpdateType.UPDATED:
-            effect.pedalboard = self
-            effect.observer = self.observer
+        if update_type == UpdateType.CREATED:
+            self._init_effect(effect)
+
+        elif update_type == UpdateType.UPDATED:
+            self._init_effect(effect)
+
+            old_effect = kwargs['old']
+            if old_effect not in self.effects:
+                self._clear_effect(old_effect)
+
         elif update_type == UpdateType.DELETED:
-            for connection in effect.connections:
-                self.connections.remove(connection)
-
-            effect.pedalboard = None
-            effect.observer = MagicMock()
+            self._clear_effect(effect)
 
         self.observer.on_effect_updated(effect, update_type, index=index, origin=self)
 
-    def _connections_observer(self, update_type, connection, index):
-        self.observer.on_connection_updated(connection, update_type, pedalboard=self)
+    def _init_effect(self, effect):
+        effect.pedalboard = self
+        effect.observer = self.observer
+
+    def _clear_effect(self, effect):
+        for connection in effect.connections:
+            self.connections.remove(connection)
+
+        effect.pedalboard = None
+        effect.observer = MagicMock()
+
+    def _connections_observer(self, update_type, connection, index, **kwargs):
+        self.observer.on_connection_updated(connection, update_type, pedalboard=self, **kwargs)
 
     @property
     def json(self):
@@ -127,7 +138,7 @@ class Pedalboard(object):
 
     def append(self, effect):
         """
-        Add a :class:`Effect` in this pedalboard
+        Add a :class:`.Effect` in this pedalboard
 
         This works same as::
 
@@ -148,7 +159,7 @@ class Pedalboard(object):
 
         .. note::
 
-            Because the effects is an :class:`ObservableList`, it isn't settable.
+            Because the effects is an :class:`.ObservableList`, it isn't settable.
             For replace, del the effects unnecessary and add the necessary
             effects
         """
@@ -161,7 +172,7 @@ class Pedalboard(object):
 
         .. note::
 
-            Because the connections is an :class:`ObservableList`, it isn't settable.
+            Because the connections is an :class:`.ObservableList`, it isn't settable.
             For replace, del the connections unnecessary and add the necessary
             connections
         """

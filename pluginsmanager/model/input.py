@@ -22,7 +22,7 @@ class Input(metaclass=ABCMeta):
     Input is the medium in which the audio will go into effect to be processed.
 
     Effects usually have a one (mono) or two inputs (stereo L + stereo R). But this
-    isn't a rule: Some have only class:`Output`, like audio frequency generators,
+    isn't a rule: Some have only :class:`.Output`, like audio frequency generators,
     others have more than two.
 
     For obtains the inputs::
@@ -43,7 +43,7 @@ class Input(metaclass=ABCMeta):
         >>> my_awesome_effect.inputs[symbol] == effect_input
         True
 
-    For connections between effects, view :class:`Connections`.
+    For connections between effects, view :class:`pluginsmanager.mod_host.connection.Connection`.
 
     :param Effect effect: Effect of input
     """

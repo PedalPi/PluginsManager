@@ -17,7 +17,7 @@ from pluginsmanager.util.builder.builder import AudioPortBuilder
 
 class SystemAudioPortBuilder(AudioPortBuilder):
     """
-    Extracts the :class:`SystemInput`s and :class:`SystemOutputs`s of an :class:`SystemEffect` defined in a json.
+    Extracts the :class:`.SystemInput`s and :class:`.SystemOutputs`s of an :class:`.SystemEffect` defined in a json.
     """
 
     def __init__(self, system_effect):

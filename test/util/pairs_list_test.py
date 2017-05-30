@@ -23,7 +23,7 @@ class PairsListTest(unittest.TestCase):
         similarity_key = lambda element: element
 
         pairs_list = PairsList(similarity_key)
-        list_a = ['A', 'A', 'A', 'B', 'D', 'C']
+        list_a = ['A', 'A', 'A', 'B', 'D', 'C', 'X']
         list_b = ['B', 'B', 'D', 'C', 'A', 'A', 'E']
 
         result = pairs_list.calculate(list_a, list_b)
@@ -31,7 +31,7 @@ class PairsListTest(unittest.TestCase):
 
         self.assertEqual(expected, sorted(result.pairs))
 
-        expected_not_pairs_a = ['A']
+        expected_not_pairs_a = ['A', 'X']
         expected_not_pairs_b = ['B', 'E']
 
         self.assertEqual(expected_not_pairs_a, sorted(result.elements_not_added_a))

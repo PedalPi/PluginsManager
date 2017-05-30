@@ -19,11 +19,11 @@ class Lv2Output(Output):
     """
     Representation of a Lv2 `output audio port`_ instance.
 
-    For general input use, see :class:`Output` class documentation.
+    For general input use, see :class:`.Output` class documentation.
 
     .. _output audio port: http://lv2plug.in/ns/lv2core/#OutputPort
 
-    :param Lv2Effect effect:
+    :param Lv2Effect effect: Effect that contains the output
     :param dict effect_output: *output audio port* json representation
     """
 

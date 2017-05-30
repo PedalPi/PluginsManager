@@ -17,8 +17,8 @@ from unittest.mock import MagicMock
 
 from pluginsmanager.banks_manager import BanksManager
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.update_type import UpdateType
-from pluginsmanager.model.updates_observer import UpdatesObserver
+from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.updates_observer import UpdatesObserver
 
 
 class Observer(UpdatesObserver):

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from pluginsmanager.banks_manager import BanksManager
-from pluginsmanager.mod_host.mod_host import ModHost
+from pluginsmanager.observer.mod_host.mod_host import ModHost
 
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.pedalboard import Pedalboard
@@ -30,11 +30,9 @@ if __name__ == '__main__':
     bank = Bank('Bank 1')
     manager.append(bank)
 
-
     mod_host = ModHost('raspberrypi.local')
     mod_host.connect()
     manager.register(mod_host)
-
 
     pedalboard = Pedalboard('Rocksmith')
     bank.append(pedalboard)

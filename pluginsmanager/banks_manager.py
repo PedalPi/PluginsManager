@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
-
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
-
-from pluginsmanager.util.observable_list import ObservableList
-
 from unittest.mock import MagicMock
+
+from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.observer_manager import ObserverManager
+from pluginsmanager.observer.observable_list import ObservableList
 
 
 class BanksManager(object):
@@ -46,16 +43,38 @@ class BanksManager(object):
         for bank in banks:
             self.append(bank)
 
+    def __iter__(self):
+        """
+        Iterates banks of the banksmanager::
+
+            >>> for index, bank in enumerate(banks_manager):
+            >>>     print(index, '-', bank)
+
+        :return: Iterator for banks list
+        """
+        return self.banks.__iter__()
+
     def register(self, observer):
         """
         Register an observer for it be notified when occurs changes.
 
-        For more details, see :class:`UpdatesObserver` and :class:`ModHost`.
+        For more details, see :class:`.UpdatesObserver`
 
         :param UpdatesObserver observer: Observer that will be notified then occurs changes
         """
         self.observer_manager.append(observer)
         observer.manager = self
+
+    def unregister(self, observer):
+        """
+        Remove the observers of the observers list.
+        It will not receive any more notifications when occurs changes.
+
+        :param UpdatesObserver observer: Observer you will not receive any more notifications then
+                                         occurs changes.
+        """
+        self.observer_manager.observers.remove(observer)
+        observer.manager = None
 
     def append(self, bank):
         """
@@ -66,16 +85,29 @@ class BanksManager(object):
         """
         self.banks.append(bank)
 
-    def _banks_observer(self, update_type, bank, index):
-        if update_type == UpdateType.CREATED \
-        or update_type == UpdateType.UPDATED:
-            bank.manager = self
-            bank.observer = self.observer_manager
-        elif update_type == UpdateType.DELETED:
-            bank.manager = None
-            bank.observer_manager = MagicMock()
+    def _banks_observer(self, update_type, bank, index, **kwargs):
+        if update_type == UpdateType.CREATED:
+            self._init_bank(bank)
 
-        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self)
+        elif update_type == UpdateType.UPDATED:
+            self._init_bank(bank)
+
+            old_bank = kwargs['old']
+            if old_bank not in self:
+                self._clear_bank(old_bank)
+
+        elif update_type == UpdateType.DELETED:
+            self._clear_bank(bank)
+
+        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self, **kwargs)
+
+    def _init_bank(self, bank):
+        bank.manager = self
+        bank.observer = self.observer_manager
+
+    def _clear_bank(self, bank):
+        bank.manager = None
+        bank.observer_manager = MagicMock()
 
     def enter_scope(self, observer):
         """
@@ -92,66 +124,9 @@ class BanksManager(object):
         """
         self.observer_manager.exit_scope()
 
-
-class ObserverManager(UpdatesObserver):
-    def __init__(self):
-        super(ObserverManager, self).__init__()
-        self.observers = []
-        self._observers_scope = collections.deque()
-
-    def enter_scope(self, observer):
-        """
-        Open a observer scope.
-
-        Informs that changes occurs by the ``observer`` and isn't necessary
-        informs the changes for observer
-
-        :param UpdatesObserver observer: Observer that causes changes
-        """
-        self._observers_scope.append(observer)
-
-    def exit_scope(self):
-        """
-        Closes the last observer scope added
-        """
-        self._observers_scope.pop()
-
     @property
-    def scope(self):
-        try:
-            return self._observers_scope[-1]
-        except IndexError:
-            return None
-
-    def append(self, observer):
-        self.observers.append(observer)
-
-    def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_bank_updated(bank, update_type, index=index, origin=origin, **kwargs)
-
-    def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_pedalboard_updated(pedalboard, update_type, index=index, origin=origin, **kwargs)
-
-    def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_effect_updated(effect, update_type, index=index, origin=origin, **kwargs)
-
-    def on_effect_status_toggled(self, effect, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_effect_status_toggled(effect, **kwargs)
-
-    def on_param_value_changed(self, param, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_param_value_changed(param, **kwargs)
-
-    def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
-        for observer in self.observers:
-            if observer != self.scope:
-                observer.on_connection_updated(connection, update_type, pedalboard=pedalboard, **kwargs)
+    def observers(self):
+        """
+        :return: Observers registered in BanksManager instance
+        """
+        return self.observer_manager.observers

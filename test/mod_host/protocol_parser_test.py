@@ -14,9 +14,10 @@
 
 import unittest
 
-from pluginsmanager.mod_host.protocol_parser import ProtocolParser
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.connection import Connection
+from pluginsmanager.model.system.system_effect import SystemEffect
+from pluginsmanager.observer.mod_host.protocol_parser import ProtocolParser
 
 
 class ProtocolParserTest(unittest.TestCase):
@@ -67,6 +68,20 @@ class ProtocolParserTest(unittest.TestCase):
             reverb1.instance,
             output.symbol,
             reverb2.instance,
+            input.symbol
+        )
+
+        self.assertEqual(correct_message, ProtocolParser.connect(connection))
+
+    def test_connect_system_effect(self):
+        system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+
+        output = system_effect.outputs[1]
+        input = system_effect.inputs[0]
+        connection = Connection(output, input)
+
+        correct_message = 'connect system:{} system:{}'.format(
+            output.symbol,
             input.symbol
         )
 

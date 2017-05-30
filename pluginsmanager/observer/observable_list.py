@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..model.update_type import UpdateType
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class ObservableList(object):
@@ -27,23 +27,23 @@ class ObservableList(object):
 
     def __init__(self, lista=None):
         self._list = lista if lista is not None else []
-        self.observer = lambda *args: ...
+        self.observer = lambda *args, **kwargs: ...
 
     def __str__(self):
         """
-        See ``__repr__`` :class:`list`
+        See :meth:`list.__repr__()` method
         """
         return repr(self._list)
 
     def __repr__(self):
         """
-        See ``__repr__`` :class:`list`
+        See :meth:`list.__repr__()` method
         """
         return "ObservableList: " + repr(self._list)
 
     def append(self, item):
         """
-        See ``append`` :class:`list` method
+        See :meth:`list.append()` method
 
         Calls observer ``self.observer(UpdateType.CREATED, item, index)`` where
         **index** is *item position*
@@ -53,7 +53,7 @@ class ObservableList(object):
 
     def remove(self, item):
         """
-        See ``remove`` :class:`list` method
+        See :meth:`list.remove()` method
 
         Calls observer ``self.observer(UpdateType.DELETED, item, index)`` where
         **index** is *item position*
@@ -63,11 +63,14 @@ class ObservableList(object):
         self.observer(UpdateType.DELETED, item, index)
 
     def index(self, x):
+        """
+        See :meth:`list.index()` method
+        """
         return self._list.index(x)
 
     def insert(self, index, x):
         """
-        See ``insert`` :class:`list` method
+        See :meth:`list.insert()` method
 
         Calls observer ``self.observer(UpdateType.CREATED, item, index)``
         """
@@ -76,6 +79,8 @@ class ObservableList(object):
 
     def pop(self, index=None):
         """
+        See :meth:`list.pop()` method
+
         Remove the item at the given position in the list, and return it. If no index is specified,
         a.pop() removes and returns the last item in the list.
 
@@ -92,14 +97,20 @@ class ObservableList(object):
         return item
 
     def __len__(self):
+        """
+        See :meth:`list.__len__()` method
+        """
         return len(self._list)
 
     def __getitem__(self, index):
+        """
+        See :meth:`list.__getitem__()` method
+        """
         return self._list[index]
 
     def __setitem__(self, index, val):
         """
-        See ``__setitem__`` :class:`list` method
+        See :meth:`list.__setitem__()` method
 
         Calls observer ``self.observer(UpdateType.UPDATED, item, index)``
         if ``val != self[index]``
@@ -108,21 +119,13 @@ class ObservableList(object):
             return
 
         old = self._list[index]
+        self._list[index] = val
 
-        self._list.insert(index+1, val) # Insert and not notify
-
-        exists_other_old_bank_equals = old in self._list[:index] or old in self._list[index+1+1:]
-        # Swapped
-        if exists_other_old_bank_equals:
-            del self._list[index]
-        else:
-            del self[index] # Notify old has been removed
-
-        self.observer(UpdateType.UPDATED, val, index)
+        self.observer(UpdateType.UPDATED, val, index, old=old)
 
     def __delitem__(self, sliced):
         """
-        See ``__delitem__`` :class:`list` method
+        See :meth:`list.__delitem__()` method
 
         Calls observer ``self.observer(UpdateType.DELETED, item, index)``
         where **item** is `self[index]`
@@ -133,12 +136,29 @@ class ObservableList(object):
 
     def __contains__(self, item):
         """
-        See ``__contains__`` :class:`list`
+        See :meth:`list.__contains__()` method
         """
         return item in self._list
 
     def __iter__(self):
         """
-        See ``__iter__`` :class:`list`
+        See :meth:`list.__iter__()` method
         """
         return iter(self._list)
+
+    def move(self, item, new_position):
+        """
+        Moves a item list to new position
+
+        Calls observer ``self.observer(UpdateType.DELETED, item, index)``
+        and observer ``self.observer(UpdateType.CREATED, item, index)``
+        if ``val != self[index]``
+
+        :param item: Item that will be moved to new_position
+        :param new_position: Item's new position
+        """
+        if item == self[new_position]:
+            return
+
+        self.remove(item)
+        self.insert(new_position, item)

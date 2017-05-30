@@ -19,8 +19,8 @@ class SystemEffectBuilder(object):
     """
     Automatic system physical ports detection
 
-    :param JackClient jack_client: :class:`JackClient` instance that will get the information to
-                                   generate :class:`SystemEffect`
+    :param JackClient jack_client: :class:`.JackClient` instance that will get the information to
+                                   generate :class:`.SystemEffect`
     """
     def __init__(self, jack_client):
         self.client = jack_client

@@ -32,8 +32,8 @@ class Connection(object):
 
         .. note::
 
-            Uses :class:`ProtocolParser` for a high-level management.
-            As example, view :class:`Host`
+            Uses :class:`.ProtocolParser` for a high-level management.
+            As example, view :class:`.Host`
 
         :param string message: Message that will be sent for *mod-host*
         """
@@ -42,3 +42,9 @@ class Connection(object):
         received = self.client.recv(1024)
 
         return received
+
+    def close(self):
+        """
+        Closes socket connection
+        """
+        self.client.close()

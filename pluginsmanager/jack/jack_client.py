@@ -20,7 +20,7 @@ class JackClient(object):
     """
     Based in: http://jackclient-python.readthedocs.io/en/0.4.2/examples.html#chatty-client
 
-    Through the :class:`JackClient` it is possible to be notified when `x-run`
+    Through the :class:`jack.JackClient` it is possible to be notified when `x-run`
     occurs and when the Jack server is closed::
 
         >>> client = JackClient()

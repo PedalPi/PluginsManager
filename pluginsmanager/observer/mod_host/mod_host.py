@@ -12,11 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.model.updates_observer import UpdatesObserver
-from pluginsmanager.model.update_type import UpdateType
+import subprocess
 
-from pluginsmanager.mod_host.host import Host
+from pluginsmanager.observer.updates_observer import UpdatesObserver
+from pluginsmanager.observer.update_type import UpdateType
+
+from pluginsmanager.observer.mod_host.host import Host
 from pluginsmanager.util.pairs_list import PairsList
+
+
+class ModHostError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        super(ModHostError, self).__init__(*args, **kwargs)
 
 
 class ModHost(UpdatesObserver):
@@ -35,7 +43,8 @@ class ModHost(UpdatesObserver):
         # has added in banks_manager
         mod_host.pedalboard = my_awesome_pedalboard
 
-    The changes in current pedalboard (``mod_host.pedalboard``) will also result in mod-host::
+    The changes in current pedalboard (:attr:`~pluginsmanager.mod_host.mod_host.ModHost.pedalboard`
+    attribute of `mod_host`) will also result in mod-host::
 
         driver = my_awesome_pedalboard.effects[0]
         driver.active = False
@@ -65,6 +74,7 @@ class ModHost(UpdatesObserver):
     :param string address: Computer mod-host process address (IP). If the
      process is running on the same computer that is running the python code
      uses `localhost`.
+    :param int port: Socket port on which mod-host should be running. Default is `5555`
 
     .. _Mod-host: https://github.com/moddevices/mod-host
     .. _LV2: http://lv2plug.in
@@ -75,21 +85,54 @@ class ModHost(UpdatesObserver):
     .. _Demystifying JACK – A Beginners Guide to Getting Started with JACK: http://libremusicproduction.com/articles/demystifying-jack-%E2%80%93-beginners-guide-getting-started-jack
     """
 
-    def __init__(self, address='localhost'):
+    def __init__(self, address='localhost', port=5555):
         super(ModHost, self).__init__()
         self.address = address
+        self.port = port
+
+        self.process = 'mod-host'
 
         self.host = None
         self._pedalboard = None
 
         self.pairs_list = PairsList(lambda effect: effect.plugin['uri'])
 
+        self._started_with_this_api = False
+
+    def start(self):
+        """
+        Invokes the mod-host process.
+
+        mod-host requires JACK to be running.
+        mod-host does not startup JACK automatically, so you need to start it before running mod-host.
+
+        .. note::
+
+            This function is experimental. There is no guarantee that the process will actually be initiated.
+        """
+        if self.address != 'localhost':
+            raise ModHostError('The host configured in the constructor isn''t "localhost". '
+                               'It is not possible to start a process on another device.')
+
+        try:
+            subprocess.call([self.process, '-p', str(self.port)])
+
+        except FileNotFoundError as e:
+            exception = ModHostError(
+                'mod-host not found. Did you install it? '
+                '(https://github.com/moddevices/mod-host#building)'
+            )
+
+            raise exception from e
+
+        self._started_with_this_api = True
+
     def connect(self):
         """
         Connect the object with mod-host with the _address_ parameter informed in
-        the initialization (``__init__(address)``)
+        the constructor method (:meth:`~pluginsmanager.mod_host.mod_host.ModHost.__init__()`)
         """
-        self.host = Host(self.address)
+        self.host = Host(self.address, self.port)
 
     @property
     def pedalboard(self):
@@ -107,19 +150,44 @@ class ModHost(UpdatesObserver):
         self.on_current_pedalboard_changed(pedalboard)
 
     def __del__(self):
+        """
+        Calls :meth:`~pluginsmanager.mod_host.mod_host.ModHost.close()` method for
+        remove the audio plugins loaded and closes connection
+        with mod-host.
+
+            >>> mod_host = ModHost()
+            >>> del mod_host
+
+        .. note::
+
+            If the mod-host process has been created with :meth:`~pluginsmanager.mod_host.mod_host.ModHost.start()`
+            method, it will be finished.
+        """
         self.close()
 
     def close(self):
         """
-        Remove the audio plugins loaded
+        Remove the audio plugins loaded and closes connection with mod-host.
+
+        .. note::
+
+            If the mod-host process has been created with :meth:`~pluginsmanager.mod_host.mod_host.ModHost.start()`
+            method, it will be finished.
         """
+        if self.host is None:
+            raise ModHostError('There is no established connection with mod-host. '
+                               'Did you call the `connect()` method?')
         self.pedalboard = None
-        #self.host.quit()
+
+        if self._started_with_this_api:
+            self.host.quit()
+        else:
+            self.host.close()
 
     ####################################
     # Observer
     ####################################
-    def on_current_pedalboard_changed(self, pedalboard):
+    def on_current_pedalboard_changed(self, pedalboard, **kwargs):
         if self.pedalboard is not None and pedalboard is not None:
             self._replace_pedalboard(self.pedalboard, pedalboard)
         else:
@@ -152,7 +220,7 @@ class ModHost(UpdatesObserver):
     def _load_params_of(self, effect):
         """
         Called only when a effect has created
-        Param changes calls `self.on_param_value_changed(...)`
+        Param changes calls :meth:`~pluginsmanager.mod_host.mod_host.ModHost.on_param_value_changed()`
         """
         for param in effect.params:
             if param.value != param.default:

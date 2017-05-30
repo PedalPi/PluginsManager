@@ -15,10 +15,10 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pluginsmanager.model.pedalboard import Pedalboard
-from pluginsmanager.model.update_type import UpdateType
-
+from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.observer.update_type import UpdateType
 
 
 class PedalboardTest(unittest.TestCase):
@@ -124,7 +124,7 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.connections[0] = connection2
 
         self.assertEqual(pedalboard.connections[0], connection2)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.UPDATED, pedalboard=pedalboard)
+        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.UPDATED, pedalboard=pedalboard, old=connection1)
 
     def test_delete_connection(self):
         """ Other mode is by output.disconnect(input)"""
@@ -176,3 +176,26 @@ class PedalboardTest(unittest.TestCase):
         data = {'my-awesome-component': True}
         pedalboard.data = data
         self.assertEqual(data, pedalboard.data)
+
+    def test_index(self):
+        bank = Bank('My bank')
+
+        pedalboard1 = Pedalboard(name='My awesome pedalboard')
+        pedalboard2 = Pedalboard(name='My awesome pedalboard 2')
+        pedalboard3 = Pedalboard(name='My awesome pedalboard 3')
+
+        bank.append(pedalboard1)
+        bank.append(pedalboard2)
+        bank.append(pedalboard3)
+
+        self.assertEqual(0, pedalboard1.index)
+        self.assertEqual(1, pedalboard2.index)
+        self.assertEqual(2, pedalboard3.index)
+
+        bank.pedalboards.remove(pedalboard2)
+
+        self.assertEqual(0, pedalboard1.index)
+        self.assertEqual(1, pedalboard3.index)
+
+        with self.assertRaises(IndexError):
+            pedalboard2.index
