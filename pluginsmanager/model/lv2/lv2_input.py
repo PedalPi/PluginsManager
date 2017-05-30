@@ -19,11 +19,11 @@ class Lv2Input(Input):
     """
     Representation of a Lv2 `input audio port`_ instance.
 
-    For general input use, see :class:`Input` class documentation.
+    For general input use, see :class:`.Input` class documentation.
 
     .. _input audio port: http://lv2plug.in/ns/lv2core/#InputPort
 
-    :param Lv2Effect effect:
+    :param Lv2Effect effect: Effect that contains the input
     :param dict effect_input: *input audio port* json representation
     """
 

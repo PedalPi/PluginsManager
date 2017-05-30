@@ -50,7 +50,8 @@ class BanksManager(object):
         """
         Register an observer for it be notified when occurs changes.
 
-        For more details, see :class:`UpdatesObserver` and :class:`ModHost`.
+        For more details, see :class:`.model.updates_observer.UpdatesObserver` and
+        :class:`pluginsmanager.mod_host.mod_host.ModHost`.
 
         :param UpdatesObserver observer: Observer that will be notified then occurs changes
         """

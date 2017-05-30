@@ -12,21 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.util.builder.builder import AudioPortBuilder
+import unittest
+
+from pluginsmanager.mod_host.host import Host
 
 
-class SystemAudioPortBuilder(AudioPortBuilder):
-    """
-    Extracts the :class:`.SystemInput`s and :class:`.SystemOutputs`s of an :class:`.SystemEffect` defined in a json.
-    """
+class HostTest(unittest.TestCase):
 
-    def __init__(self, system_effect):
-        self.system_effect = system_effect
-
-    def build_input(self, json):
-        symbol = json['symbol']
-        return self.system_effect.inputs[symbol]
-
-    def build_output(self, json):
-        symbol = json['symbol']
-        return self.system_effect.outputs[symbol]
+    def test_mod_host_not_started(self):
+        with self.assertRaises(ConnectionRefusedError):
+            Host()

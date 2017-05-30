@@ -68,7 +68,7 @@ class ProtocolParser:
             connect system:capture_1 plugin_0:in
 
         :param pluginsmanager.model.connection.Connection connection: Connection with a valid
-               :class:`Output` and :class:`Input`
+               :class:`.Output` and :class:`.Input`
         """
         return ProtocolParser._connect_message(
             ProtocolParser._get_out_name_of(connection.output),
@@ -109,7 +109,7 @@ class ProtocolParser:
             disconnect system:capture_1 plugin_0:in
 
         :param pluginsmanager.model.connection.Connection connection: Connection with a valid
-               :class:`Output` and :class:`Input`
+               :class:`.Output` and :class:`.Input`
         """
         return 'disconnect {} {}'.format(
             ProtocolParser._get_out_name_of(connection.output),
@@ -131,7 +131,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def preset_save():
@@ -148,7 +148,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def preset_show():
@@ -165,7 +165,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def param_set(param):
@@ -216,7 +216,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def monitor():
@@ -236,7 +236,7 @@ class ProtocolParser:
 
             Not implemented yet
         """
-        return None
+        pass
 
     @staticmethod
     def midi_learn(self, plugin, param):

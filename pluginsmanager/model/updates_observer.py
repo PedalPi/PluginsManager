@@ -17,13 +17,13 @@ from abc import ABCMeta, abstractmethod
 
 class UpdatesObserver(metaclass=ABCMeta):
     """
-    The :class:`UpdatesObserver` is an abstract class definition for
+    The :class:`.UpdatesObserver` is an abstract class definition for
     treatment of changes in some class model. Your methods are called
     when occurs any change in Bank, Pedalboard, Effect, etc.
 
-    To do this, it is necessary that the :class:`UpdateObserver` objects
+    To do this, it is necessary that the :class:`.UpdatesObserver` objects
     be registered in some manager, so that it reports the changes. An
-    example of a manager is :class:`BanksManager`.
+    example of a manager is :class:`.BanksManager`.
     """
 
     def __init__(self):
@@ -40,7 +40,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_bank_updated(self, bank, update_type, index, origin, **kwargs):
         """
-        Called when changes occurs in any :class:`Bank`
+        Called when changes occurs in any :class:`.Bank`
 
         :param Bank bank: Bank changed.
         :param UpdateType update_type: Change type
@@ -52,7 +52,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_pedalboard_updated(self, pedalboard, update_type, index, origin, **kwargs):
         """
-        Called when changes occurs in any :class:`Pedalboard`
+        Called when changes occurs in any :class:`.Pedalboard`
 
         :param Pedalboard pedalboard: Pedalboard changed
         :param UpdateType update_type: Change type
@@ -64,7 +64,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_effect_updated(self, effect, update_type, index, origin, **kwargs):
         """
-        Called when changes occurs in any :class:`Effect`
+        Called when changes occurs in any :class:`.Effect`
 
         :param Effect effect: Effect changed
         :param UpdateType update_type: Change type
@@ -76,7 +76,7 @@ class UpdatesObserver(metaclass=ABCMeta):
     @abstractmethod
     def on_effect_status_toggled(self, effect, **kwargs):
         """
-        Called when any :class:`Effect` status is toggled
+        Called when any :class:`.Effect` status is toggled
 
         :param Effect effect: Effect when status has been toggled
         """

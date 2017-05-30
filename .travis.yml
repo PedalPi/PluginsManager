@@ -10,8 +10,9 @@ python:
 sudo: required
 
 install:
-  - sudo apt-get install portaudio19-dev python-all-dev
+  - sudo apt-get install -y portaudio19-dev python-all-dev --no-install-recommends
   - sudo apt-get install -y lilv-utils calf-plugins guitarix --no-install-recommends
+  - pip3 install sphinx
   - pip3 install coveralls
   - pip3 install cffi
   - pip3 install JACK-Client
@@ -24,6 +25,7 @@ script:
   - mkdir test
   - cd ../PluginsManager
   - coverage3 run --source=pluginsmanager setup.py test
-
+  - cd docs
+  - make html
 after_success:
   - bash <(curl -s https://codecov.io/bash)

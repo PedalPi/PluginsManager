@@ -77,7 +77,7 @@ BanksManager
 .. autoclass:: pluginsmanager.banks_manager.BanksManager
    :members:
    :special-members:
-
+   :exclude-members: __weakref__
 
 Bank
 ----
@@ -85,6 +85,7 @@ Bank
 .. autoclass:: pluginsmanager.model.bank.Bank
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 Connection
 ----------
@@ -92,7 +93,7 @@ Connection
 .. autoclass:: pluginsmanager.model.connection.Connection
    :members:
    :special-members:
-
+   :exclude-members: __weakref__
 
 Effect
 ------
@@ -100,6 +101,7 @@ Effect
 .. autoclass:: pluginsmanager.model.effect.Effect
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 Input
 -----
@@ -107,6 +109,7 @@ Input
 .. autoclass:: pluginsmanager.model.input.Input
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 Output
 ------
@@ -114,6 +117,7 @@ Output
 .. autoclass:: pluginsmanager.model.output.Output
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 Param
 -----
@@ -121,6 +125,7 @@ Param
 .. autoclass:: pluginsmanager.model.param.Param
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 Pedalboard
 ----------
@@ -128,6 +133,7 @@ Pedalboard
 .. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
    :members:
    :special-members:
+   :exclude-members: __weakref__
 
 UpdateType
 ----------
@@ -135,7 +141,7 @@ UpdateType
 .. autoclass:: pluginsmanager.model.update_type.UpdateType
    :members:
    :special-members:
-
+   :exclude-members: __weakref__
 
 UpdatesObserver
 ---------------
@@ -143,3 +149,4 @@ UpdatesObserver
 .. autoclass:: pluginsmanager.model.updates_observer.UpdatesObserver
    :members:
    :special-members:
+   :exclude-members: __weakref__Z

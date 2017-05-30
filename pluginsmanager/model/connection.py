@@ -21,8 +21,8 @@ class ConnectionError(Exception):
 
 class Connection(object):
     """
-    :class:`Connection` represents a connection between two
-    distinct effects by your ports (effect :class:`Output` with effect :class:`Input`)::
+    :class:`pluginsmanager.model.connection.Connection` represents a connection between two
+    distinct effects by your ports (effect :class:`.Output` with effect :class:`.Input`)::
 
     >>> californication = Pedalboard('Californication')
     >>> californication.append(driver)

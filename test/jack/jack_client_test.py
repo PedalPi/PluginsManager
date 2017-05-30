@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.util.builder.builder import AudioPortBuilder
+import os
+import unittest
+
+from pluginsmanager.jack.jack_client import JackClient
 
 
-class SystemAudioPortBuilder(AudioPortBuilder):
-    """
-    Extracts the :class:`.SystemInput`s and :class:`.SystemOutputs`s of an :class:`.SystemEffect` defined in a json.
-    """
+class JackClientTest(unittest.TestCase):
 
-    def __init__(self, system_effect):
-        self.system_effect = system_effect
+    @unittest.skipIf('TRAVIS' in os.environ, 'Travis not contains audio interface')
+    def test_assert_not_raises_error(self):
+        """Assert not raises error"""
+        client1 = JackClient(no_start_server=False, name="Client")
+        client2 = JackClient(name="Client")
 
-    def build_input(self, json):
-        symbol = json['symbol']
-        return self.system_effect.inputs[symbol]
-
-    def build_output(self, json):
-        symbol = json['symbol']
-        return self.system_effect.outputs[symbol]
+        client2.close()
+        client1.close()

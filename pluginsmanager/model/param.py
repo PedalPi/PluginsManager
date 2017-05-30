@@ -26,7 +26,7 @@ class ParamError(Exception):
 
 class Param(metaclass=ABCMeta):
     """
-    :class:`Param` represents an Audio Plugin Parameter::
+    :class:`.Param` represents an Audio Plugin Parameter::
 
         >>> my_awesome_effect
         <Lv2Effect object as 'Calf Reverb' active at 0x7fd58d874ba8>

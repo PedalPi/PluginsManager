@@ -43,9 +43,9 @@ class Output(metaclass=ABCMeta):
         >>> my_awesome_effect.outputs[symbol] == output
         True
 
-    For connections between effects, view :class:`Connections`.
+    For connections between effects, view :class:`.pluginsmanager.mod_host.connection.Connection`.
 
-    :param Effect effect: Effect of output
+    :param Effect effect: Effect that contains the output
     """
 
     def __init__(self, effect):
@@ -88,7 +88,8 @@ class Output(metaclass=ABCMeta):
             error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
             raise ConnectionError(error)
 
-        effect_input.effect.pedalboard.connections.append(Connection(self, effect_input))
+        pedalboard = self.effect.pedalboard if not self._unique_for_all_pedalboards else effect_input.effect.pedalboard
+        pedalboard.connections.append(Connection(self, effect_input))
 
     def disconnect(self, effect_input):
         """

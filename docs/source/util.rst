@@ -33,8 +33,6 @@ pluginsmanager.util.pairs_list.PairsListResult
 pluginsmanager.util.persistence_decoder
 ---------------------------------------
 
-^^^^^^^^^^^^^^^^^^
-
 .. autoclass:: pluginsmanager.util.persistence_decoder.PersistenceDecoderError
    :members:
    :special-members:

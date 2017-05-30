@@ -21,7 +21,7 @@ import uuid
 
 class Bank(object):
     """
-    Bank is a data structure that contains :class:`Pedalboard`. It's useful
+    Bank is a data structure that contains :class:`.Pedalboard`. It's useful
     for group common pedalboards, like "Pedalboards will be used in
     the Sunday show"
 
@@ -120,7 +120,7 @@ class Bank(object):
 
     def append(self, pedalboard):
         """
-        Add a :class:`Pedalboard` in this bank
+        Add a :class:`.Pedalboard` in this bank
 
         This works same as::
 

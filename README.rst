@@ -36,10 +36,38 @@ Pythonic management of LV2 audio plugins with `mod-host`_.
 
 .. _Apache License 2.0: https://github.com/PedalPi/PluginsManager/blob/master/LICENSE
 
+
+Install
+-------
+
+Plugin Manager has dependencies that must be installed before installing the library.
+Among the dependencies are `lv2ls`_ to check the installed audio plugins
+and `PortAudio`_ for information on the audio interfaces through `PyAudio`_.
+
+On Debian-based systems, run:
+
+
+.. code-block:: bash
+
+    sudo apt-get install -y portaudio19-dev python-all-dev lilv-utils --no-install-recommends
+
+Of course, for PluginsManager to manage Lv2 audio plugins, it is necessary that they have installed
+audio plugins to be managed. The `Guitarix`_ and `Calf Studio`_ projects provide some audio plugins.
+To install them::
+
+.. code-block:: bash
+
+    pip install PedalPi-PluginsManager
+
+.. _lv2ls: http://drobilla.net/man/lv2ls.1.html
+.. _PortAudio: http://www.portaudio.com/
+.. _PyAudio: https://people.csail.mit.edu/hubert/pyaudio/
+.. _Calf Studio: http://calf-studio-gear.org/
+
 Example
 -------
 
-This examples uses `Calf`_ and `Guitarix`_ audio plugins
+This examples uses `Calf`_ and `Guitarix`_ audio plugins.
 
 Download and install `mod-host`_. For more information, check the `ModHost section <mod_host.html>`__.
 
