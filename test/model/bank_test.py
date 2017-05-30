@@ -76,7 +76,7 @@ class BankTest(unittest.TestCase):
 
         self.assertEqual(pedalboard2.bank, bank)
         self.assertEqual(bank.pedalboards[0], pedalboard2)
-        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.UPDATED, index=0, origin=bank)
+        bank.observer.on_pedalboard_updated.assert_called_with(pedalboard2, UpdateType.UPDATED, index=0, origin=bank, old=pedalboard1)
 
     def test_delete_pedalboard(self):
         bank = Bank('Bank 1')

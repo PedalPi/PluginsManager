@@ -13,4 +13,5 @@ Contents:
    model
    model_lv2
    model_system
+   observer
    util

@@ -22,27 +22,34 @@ from pluginsmanager.model.pedalboard import Pedalboard
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 
-from pluginsmanager.observer.autosaver import Autosaver
+from pluginsmanager.observer.autosaver.autosaver import Autosaver
 
 
 class AutoSaverTest(unittest.TestCase):
 
+    def autosaver(self, auto_save=True):
+        return Autosaver('../data/autosaver_data/', auto_save=auto_save)
+
     def test_observers(self):
-        mock = MagicMock()
-        observer = Autosaver('data/test/')
-        observer.save = mock
-        observer.delete = mock
+        save_mock = MagicMock()
+        delete_mock = MagicMock()
+
+        observer = self.autosaver()
+        observer.banks_files.save_bank = save_mock
+        observer.banks_files.delete_bank = delete_mock
 
         manager = BanksManager()
         manager.register(observer)
 
         bank = Bank('Bank 1')
         manager.append(bank)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         pedalboard = Pedalboard('Rocksmith')
         bank.append(pedalboard)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         builder = Lv2EffectBuilder()
         reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
@@ -50,40 +57,54 @@ class AutoSaverTest(unittest.TestCase):
         reverb2 = builder.build('http://calf.sourceforge.net/plugins/Reverb')
 
         pedalboard.append(reverb)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         pedalboard.append(filter)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         pedalboard.append(reverb2)
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         reverb.outputs[0].connect(filter.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         reverb.outputs[1].connect(filter.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         filter.outputs[0].connect(reverb2.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
         reverb.outputs[0].connect(reverb2.inputs[0])
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         filter.toggle()
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 2
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         del bank.pedalboards[0]
-        observer.save.assert_called_with(bank)
+        save_mock.assert_called_with(bank)
+        save_mock.reset_mock()
 
         bank2 = Bank('Bank 2')
         manager.banks[0] = bank2
-        observer.delete.assert_called_with(bank2)
-        observer.save.assert_called_with(bank2)
+        delete_mock.assert_called_with(bank)
+        save_mock.assert_called_with(bank2)
+
+        delete_mock.reset_mock()
+        save_mock.reset_mock()
 
         manager.banks.remove(bank2)
-        observer.delete.assert_called_with(bank2)
+        delete_mock.assert_called_with(bank2)
+        delete_mock.reset_mock()
 
     def test_replace_bank(self):
-        observer = Autosaver('../data/test/')
+        observer = self.autosaver()
 
         manager = BanksManager()
         manager.register(observer)
@@ -102,7 +123,7 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def test_swap_bank(self):
-        observer = Autosaver('../data/test/')
+        observer = self.autosaver()
 
         manager = BanksManager()
         manager.register(observer)
@@ -110,8 +131,8 @@ class AutoSaverTest(unittest.TestCase):
         bank1 = Bank('Bank 1')
         bank2 = Bank('Bank 2')
 
-        manager.banks.append(bank1)
-        manager.banks.append(bank2)
+        manager.append(bank1)
+        manager.append(bank2)
 
         manager.banks[0], manager.banks[1] = manager.banks[1], manager.banks[0]
 
@@ -121,11 +142,39 @@ class AutoSaverTest(unittest.TestCase):
             del manager.banks[0]
 
     def validate_persisted(self, manager):
-        autosaver_validation = Autosaver('../data/test/')
-        banks = autosaver_validation.load(None)
+        autosaver_validation = self.autosaver()
+        banks_manager = autosaver_validation.load(None)
 
-        self.assertEqual(len(manager.banks), len(banks))
+        self.assertEqual(len(manager.banks), len(banks_manager.banks))
 
-        for bank_manager, bank_persisted in zip(manager.banks, banks):
+        for bank_manager, bank_persisted in zip(manager.banks, banks_manager.banks):
             self.assertEqual(bank_manager.json, bank_persisted.json)
 
+    def test_manual_save(self):
+        observer = self.autosaver(auto_save=False)
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        bank1 = Bank('Bank 1')
+        bank2 = Bank('Bank 2')
+
+        manager.append(bank1)
+        manager.append(bank2)
+
+        # Not saved
+        self.assertEqual(0, len(self.autosaver().load(None).banks))
+
+        # Now has saved
+        observer.save(manager)
+        self.validate_persisted(manager)
+
+        while manager.banks:
+            manager.banks.pop()
+
+        # Not saved
+        self.assertEqual(2, len(self.autosaver().load(None).banks))
+
+        # Now has saved
+        observer.save(manager)
+        self.validate_persisted(manager)

@@ -62,4 +62,3 @@ class ConnectionTest(unittest.TestCase):
 
         self.assertEqual(connection.input, system_effect.inputs[0])
         self.assertEqual(connection.output, system_effect.outputs[0])
-

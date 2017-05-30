@@ -46,6 +46,17 @@ class BanksManager(object):
         for bank in banks:
             self.append(bank)
 
+    def __iter__(self):
+        """
+        Iterates banks of the banksmanager::
+
+            >>> for index, bank in enumerate(banks_manager):
+            >>>     print(index, '-', bank)
+
+        :return: Iterator for banks list
+        """
+        return self.banks.__iter__()
+
     def register(self, observer):
         """
         Register an observer for it be notified when occurs changes.
@@ -67,16 +78,29 @@ class BanksManager(object):
         """
         self.banks.append(bank)
 
-    def _banks_observer(self, update_type, bank, index):
-        if update_type == UpdateType.CREATED \
-        or update_type == UpdateType.UPDATED:
-            bank.manager = self
-            bank.observer = self.observer_manager
-        elif update_type == UpdateType.DELETED:
-            bank.manager = None
-            bank.observer_manager = MagicMock()
+    def _banks_observer(self, update_type, bank, index, **kwargs):
+        if update_type == UpdateType.CREATED:
+            self._init_bank(bank)
 
-        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self)
+        elif update_type == UpdateType.UPDATED:
+            self._init_bank(bank)
+
+            old_bank = kwargs['old']
+            if old_bank not in self:
+                self._clear_bank(old_bank)
+
+        elif update_type == UpdateType.DELETED:
+            self._clear_bank(bank)
+
+        self.observer_manager.on_bank_updated(bank, update_type, index=index, origin=self, **kwargs)
+
+    def _init_bank(self, bank):
+        bank.manager = self
+        bank.observer = self.observer_manager
+
+    def _clear_bank(self, bank):
+        bank.manager = None
+        bank.observer_manager = MagicMock()
 
     def enter_scope(self, observer):
         """
@@ -92,6 +116,13 @@ class BanksManager(object):
         Closes the last observer scope added
         """
         self.observer_manager.exit_scope()
+
+    @property
+    def observers(self):
+        """
+        :return: Observers registered in BanksManager instance
+        """
+        return self.observer_manager.observers
 
 
 class ObserverManager(UpdatesObserver):

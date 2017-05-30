@@ -125,7 +125,7 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.connections[0] = connection2
 
         self.assertEqual(pedalboard.connections[0], connection2)
-        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.UPDATED, pedalboard=pedalboard)
+        pedalboard.observer.on_connection_updated.assert_called_with(connection2, UpdateType.UPDATED, pedalboard=pedalboard, old=connection1)
 
     def test_delete_connection(self):
         """ Other mode is by output.disconnect(input)"""

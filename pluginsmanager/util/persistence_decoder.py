@@ -48,7 +48,6 @@ class BankReader(Reader):
 
     def read(self, json):
         bank = Bank(json['name'])
-        bank.index = json['index']
 
         pedalboard_reader = PedalboardReader(self.system_effect)
         for pedalboard_json in json['pedalboards']:
