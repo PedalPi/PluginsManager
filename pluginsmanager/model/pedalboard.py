@@ -110,7 +110,7 @@ class Pedalboard(object):
 
     def _clear_effect(self, effect):
         for connection in effect.connections:
-            self.connections.remove(connection)
+            self.connections.real_list.remove(connection)
 
         effect.pedalboard = None
         effect.observer = MagicMock()
