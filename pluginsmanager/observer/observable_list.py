@@ -26,20 +26,20 @@ class ObservableList(object):
     """
 
     def __init__(self, lista=None):
-        self._list = lista if lista is not None else []
+        self.real_list = lista if lista is not None else []
         self.observer = lambda *args, **kwargs: ...
 
     def __str__(self):
         """
         See :meth:`list.__repr__()` method
         """
-        return repr(self._list)
+        return repr(self.real_list)
 
     def __repr__(self):
         """
         See :meth:`list.__repr__()` method
         """
-        return "ObservableList: " + repr(self._list)
+        return "ObservableList: " + repr(self.real_list)
 
     def append(self, item):
         """
@@ -48,8 +48,8 @@ class ObservableList(object):
         Calls observer ``self.observer(UpdateType.CREATED, item, index)`` where
         **index** is *item position*
         """
-        self._list.append(item)
-        self.observer(UpdateType.CREATED, item, len(self._list)-1)
+        self.real_list.append(item)
+        self.observer(UpdateType.CREATED, item, len(self.real_list) - 1)
 
     def remove(self, item):
         """
@@ -59,14 +59,14 @@ class ObservableList(object):
         **index** is *item position*
         """
         index = self.index(item)
-        self._list.remove(item)
+        self.real_list.remove(item)
         self.observer(UpdateType.DELETED, item, index)
 
     def index(self, x):
         """
         See :meth:`list.index()` method
         """
-        return self._list.index(x)
+        return self.real_list.index(x)
 
     def insert(self, index, x):
         """
@@ -74,7 +74,7 @@ class ObservableList(object):
 
         Calls observer ``self.observer(UpdateType.CREATED, item, index)``
         """
-        self._list.insert(index, x)
+        self.real_list.insert(index, x)
         self.observer(UpdateType.CREATED, x, index)
 
     def pop(self, index=None):
@@ -89,7 +89,7 @@ class ObservableList(object):
         :return: item removed
         """
         if index is None:
-            index = len(self._list) - 1
+            index = len(self.real_list) - 1
 
         item = self[index]
         del self[index]
@@ -100,13 +100,13 @@ class ObservableList(object):
         """
         See :meth:`list.__len__()` method
         """
-        return len(self._list)
+        return len(self.real_list)
 
     def __getitem__(self, index):
         """
         See :meth:`list.__getitem__()` method
         """
-        return self._list[index]
+        return self.real_list[index]
 
     def __setitem__(self, index, val):
         """
@@ -118,8 +118,8 @@ class ObservableList(object):
         if val == self[index]:
             return
 
-        old = self._list[index]
-        self._list[index] = val
+        old = self.real_list[index]
+        self.real_list[index] = val
 
         self.observer(UpdateType.UPDATED, val, index, old=old)
 
@@ -130,21 +130,21 @@ class ObservableList(object):
         Calls observer ``self.observer(UpdateType.DELETED, item, index)``
         where **item** is `self[index]`
         """
-        item = self._list[sliced]
-        del self._list[sliced]
+        item = self.real_list[sliced]
+        del self.real_list[sliced]
         self.observer(UpdateType.DELETED, item, sliced)
 
     def __contains__(self, item):
         """
         See :meth:`list.__contains__()` method
         """
-        return item in self._list
+        return item in self.real_list
 
     def __iter__(self):
         """
         See :meth:`list.__iter__()` method
         """
-        return iter(self._list)
+        return iter(self.real_list)
 
     def move(self, item, new_position):
         """

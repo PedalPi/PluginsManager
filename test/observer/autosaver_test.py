@@ -16,12 +16,10 @@ import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.banks_manager import BanksManager
-
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.pedalboard import Pedalboard
-
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
-
+from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.model.system.system_effect import SystemEffect
 from pluginsmanager.observer.autosaver.autosaver import Autosaver
 
 
@@ -178,3 +176,32 @@ class AutoSaverTest(unittest.TestCase):
         # Now has saved
         observer.save(manager)
         self.validate_persisted(manager)
+
+    def test_connections_effect_removed(self):
+        """
+        Issue #53 - https://github.com/PedalPi/PluginsManager/issues/53
+        """
+        builder = Lv2EffectBuilder()
+        system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+
+        observer = self.autosaver()
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        bank = Bank('Bank 1')
+        pedalboard = Pedalboard('Pedalboard 1')
+
+        reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
+
+        manager.append(bank)
+        bank.append(pedalboard)
+        pedalboard.append(reverb)
+
+        reverb.outputs[0].connect(system_effect.inputs[0])
+        reverb.outputs[0].connect(system_effect.inputs[1])
+
+        pedalboard.effects.remove(reverb)
+
+        while manager.banks:
+            manager.banks.pop()
