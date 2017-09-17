@@ -162,4 +162,4 @@ class Autosaver(UpdatesObserver):
         if not self.auto_save:
             return
 
-        self.banks_files.save_bank(connection.output.effect.pedalboard.bank)
+        self.banks_files.save_bank(pedalboard.bank)

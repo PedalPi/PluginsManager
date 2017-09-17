@@ -1,3 +1,9 @@
+Version 0.5.1 -- released 06//17
+**********************************
+ - `Issue #52`_ - :class:`Autosaver` - Change connection with :class:`SystemInput` and :class:`SystemOutput` causes error
+
+.. _Issue #52: https://github.com/PedalPi/PluginsManager/issues/52
+
 Version 0.5.0 -- released 05/29/17
 **********************************
  - `Issue #29`_ - List audio interfaces
