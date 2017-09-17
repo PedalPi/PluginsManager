@@ -4,9 +4,12 @@ Version 0.5.1 -- released 06//17
  - `Issue #53`_ - :class:`Autosaver` - Remove effect with connections breaks.
     Disable connections removed notification when a effect with connections has removed;
  - :class:`Autosaver` - Add :attr:`.Observable.real_list` attribute for access the list of :class:`ObservableList`.
+ - `Issue #54`_ - :class:`Mod-host` - Fix `feedback_socket optional`_ problem
 
 .. _Issue #52: https://github.com/PedalPi/PluginsManager/issues/52
 .. _Issue #53: https://github.com/PedalPi/PluginsManager/issues/53
+.. _Issue #54: https://github.com/PedalPi/PluginsManager/issues/54
+.. _default feedback_socket disabled: https://github.com/moddevices/mod-host/commit/31b1d04deb91c88420e1e0dd0cc4fad523f55712
 
 Version 0.5.0 -- released 05/29/17
 **********************************
