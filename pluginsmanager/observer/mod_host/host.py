@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+
 from pluginsmanager.observer.mod_host.connection import Connection
 from pluginsmanager.observer.mod_host.protocol_parser import ProtocolParser
 
@@ -22,6 +24,9 @@ class Host:
     """
 
     def __init__(self, address='localhost', port=5555):
+        self.connection = None
+        self.connection_fd = None
+
         # mod-host works if only exists two connections:
         #  - For communication
         try:
@@ -30,7 +35,11 @@ class Host:
             raise ConnectionRefusedError(str(e) + '. Do you starts mod-host?') from e
 
         #  - For callback?
-        self.connection_fd = Connection(port+1, address)
+        try:
+            self.connection_fd = Connection(port+1, address)
+        except ConnectionRefusedError as e:
+            logging.info('Mod-host - Feedback socket is not enabled')
+            logging.info('           Try start Mod-host using: mod-host -f {}'.format(port+1))
 
         self.instance_index = 0
 
@@ -97,5 +106,7 @@ class Host:
         """
         Quit the connection with mod-host
         """
-        self.connection.close()
-        self.connection_fd.close()
+        if self.connection is not None:
+            self.connection.close()
+        if self.connection_fd is not None:
+            self.connection_fd.close()
