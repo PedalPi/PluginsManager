@@ -165,8 +165,7 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.effects.remove(filter)
 
         self.assertEqual(1, len(pedalboard.connections))
-        for connection in fuzz_connections:
-            pedalboard.observer.on_connection_updated.assert_any_call(connection, UpdateType.DELETED, pedalboard=pedalboard)
+        pedalboard.observer.on_connection_updated.assert_not_called()
 
     def test_data(self):
         pedalboard = Pedalboard('Bank 1')
