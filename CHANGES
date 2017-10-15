@@ -11,7 +11,8 @@ Version 0.6.0 -- released ?
    - Created :class:`Lv2MidiInput`, :class:`Lv2MidiOutput`;
  - Fix autosaver_test creation folder. Now is more easily configure test workspace;
  - Refactored :class:`Input`, :class:`Output`: Created :class:`Port` for remove duplicated code;
- - Refactored :class:`SystemInput`, :class:`SystemInput`: Created :class:`SystemPortMixing` for remove duplicated code.
+ - Refactored :class:`SystemInput`, :class:`SystemOutput`: Created :class:`SystemPortMixing` for remove duplicated code;
+ - Refactored :class:`Lv2Input`, :class:`Lv2Output`: Created :class:`Lv2PortMixing` for remove duplicated code.
 
 Version 0.5.1 -- released 08/16/17
 **********************************

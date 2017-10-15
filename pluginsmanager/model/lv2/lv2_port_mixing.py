@@ -12,25 +12,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
-class SystemPortMixing(object, metaclass=ABCMeta):
+class Lv2PortMixing(object, metaclass=ABCMeta):
     """
     Contains the default implementation of System ports:
-    :class:`.SystemInput`, :class:`.SystemOutput`,
-    :class:`.SystemMidiInput` and :class:`.SystemMidiInput`
+    :class:`.Lv2Input`, :class:`.Lv2Output`,
+    :class:`.Lv2MidiInput` and :class:`.Lv2MidiInput`
     """
 
     def __init__(self, *args, **kwargs):
-        super(SystemPortMixing, self).__init__(*args, **kwargs)
+        super(Lv2PortMixing, self).__init__(*args, **kwargs)
+        self._data = None
+
+    @property
+    @abstractmethod
+    def data(self):
+        """
+        :return dict: Metadata used for provide the required information
+                      in this object
+        """
+        pass
 
     def __str__(self):
-        return self.symbol
+        return self.data['name']
+
+    @property
+    def symbol(self):
+        return self.data['symbol']
 
     @property
     def __dict__(self):
-        return {
-            'symbol': self.symbol,
-            'index': self.index,
-        }
+        dictionary = super(Lv2PortMixing, self).__dict__
+        dictionary['index'] = self.data['index']
+
+        return dictionary

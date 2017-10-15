@@ -119,3 +119,23 @@ class MidiOutputTest(unittest.TestCase):
 
         with self.assertRaises(ConnectionError):
             effect_output.disconnect(effect_input)
+
+    def test_port_symbol(self):
+        builder = MidiOutputTest.builder
+        cctonode = builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
+        sys_effect = SystemEffect(
+            'system',
+            ['capture_1'],
+            ['playback_1', 'playback_2'],
+            ['midi_capture_1'],
+            ['midi_playback_1']
+        )
+
+        self.port_symbol_test(cctonode)
+        self.port_symbol_test(sys_effect)
+
+    def port_symbol_test(self, effect):
+        port = effect.midi_outputs[0]
+        self.assertEqual(effect.midi_outputs[port.index], effect.midi_outputs[port.symbol])
+        port = effect.midi_inputs[0]
+        self.assertEqual(effect.midi_inputs[port.index], effect.midi_inputs[port.symbol])

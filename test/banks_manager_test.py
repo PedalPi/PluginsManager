@@ -139,3 +139,13 @@ class BanksManagerTest(unittest.TestCase):
         manager.register(observer2)
 
         self.assertListEqual([observer1, observer2], manager.observers)
+
+    def test_unregister(self):
+        observer = MagicMock()
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        self.assertIn(observer, manager.observers)
+        manager.unregister(observer)
+        self.assertNotIn(observer, manager.observers)

@@ -37,9 +37,9 @@ test: clean-test
     mkdir test/autosaver_data
     coverage3 run --source=pluginsmanager setup.py test
     coverage3 report
-    coverage3 html
 
 test-details: test
+    coverage3 html
     $(BROWSER) htmlcov/index.html
 
 help:

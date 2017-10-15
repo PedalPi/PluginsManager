@@ -99,8 +99,9 @@ class Output(Port, metaclass=ABCMeta):
 
         :param Input effect_input: Input that will be disconnected with it
         """
-        if self._unique_for_all_pedalboards and effect_input._unique_for_all_pedalboards:
-            error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
+        if self.effect.is_unique_for_all_pedalboards and effect_input.effect.is_unique_for_all_pedalboards:
+            error = "Isn't possible disconnect ports that both are from effects uniques for all pedalboards. "
+            error += "Please use `del pedalboard.connections[connection.index]`"
             raise ConnectionError(error)
 
         self.effect.pedalboard.connections.remove(Connection(self, effect_input))

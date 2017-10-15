@@ -13,32 +13,24 @@
 # limitations under the License.
 
 from pluginsmanager.model.midi_input import MidiInput
+from pluginsmanager.model.lv2.lv2_port_mixing import Lv2PortMixing
 
 
-class Lv2MidiInput(MidiInput):
+class Lv2MidiInput(Lv2PortMixing, MidiInput):
     """
     Representation of a Lv2 midi input port instance.
 
-    For general input use, see :class:`.MidiInput` and :class:`.Input` classes documentation.
+    For general input use, see :class:`.MidiInput` and
+    :class:`.Input` classes documentation.
 
     :param Lv2Effect effect: Effect that contains the midi input
-    :param dict effect_midi_input: *midi input port* json representation
+    :param dict data: *midi input port* json representation
     """
 
-    def __init__(self, effect, effect_midi_input):
+    def __init__(self, effect, data):
         super(Lv2MidiInput, self).__init__(effect)
-        self._input = effect_midi_input
-
-    def __str__(self):
-        return self._input['name']
+        self._data = data
 
     @property
-    def symbol(self):
-        return self._input['symbol']
-
-    @property
-    def __dict__(self):
-        dictionary = super(Lv2MidiInput, self).__dict__
-        dictionary['index'] = self._input['index']
-
-        return dictionary
+    def data(self):
+        return self._data

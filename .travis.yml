@@ -19,13 +19,7 @@ install:
 
 script:
   - lv2ls
-  - cd ..
-  - mkdir data
-  - cd data
-  - mkdir autosaver_data
-  - cd ../PluginsManager
-  - coverage3 run --source=pluginsmanager setup.py test
-  - cd docs
-  - make html
+  - make test
+  - make docs
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -13,35 +13,24 @@
 # limitations under the License.
 
 from pluginsmanager.model.midi_output import MidiOutput
+from pluginsmanager.model.lv2.lv2_port_mixing import Lv2PortMixing
 
 
-class Lv2MidiOutput(MidiOutput):
+class Lv2MidiOutput(Lv2PortMixing, MidiOutput):
     """
     Representation of a Lv2 midi output port instance.
 
     For general input use, see :class:`.MidiOutput` and
     :class:`.Output` classes documentation.
 
-    .. _output audio port: http://lv2plug.in/ns/lv2core/#OutputPort
-
     :param Lv2Effect effect: Effect that contains the midi output
-    :param dict output: *midi output port* json representation
+    :param dict data: *midi output port* json representation
     """
 
-    def __init__(self, effect, output):
+    def __init__(self, effect, data):
         super(Lv2MidiOutput, self).__init__(effect)
-        self._output = output
-
-    def __str__(self):
-        return self._output['name']
+        self._data = data
 
     @property
-    def symbol(self):
-        return self._output['symbol']
-
-    @property
-    def __dict__(self):
-        dictionary = super(Lv2MidiOutput, self).__dict__
-        dictionary['index'] = self._output['index']
-
-        return dictionary
+    def data(self):
+        return self._data
