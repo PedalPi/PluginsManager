@@ -14,10 +14,10 @@
 
 from abc import ABCMeta
 
-from pluginsmanager.model.port import Port
+from pluginsmanager.model.audio_port import AudioPort
 
 
-class Input(Port, metaclass=ABCMeta):
+class Input(AudioPort, metaclass=ABCMeta):
     """
     Input is the medium in which the audio will go into effect to be processed.
 
@@ -43,7 +43,8 @@ class Input(Port, metaclass=ABCMeta):
         >>> my_awesome_effect.inputs[symbol] == effect_input
         True
 
-    For connections between effects, view :class:`pluginsmanager.model.connection.Connection`.
+    For connections between effects, see :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`
+    and :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` class methods.
 
     :param Effect effect: Effect of input
     """

@@ -261,10 +261,6 @@ library can be accessed in the `Observer section <observer.html>`__.
 
 .. _Carla: https://github.com/falkTX/Carla
 
-Changelog
----------
-
-..include:: ../../CHANGES
 
 Maintenance
 -----------

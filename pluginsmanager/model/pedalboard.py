@@ -21,7 +21,7 @@ from unittest.mock import MagicMock
 class Pedalboard(object):
     """
     Pedalboard is a patch representation: your structure contains
-    :class:`.Effect` and :class:`pluginsmanager.mod_host.connection.Connection`::
+    :class:`.Effect` and :class:`~pluginsmanager.model.connection.Connection`::
 
         >>> pedalboard = Pedalboard('Rocksmith')
         >>> bank.append(pedalboard)
@@ -42,7 +42,8 @@ class Pedalboard(object):
         >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], fuzz.inputs[0])) # View SystemEffect for more details
         >>> pedalboard.connections.append(Connection(fuzz.outputs[0], reverb.inputs[0]))
         >>> # It works too
-        >>> reverb.outputs[1].connect(sys_effect.inputs[0])
+        >>> pedalboard.connect(reverb.outputs[1], sys_effect.inputs[0])
+        >>> pedalboard.connections
         ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
 
         >>> pedalboard.data
@@ -187,3 +188,20 @@ class Pedalboard(object):
             raise IndexError('Pedalboard not contains a bank')
 
         return self.bank.pedalboards.index(self)
+
+    def connect(self, output_port, input_port):
+
+        """
+        :param output_port:
+        :param input_port:
+        :return:
+        """
+        pass
+
+    def disconnect(self, output_port, input_port):
+        """
+        :param output_port:
+        :param input_port:
+        :return:
+        """
+        pass

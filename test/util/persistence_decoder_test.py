@@ -33,7 +33,7 @@ class PersistenceTest(unittest.TestCase):
 
     @property
     def bank(self):
-        sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+        sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'), ('midi_out',), ('midi_in',))
 
         bank = Bank('Bank 1')
         pedalboard = Pedalboard('Pedalboard 1')
@@ -44,15 +44,19 @@ class PersistenceTest(unittest.TestCase):
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
         filter = self.builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
+        cctonode = self.builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
 
         pedalboard.append(reverb)
         pedalboard.append(filter)
         pedalboard.append(reverb2)
+        pedalboard.append(cctonode)
 
         reverb.outputs[0].connect(filter.inputs[0])
         reverb.outputs[1].connect(filter.inputs[0])
         filter.outputs[0].connect(reverb2.inputs[0])
         reverb.outputs[0].connect(reverb2.inputs[0])
+
+        cctonode.midi_outputs[0].connect(sys_effect.midi_inputs[0])
 
         pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
         pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
@@ -68,6 +72,8 @@ class PersistenceTest(unittest.TestCase):
         util = PersistenceDecoder(system_effect)
 
         bank = self.bank
+        import pprint
+        pprint.pprint(bank.json)
         bank_readed = util.read(bank.json)
 
         self.maxDiff = None

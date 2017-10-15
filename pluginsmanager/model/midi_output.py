@@ -41,69 +41,11 @@ class MidiOutput(Port, metaclass=ABCMeta):
         >>> cctonode.midi_outputs[symbol] == midi_output
         True
 
-    For connections between effects, view :class:`.pluginsmanager.model.connection.Connection`.
+    For connections between effects, see :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`
+    and :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` class methods.
 
     :param Effect effect: Effect that contains the output
     """
-
-    def connect(self, effect_input):
-        """
-        Connect it with effect_input::
-
-            >>> driver_output = driver.outputs[0]
-            >>> reverb_input = reverb.inputs[0]
-            >>> Connection(driver_output, reverb_input) in driver.effect.connections
-            False
-            >>> driver_output.connect(reverb_input)
-            >>> Connection(driver_output, reverb_input) in driver.effect.connections
-            True
-
-        .. note::
-
-            This method does not work for all cases.
-            class:`SystemOutput` can not be connected with class:`SystemInput` this way.
-            For this case, use ::
-
-                >>> pedalboard.connections.append(Connection(system_output, system_input))
-
-        :param Input effect_input: Input that will be connected with it
-        """
-        if self.effect.is_unique_for_all_pedalboards and effect_input.effect.is_unique_for_all_pedalboards:
-            error = "Isn't possible connect ports that both are from effects uniques for all pedalboards. "
-            error += "Please use pedalboard.connect(Connection(output, input))"
-            raise ConnectionError(error)
-
-        pedalboard = self.effect.pedalboard if not self.effect.is_unique_for_all_pedalboards else effect_input.effect.pedalboard
-        pedalboard.connections.append(Connection(self, effect_input))
-
-    def disconnect(self, effect_input):
-        """
-        Disconnect it with effect_input
-
-            >>> driver_output = driver.outputs[0]
-            >>> reverb_input = reverb.inputs[0]
-            >>> Connection(driver_output, reverb_input) in driver.effect.connections
-            True
-            >>> driver_output.disconnect(reverb_input)
-            >>> Connection(driver_output, reverb_input) in driver.effect.connections
-            False
-
-        .. note::
-
-            This method does not work for all cases.
-            class:`SystemOutput` can not be disconnected with class:`SystemInput` this way.
-            For this case, use ::
-
-                >>> pedalboard.connections.remove(Connection(system_output, system_input))
-
-        :param Input effect_input: Input that will be disconnected with it
-        """
-        if self.effect.is_unique_for_all_pedalboards and effect_input.effect.is_unique_for_all_pedalboards:
-            error = "Isn't possible connect ports that both are from effects uniques for all pedalboards. "
-            error += "Please use pedalboard.connect(Connection(output, input))"
-            raise ConnectionError(error)
-
-        self.effect.pedalboard.connections.remove(Connection(self, effect_input))
 
     @property
     def index(self):
