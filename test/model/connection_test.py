@@ -14,6 +14,7 @@
 
 import unittest
 from pluginsmanager.model.connection import Connection, ConnectionError
+from pluginsmanager.model.midi_connection import MidiConnection
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.system.system_effect import SystemEffect
@@ -62,3 +63,14 @@ class ConnectionTest(unittest.TestCase):
 
         self.assertEqual(connection.input, system_effect.inputs[0])
         self.assertEqual(connection.output, system_effect.outputs[0])
+
+    def test_connection_midi_ports(self):
+        cctonode1 = self.builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
+        cctonode2 = self.builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
+
+        system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+
+        with self.assertRaises(ConnectionError):
+            Connection(cctonode1.midi_outputs[0], cctonode2.midi_inputs[0])
+        with self.assertRaises(ConnectionError):
+            MidiConnection(system_effect.outputs[0], system_effect.inputs[0])

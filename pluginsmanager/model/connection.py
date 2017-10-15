@@ -57,7 +57,7 @@ class Connection(object):
     def __init__(self, output_port, input_port):
         if not self._valid_instance(output_port)\
         or not self._valid_instance(input_port):
-            raise ConnectionError("Connection only accepts ports that inherits {}".format(self.ports_class.__name__))
+            raise ConnectionError("'{}' only accepts ports that inherits {}".format(self.__class__.__name__, self.ports_class.__name__))
 
         if output_port.effect == input_port.effect\
         and not output_port.effect.is_possible_connect_itself:

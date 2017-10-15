@@ -32,8 +32,11 @@ class PersistenceTest(unittest.TestCase):
         cls.builder = Lv2EffectBuilder()
 
     @property
-    def bank(self):
-        sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'), ('midi_out',), ('midi_in',))
+    def system_effect(self):
+        return SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'), ('midi_out',), ('midi_in',))
+
+    def bank(self, midi=True):
+        sys_effect = self.system_effect
 
         bank = Bank('Bank 1')
         pedalboard = Pedalboard('Pedalboard 1')
@@ -44,19 +47,21 @@ class PersistenceTest(unittest.TestCase):
         reverb = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
         filter = self.builder.build('http://calf.sourceforge.net/plugins/Filter')
         reverb2 = self.builder.build('http://calf.sourceforge.net/plugins/Reverb')
-        cctonode = self.builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
 
         pedalboard.append(reverb)
         pedalboard.append(filter)
         pedalboard.append(reverb2)
-        pedalboard.append(cctonode)
 
         pedalboard.connect(reverb.outputs[0], filter.inputs[0])
         pedalboard.connect(reverb.outputs[1], filter.inputs[0])
         pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
         pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
-        pedalboard.connect(cctonode.midi_outputs[0], sys_effect.midi_inputs[0])
+        if midi:
+            cctonode = self.builder.build('http://gareus.org/oss/lv2/midifilter#cctonote')
+            pedalboard.append(cctonode)
+            pedalboard.connect(cctonode.midi_outputs[0], sys_effect.midi_inputs[0])
+            pedalboard.connect(sys_effect.midi_outputs[0], cctonode.midi_inputs[0])
 
         pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
         pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
@@ -67,13 +72,9 @@ class PersistenceTest(unittest.TestCase):
         return bank
 
     def test_read(self):
-        system_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
+        util = PersistenceDecoder(self.system_effect)
 
-        util = PersistenceDecoder(system_effect)
-
-        bank = self.bank
-        import pprint
-        pprint.pprint(bank.json)
+        bank = self.bank()
         bank_readed = util.read(bank.json)
 
         self.maxDiff = None
@@ -112,7 +113,7 @@ class PersistenceTest(unittest.TestCase):
 
         util = PersistenceDecoder(system_effect)
 
-        bank = self.bank
+        bank = self.bank(midi=False)
         bank_readed = util.read(bank.json)
 
         self.assertEqual(bank.json, bank_readed.json)

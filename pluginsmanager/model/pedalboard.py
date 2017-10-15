@@ -18,6 +18,10 @@ from pluginsmanager.observer.update_type import UpdateType
 from unittest.mock import MagicMock
 
 
+class PedalboardError(Exception):
+    pass
+
+
 class Pedalboard(object):
     """
     Pedalboard is a patch representation: your structure contains
@@ -151,6 +155,10 @@ class Pedalboard(object):
 
         :param Effect effect: Effect that will be added
         """
+        if effect.is_unique_for_all_pedalboards:
+            raise PedalboardError("The effect '{}' is unique for all pedalboards. "
+                                  "Then, isn't allowed add it in any pedalboard.".format(str(effect)))
+
         self.effects.append(effect)
 
     @property

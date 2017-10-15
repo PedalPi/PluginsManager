@@ -2,7 +2,7 @@ Version 0.6.0 -- released 10/?/17
 **********************************
  - Add makefile. Now is possible run tests and generate docs easly (`make help`);
  - Improve :class:`.SystemInput` and :class:`.SystemOutputs` documentation;
- - `Issue #57`_ Implementing midi support;
+ - `Issue #57`_  - Implementing midi support:
    - Now :class:`.Effect` list yours `midi_inputs` and `midi_outputs`;
    - :class:`.SystemEffect` now supports `midi_inputs` and `midi_outputs`;
    - :class:`.Lv2Effect` now supports `midi_inputs` and `midi_outputs`;
@@ -17,9 +17,11 @@ Version 0.6.0 -- released 10/?/17
  - :class:`.JackClient` - Add attributes: `audio_inputs`, `audio_outputs`, `midi_inputs`, `midi_outputs`;
  - Break change: Removed :meth:`Output.connect()` and :meth:`Output.disconnect()` :class:`.Output` methods.
    Use instead :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`, :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` methods;
- - `Issue #67`_ Created :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`, :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` methods;
- - Fixed Changelog: Now is possible see it in the documentation.
+ - `Issue #67`_ - Created :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`, :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` methods;
+ - Fixed Changelog: Now is possible see it in the documentation;
+ - `Issue #38`_ - Raise erros then add sys_effect in any Pedalboard.
 
+.. _Issue #38: https://github.com/PedalPi/PluginsManager/issues/38
 .. _Issue #57: https://github.com/PedalPi/PluginsManager/issues/57
 .. _Issue #67: https://github.com/PedalPi/PluginsManager/issues/67
 
