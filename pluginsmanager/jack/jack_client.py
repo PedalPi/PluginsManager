@@ -62,9 +62,37 @@ class JackClient(object):
 
         self.client.activate()
 
+    @property
+    def audio_inputs(self):
+        """
+        :return: A list of audio input :class:`Ports`.
+        """
+        return self.client.get_ports(is_audio=True, is_physical=True, is_input=True)
+
+    @property
+    def audio_outputs(self):
+        """
+        :return: A list of audio output :class:`Ports`.
+        """
+        return self.client.get_ports(is_audio=True, is_physical=True, is_output=True)
+
+    @property
+    def midi_inputs(self):
+        """
+        :return: A list of MIDI input :class:`Ports`.
+        """
+        return self.client.get_ports(is_midi=True, is_physical=True, is_input=True)
+
+    @property
+    def midi_outputs(self):
+        """
+        :return: A list of MIDI output :class:`Ports`.
+        """
+        return self.client.get_ports(is_midi=True, is_physical=True, is_output=True)
+
     def close(self):
         """
-        Deactive and closes the jack client
+        Deactivate and closes the jack client
         """
         self.client.deactivate()
         self.client.close()

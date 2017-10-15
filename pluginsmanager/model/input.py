@@ -43,7 +43,7 @@ class Input(Port, metaclass=ABCMeta):
         >>> my_awesome_effect.inputs[symbol] == effect_input
         True
 
-    For connections between effects, view :class:`pluginsmanager.connection.Connection`.
+    For connections between effects, view :class:`pluginsmanager.model.connection.Connection`.
 
     :param Effect effect: Effect of input
     """

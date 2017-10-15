@@ -1,16 +1,21 @@
-#https://krzysztofzuraw.com/blog/2016/makefiles-in-python-projects.html
 .RECIPEPREFIX +=
 BROWSER=firefox
 
 default: run
 
-clean: clean-pyc clean-test
+clean: clean-pyc clean-test clean-build
+
+clean-build:
+    rm -rf .eggs
+    rm -rf build
+    rm -rf dist
 
 clean-pyc:
     find . -name '*.pyc' -exec rm --force {} +
     find . -name '*.pyo' -exec rm --force {} +
 
 clean-test:
+    rm -f .coverage
     rm -rf htmlcov
     rm -rf test/autosaver_data
 

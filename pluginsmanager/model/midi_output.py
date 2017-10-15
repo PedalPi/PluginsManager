@@ -20,29 +20,28 @@ from pluginsmanager.model.port import Port
 
 class MidiOutput(Port, metaclass=ABCMeta):
     """
-    Output is the medium in which the audio processed by the effect is returned.
-
-    Effects usually have a one (mono) or two outputs (stereo L + stereo R). .
+    MidiOutput is the medium in which the midi output processed
+    by the effect is returned.
 
     For obtains the outputs::
 
-        >>> my_awesome_effect
-        <Lv2Effect object as 'Calf Reverb' active at 0x7fd58d874ba8>
-        >>> my_awesome_effect.outputs
-        (<Lv2Output object as Out L at 0x7fd58c58a438>, <Lv2Output object as Out R at 0x7fd58c58d550>)
+        >>> cctonode
+        <Lv2Effect object as 'CC2Note'  active at 0x7efe5480af28>
+        >>> cctonode.outputs
+        (<Lv2MidiOutput object as MIDI Out at 0x7efe5420eeb8>,)
 
-        >>> output = my_awesome_effect.outputs[0]
-        >>> output
+        >>> midi_output = cctonode.midi_outputs[0]
+        >>> midi_output
         <Lv2Output object as Out L at 0x7fd58c58a438>
 
-        >>> symbol = my_awesome_effect.outputs[0].symbol
+        >>> symbol = midi_output.symbol
         >>> symbol
-        'output_l'
+        'midiout'
 
-        >>> my_awesome_effect.outputs[symbol] == output
+        >>> cctonode.midi_outputs[symbol] == midi_output
         True
 
-    For connections between effects, view :class:`.pluginsmanager.mod_host.connection.Connection`.
+    For connections between effects, view :class:`.pluginsmanager.model.connection.Connection`.
 
     :param Effect effect: Effect that contains the output
     """

@@ -42,7 +42,7 @@ class Output(Port, metaclass=ABCMeta):
         >>> my_awesome_effect.outputs[symbol] == output
         True
 
-    For connections between effects, view :class:`.pluginsmanager.mod_host.connection.Connection`.
+    For connections between effects, view :class:`.pluginsmanager.model.connection.Connection`.
 
     :param Effect effect: Effect that contains the output
     """

@@ -18,6 +18,32 @@ from pluginsmanager.model.midi_port import MidiPort
 
 
 class MidiInput(MidiPort, metaclass=ABCMeta):
+    """
+    MidiInput is the medium in which the midi input port will go into
+    effect to be processed.
+
+    For obtains the inputs::
+
+        >>> cctonode
+        <Lv2Effect object as 'CC2Note'  active at 0x7efe5480af28>
+        >>> cctonode.midi_inputs
+        (<Lv2MidiInput object as MIDI In at 0x7efe54535dd8>,)
+
+        >>> midi_input = cctonode.midi_inputs[0]
+        >>> midi_input
+        <Lv2MidiInput object as MIDI In at 0x7efe54535dd8>
+
+        >>> symbol = midi_input.symbol
+        >>> symbol
+        'midiin'
+
+        >>> cctonode.midi_inputs[symbol] == midi_input
+        True
+
+    For connections between effects, view :class:`pluginsmanager.model.connection.Connection`.
+
+    :param Effect effect: Effect of midi input
+    """
 
     @property
     def index(self):

@@ -2,17 +2,21 @@ Version 0.6.0 -- released ?
 **********************************
  - Add makefile. Now is possible run tests and generate docs easly (`make help`);
  - Improve :class:`SystemInput` and :class:`SystemOutputs` documentation;
- - Implementing midi support;
+ - `Issue #57`_ Implementing midi support;
    - Now :class:`Effect` list yours `midi_inputs` and `midi_outputs`;
    - :class:`SystemEffect` now supports `midi_inputs` and `midi_outputs`;
    - :class:`Lv2Effect` now supports `midi_inputs` and `midi_outputs`;
    - Created :class:`MidiPort`, :class:`MidiInput`, :class:`MidiOutput`;
    - Created :class:`SystemMidiInput`, :class:`SystemMidiOutput`;
    - Created :class:`Lv2MidiInput`, :class:`Lv2MidiOutput`;
+   - :class:`SystemEffectBuilder` now creates :class:`SystemEffect` with your midi outputs and midi inputs;
  - Fix autosaver_test creation folder. Now is more easily configure test workspace;
  - Refactored :class:`Input`, :class:`Output`: Created :class:`Port` for remove duplicated code;
  - Refactored :class:`SystemInput`, :class:`SystemOutput`: Created :class:`SystemPortMixing` for remove duplicated code;
- - Refactored :class:`Lv2Input`, :class:`Lv2Output`: Created :class:`Lv2PortMixing` for remove duplicated code.
+ - Refactored :class:`Lv2Input`, :class:`Lv2Output`: Created :class:`Lv2PortMixing` for remove duplicated code;
+ - :class:`JackClient` - Add attributes: `audio_inputs`, `audio_outputs`, `midi_inputs`, `midi_outputs`.
+
+.. _Issue #57: https://github.com/PedalPi/PluginsManager/issues/57
 
 Version 0.5.1 -- released 08/16/17
 **********************************
