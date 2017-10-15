@@ -269,34 +269,15 @@ Changelog
 Maintenance
 -----------
 
-Test
-****
+Makefile
+********
 
-It is not necessary for the mod_host process to be running
-
-.. code-block:: bash
-
-    coverage3 run --source=pluginsmanager setup.py test
-
-    coverage3 report
-    coverage3 html
-    firefox htmlcov/index.html
+Execute ``make help`` for see the options
 
 Generate documentation
 **********************
 
 This project uses `Sphinx`_ + `Read the Docs`_.
-
-You can generate the documentation in your local machine:
-
-.. code-block:: bash
-
-    pip3 install sphinx
-
-    cd docs
-    make html
-
-    firefox build/html/index.html
 
 .. _Sphinx: http://www.sphinx-doc.org/
 .. _Read the Docs: http://readthedocs.org

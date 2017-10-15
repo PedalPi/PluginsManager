@@ -18,7 +18,7 @@ from pluginsmanager.model.connection import Connection, ConnectionError
 from pluginsmanager.model.port import Port
 
 
-class Output(Port, metaclass=ABCMeta):
+class MidiOutput(Port, metaclass=ABCMeta):
     """
     Output is the medium in which the audio processed by the effect is returned.
 
@@ -99,8 +99,9 @@ class Output(Port, metaclass=ABCMeta):
 
         :param Input effect_input: Input that will be disconnected with it
         """
-        if self._unique_for_all_pedalboards and effect_input._unique_for_all_pedalboards:
-            error = "Isn't possible connect this way. Please use pedalboard.connect(Connection(output, input))"
+        if self.effect.is_unique_for_all_pedalboards and effect_input.effect.is_unique_for_all_pedalboards:
+            error = "Isn't possible connect ports that both are from effects uniques for all pedalboards. "
+            error += "Please use pedalboard.connect(Connection(output, input))"
             raise ConnectionError(error)
 
         self.effect.pedalboard.connections.remove(Connection(self, effect_input))
@@ -110,4 +111,4 @@ class Output(Port, metaclass=ABCMeta):
         """
         :return: Output index in the your effect
         """
-        return self.effect.outputs.index(self)
+        return self.effect.midi_outputs.index(self)

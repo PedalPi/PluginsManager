@@ -12,35 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.model.output import Output
+from pluginsmanager.model.midi_input import MidiInput
 
 
-class Lv2Output(Output):
+class Lv2MidiInput(MidiInput):
     """
-    Representation of a Lv2 `output audio port`_ instance.
+    Representation of a Lv2 midi input port instance.
 
-    For general input use, see :class:`.Output` class documentation.
+    For general input use, see :class:`.MidiInput` and :class:`.Input` classes documentation.
 
-    .. _output audio port: http://lv2plug.in/ns/lv2core/#OutputPort
-
-    :param Lv2Effect effect: Effect that contains the output
-    :param dict effect_output: *output audio port* json representation
+    :param Lv2Effect effect: Effect that contains the midi input
+    :param dict effect_midi_input: *midi input port* json representation
     """
 
-    def __init__(self, effect, effect_output):
-        super(Lv2Output, self).__init__(effect)
-        self._output = effect_output
+    def __init__(self, effect, effect_midi_input):
+        super(Lv2MidiInput, self).__init__(effect)
+        self._input = effect_midi_input
 
     def __str__(self):
-        return self._output['name']
+        return self._input['name']
 
     @property
     def symbol(self):
-        return self._output['symbol']
+        return self._input['symbol']
 
     @property
     def __dict__(self):
-        dictionary = super(Lv2Output, self).__dict__
-        dictionary['index'] = self._output['index']
+        dictionary = super(Lv2MidiInput, self).__dict__
+        dictionary['index'] = self._input['index']
 
         return dictionary

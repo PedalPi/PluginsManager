@@ -34,13 +34,6 @@ class Lv2Input(Input):
     def __str__(self):
         return self._input['name']
 
-    def __repr__(self):
-        return "<{} object as {} at 0x{:x}>".format(
-            self.__class__.__name__,
-            str(self),
-            id(self)
-        )
-
     @property
     def symbol(self):
         return self._input['symbol']

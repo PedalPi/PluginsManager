@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
-from unittest.mock import MagicMock
+from pluginsmanager.model.port import Port
 
 
-class Input(metaclass=ABCMeta):
+class Input(Port, metaclass=ABCMeta):
     """
     Input is the medium in which the audio will go into effect to be processed.
 
@@ -43,53 +43,14 @@ class Input(metaclass=ABCMeta):
         >>> my_awesome_effect.inputs[symbol] == effect_input
         True
 
-    For connections between effects, view :class:`pluginsmanager.mod_host.connection.Connection`.
+    For connections between effects, view :class:`pluginsmanager.connection.Connection`.
 
     :param Effect effect: Effect of input
     """
 
-    def __init__(self, effect):
-        self._effect = effect
-
-        self.observer = MagicMock()
-
-        self._unique_for_all_pedalboards = False
-
-    @property
-    def effect(self):
-        """
-        :return: Effect of input
-        """
-        return self._effect
-
-    @property
-    @abstractmethod
-    def symbol(self):
-        """
-        :return: Input identifier
-        """
-        pass
-
-    @property
-    def json(self):
-        """
-        Get a json decodable representation of this input
-
-        :return dict: json representation
-        """
-        return self.__dict__
-
-    @property
-    def __dict__(self):
-        return {
-            'effect': self.effect.index,
-            'symbol': self.symbol,
-            'index': self.index,
-        }
-
     @property
     def index(self):
         """
-        :return Input index in the your effect
+        :return: Input index in the your effect
         """
         return self.effect.inputs.index(self)

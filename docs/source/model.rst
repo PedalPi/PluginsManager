@@ -39,24 +39,35 @@ This page contains the model classes.
 
 .. graphviz::
 
-   digraph classes {
-       graph [rankdir=BT];
-       node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+    digraph classes {
+        graph [rankdir=BT];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Lv2Effect->Lv2Plugin[
-           dir="backward", arrowhead="diamond", arrowtail="normal"
-       ];
-       Lv2Effect->Effect;
-       SystemEffect->Effect;
+        Lv2Effect->Lv2Plugin[
+            dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
+        Lv2Effect->Effect;
+        SystemEffect->Effect;
 
-       Lv2Input->Input;
-       SystemInput->Input;
+        Input->Port;
+        Output->Port;
 
-       Lv2Output->Output;
-       SystemOutput->Output;
+        MidiPort->Port;
+        MidiInput->MidiPort;
+        MidiOutput->MidiPort;
 
-       Lv2Param->Param;
-   }
+        Lv2Input->Input;
+        Lv2Output->Output;
+        Lv2MidiInput->MidiInput;
+        Lv2MidiOutput->MidiOutput;
+
+        SystemInput->Input;
+        SystemOutput->Output;
+        SystemMidiInput->MidiInput;
+        SystemMidiOutput->MidiOutput;
+
+        Lv2Param->Param;
+    }
 
 .. graphviz::
 
@@ -70,6 +81,11 @@ This page contains the model classes.
         ModHost->UpdatesObserver
         AutoSaver->UpdatesObserver
     }
+
+.. .. inheritance-diagram::
+    pluginsmanager.model.output.Output
+    pluginsmanager.model.input.Input
+
 
 BanksManager
 ------------
@@ -103,6 +119,14 @@ Effect
    :special-members:
    :exclude-members: __weakref__
 
+Port
+----
+
+.. autoclass:: pluginsmanager.model.port.Port
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Input
 -----
 
@@ -115,6 +139,31 @@ Output
 ------
 
 .. autoclass:: pluginsmanager.model.output.Output
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+MidiPort
+--------
+
+.. autoclass:: pluginsmanager.model.midi_port.MidiPort
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+
+MidiInput
+---------
+
+.. autoclass:: pluginsmanager.model.midi_input.MidiInput
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+MidiOutput
+----------
+
+.. autoclass:: pluginsmanager.model.midi_output.MidiOutput
    :members:
    :special-members:
    :exclude-members: __weakref__

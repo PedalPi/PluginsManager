@@ -16,6 +16,8 @@ from pluginsmanager.model.effect import Effect
 from pluginsmanager.model.lv2.lv2_param import Lv2Param
 from pluginsmanager.model.lv2.lv2_input import Lv2Input
 from pluginsmanager.model.lv2.lv2_output import Lv2Output
+from pluginsmanager.model.lv2.lv2_midi_input import Lv2MidiInput
+from pluginsmanager.model.lv2.lv2_midi_output import Lv2MidiOutput
 
 from pluginsmanager.util.dict_tuple import DictTuple
 
@@ -49,6 +51,12 @@ class Lv2Effect(Effect):
 
         outputs = [Lv2Output(self, effect_output) for effect_output in plugin['ports']['audio']['output']]
         self._outputs = DictTuple(outputs, lambda _output: _output.symbol)
+
+        midi_inputs = [Lv2MidiInput(self, midi_input) for midi_input in plugin['ports']['midi']['input']]
+        self._midi_inputs = DictTuple(midi_inputs, lambda _output: _output.symbol)
+
+        midi_outputs = [Lv2MidiOutput(self, midi_output) for midi_output in plugin['ports']['midi']['output']]
+        self._midi_outputs = DictTuple(midi_outputs, lambda _output: _output.symbol)
 
         self.instance = None
 
