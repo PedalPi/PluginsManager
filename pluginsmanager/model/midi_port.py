@@ -22,3 +22,11 @@ class MidiPort(Port, metaclass=ABCMeta):
     Port is a parent abstraction for midi inputs and midi outputs
     """
     pass
+
+    @property
+    def connection_class(self):
+        """
+        :return MidiConnection: Class used for connections in this port
+        """
+        from pluginsmanager.model.midi_connection import MidiConnection
+        return MidiConnection

@@ -190,13 +190,13 @@ class Pedalboard(object):
         return self.bank.pedalboards.index(self)
 
     def connect(self, output_port, input_port):
-
         """
         :param output_port:
         :param input_port:
         :return:
         """
-        pass
+        ConnectionClass = output_port.connection_class
+        self.connections.append(ConnectionClass(output_port, input_port))
 
     def disconnect(self, output_port, input_port):
         """
@@ -204,4 +204,5 @@ class Pedalboard(object):
         :param input_port:
         :return:
         """
-        pass
+        ConnectionClass = output_port.connection_class
+        self.connections.remove(ConnectionClass(output_port, input_port))

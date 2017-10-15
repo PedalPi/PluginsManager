@@ -51,12 +51,12 @@ class PersistenceTest(unittest.TestCase):
         pedalboard.append(reverb2)
         pedalboard.append(cctonode)
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
-        cctonode.midi_outputs[0].connect(sys_effect.midi_inputs[0])
+        pedalboard.connect(cctonode.midi_outputs[0], sys_effect.midi_inputs[0])
 
         pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
         pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))

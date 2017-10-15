@@ -21,4 +21,11 @@ class AudioPort(Port, metaclass=ABCMeta):
     """
     Port is a parent abstraction for audio inputs and audio outputs
     """
-    pass
+
+    @property
+    def connection_class(self):
+        """
+        :return Connection: Class used for connections in this port
+        """
+        from pluginsmanager.model.connection import Connection
+        return Connection

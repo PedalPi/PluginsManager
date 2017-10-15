@@ -152,15 +152,14 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
         self.assertEqual(4, len(pedalboard.connections))
 
         pedalboard.observer = MagicMock()
-        fuzz_connections = filter.connections
 
         pedalboard.effects.remove(filter)
 

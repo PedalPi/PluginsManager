@@ -41,13 +41,13 @@ class MidiOutputTest(unittest.TestCase):
         pedalboard.append(cctonode2)
 
         self.assertEqual(0, len(pedalboard.connections))
-        cctonode.midi_outputs[0].connect(cctonode2.midi_inputs[0])
+        pedalboard.connect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
         self.assertEqual(1, len(pedalboard.connections))
 
         new_connection = pedalboard.connections[0]
         pedalboard.observer.on_connection_updated.assert_called_with(new_connection, UpdateType.CREATED, pedalboard=pedalboard)
 
-        cctonode.midi_outputs[0].connect(cctonode2.midi_inputs[0])
+        pedalboard.connect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
         self.assertEqual(2, len(pedalboard.connections))
 
         new_connection = pedalboard.connections[-1]
@@ -63,13 +63,13 @@ class MidiOutputTest(unittest.TestCase):
         pedalboard.append(cctonode)
         pedalboard.append(cctonode2)
 
-        cctonode.midi_outputs[0].connect(cctonode2.midi_inputs[0])
+        pedalboard.connect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
         self.assertEqual(1, len(pedalboard.connections))
 
         pedalboard.observer = MagicMock()
 
         disconnected = pedalboard.connections[-1]
-        cctonode.midi_outputs[0].disconnect(cctonode2.midi_inputs[0])
+        pedalboard.disconnect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
         self.assertEqual(0, len(pedalboard.connections))
         pedalboard.observer.on_connection_updated.assert_called_with(disconnected, UpdateType.DELETED, pedalboard=pedalboard)
 
@@ -86,11 +86,12 @@ class MidiOutputTest(unittest.TestCase):
         pedalboard.observer = MagicMock()
 
         with self.assertRaises(ValueError):
-            cctonode.midi_outputs[0].disconnect(cctonode2.midi_inputs[0])
+            pedalboard.disconnect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
 
         pedalboard.observer.on_connection_updated.assert_not_called()
 
-    def test_connect_system_effect(self):
+    def test_system_effect_connections(self):
+        pedalboard = Pedalboard('A pedalboard')
         sys_effect = SystemEffect(
             'system',
             ['capture_1'],
@@ -102,23 +103,11 @@ class MidiOutputTest(unittest.TestCase):
         effect_output = sys_effect.midi_outputs[0]
         effect_input = sys_effect.midi_inputs[0]
 
-        with self.assertRaises(ConnectionError):
-            effect_output.connect(effect_input)
+        pedalboard.connect(effect_output, effect_input)
+        self.assertEqual(len(pedalboard.connections), 1)
 
-    def test_disconnect_system_effect(self):
-        sys_effect = SystemEffect(
-            'system',
-            ['capture_1'],
-            ['playback_1', 'playback_2'],
-            ['midi_capture_1'],
-            ['midi_playback_1']
-        )
-
-        effect_output = sys_effect.midi_outputs[0]
-        effect_input = sys_effect.midi_inputs[0]
-
-        with self.assertRaises(ConnectionError):
-            effect_output.disconnect(effect_input)
+        pedalboard.disconnect(effect_output, effect_input)
+        self.assertEqual(len(pedalboard.connections), 0)
 
     def test_port_symbol(self):
         builder = MidiOutputTest.builder

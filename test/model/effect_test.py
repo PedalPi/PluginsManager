@@ -71,10 +71,10 @@ class EffectTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
         reverb_connections = (
             Connection(reverb.outputs[0], filter.inputs[0]),

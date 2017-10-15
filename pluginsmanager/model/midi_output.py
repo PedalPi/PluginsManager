@@ -14,11 +14,10 @@
 
 from abc import ABCMeta
 
-from pluginsmanager.model.connection import Connection, ConnectionError
-from pluginsmanager.model.port import Port
+from pluginsmanager.model.midi_port import MidiPort
 
 
-class MidiOutput(Port, metaclass=ABCMeta):
+class MidiOutput(MidiPort, metaclass=ABCMeta):
     """
     MidiOutput is the medium in which the midi output processed
     by the effect is returned.
