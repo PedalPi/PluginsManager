@@ -115,6 +115,14 @@ Bank
    :special-members:
    :exclude-members: __weakref__
 
+Pedalboard
+----------
+
+.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Connection
 ----------
 
@@ -204,10 +212,3 @@ Param
    :special-members:
    :exclude-members: __weakref__
 
-Pedalboard
-----------
-
-.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
-   :members:
-   :special-members:
-   :exclude-members: __weakref__

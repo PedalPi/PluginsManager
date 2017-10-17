@@ -199,18 +199,43 @@ class Pedalboard(object):
 
     def connect(self, output_port, input_port):
         """
-        :param output_port:
-        :param input_port:
-        :return:
+        Connect two :class:`.Effect` instances in this pedalboard.
+        For this, is necessary informs the output port origin and the input port destination::
+
+            >>> pedalboard.append(driver)
+            >>> pedalboard.append(reverb)
+            >>> driver_output = driver.outputs[0]
+            >>> reverb_input = reverb.inputs[0]
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            False
+            >>> pedalboard.connect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            True
+
+        :param Port output_port: Effect output port
+        :param Port input_port: Effect input port
         """
         ConnectionClass = output_port.connection_class
         self.connections.append(ConnectionClass(output_port, input_port))
 
     def disconnect(self, output_port, input_port):
         """
-        :param output_port:
-        :param input_port:
-        :return:
+        Remove a connection between (two ports of) :class:`.Effect` instances.
+        For this, is necessary informs the output port origin and the input port destination::
+
+            >>> pedalboard.append(driver)
+            >>> pedalboard.append(reverb)
+            >>> driver_output = driver.outputs[0]
+            >>> reverb_input = reverb.inputs[0]
+            >>> pedalboard.connect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            True
+            >>> pedalboard.disconnect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            False
+
+        :param Port output_port: Effect output port
+        :param Port input_port: Effect input port
         """
         ConnectionClass = output_port.connection_class
         self.connections.remove(ConnectionClass(output_port, input_port))
