@@ -157,7 +157,7 @@ It requires a `JackClient` instance, that uses `JACK-Client`_.
     client = JackClient()
 
     from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
-    sys_effect = SystemEffectBuilder(client)
+    sys_effect = SystemEffectBuilder(client).build()
 
 For manual input and output sound card definition, use:
 
