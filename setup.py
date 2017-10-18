@@ -24,7 +24,7 @@ def readme():
 
 setup(
     name='PedalPi-PluginsManager',
-    version='0.5.1',
+    version='0.6.0',
 
     description='Pythonic management of LV2 audio plugins with mod-host.',
     long_description=readme(),
@@ -62,7 +62,7 @@ setup(
     ],
 
     test_suite='test',
-    tests_require=['JACK-Client'],
+    tests_require=['JACK-Client', 'pytest', 'pytest-cov'],
 
     classifiers=[
         'Development Status :: 3 - Alpha',
