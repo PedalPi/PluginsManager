@@ -148,8 +148,6 @@ class Param(metaclass=ABCMeta):
     def __dict__(self):
         return {
             'index': self.index,
-            'minimum': self.minimum,
-            'maximum': self.maximum,
             'symbol': self.symbol,
             'value': self.value,
         }

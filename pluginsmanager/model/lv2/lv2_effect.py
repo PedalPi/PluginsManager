@@ -78,4 +78,12 @@ class Lv2Effect(Effect):
             'plugin': self.plugin['uri'],
             'active': self.active,
             'params': [param.json for param in self.params],
+            'version': self.version
         }
+
+    @property
+    def version(self):
+        """
+        :return string: Version of plugin of effect
+        """
+        return self.plugin.version
