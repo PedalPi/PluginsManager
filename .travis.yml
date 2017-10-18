@@ -16,10 +16,13 @@ install:
   - pip3 install cffi
   - python setup.py develop
   - pip3 install pytest pytest-cov
+  - make install-tests-requirements
 
 script:
   - lv2ls
   - make test
   - make docs
+  - pytest --doctest-glob='*.rst'
+  - pytest --doctest-modules
 after_success:
   - bash <(curl -s https://codecov.io/bash)
