@@ -44,6 +44,10 @@ test: clean-test
 	mkdir test/autosaver_data
 	pytest --cov=pluginsmanager
 
+test-docs:
+	python -m doctest *.rst -v
+	python -m doctest docs/*/*.rst -v
+
 test-details: test
 	coverage3 html
 	$(BROWSER) htmlcov/index.html

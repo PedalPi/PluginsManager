@@ -16,7 +16,7 @@
 class DictTuple(tuple):
     """
     Dict tuple is a union with dicts and tuples. It's possible obtains an element
-    by index or by a key.
+    by index or by a key
 
     The key is not been a int or long instance
 

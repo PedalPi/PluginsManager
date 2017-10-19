@@ -203,10 +203,11 @@ of the change::
 We'll now limit the notification by telling you who performed the actions::
 
     >>> with observer1:
-    >>>     del manager.banks[0]
+    >>> with observer1:
+    ...     del manager.banks[0]
     "Hi! I am observer2"
     >>> with observer2:
-    >>>     manager.banks.append(bank)
+    ...     manager.banks.append(bank)
     "Hi! I am observer1"
 
 

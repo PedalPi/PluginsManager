@@ -22,8 +22,10 @@ install:
 script:
   - lv2ls
   - make test
-  - make docs
-  - pytest --doctest-glob='*.rst'
-  - pytest --doctest-modules
-after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - make docs
+  - make test-docd
+  - #pytest --doctest-modules
+
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
