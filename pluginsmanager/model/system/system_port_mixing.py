@@ -12,24 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.model.output import Output
-from pluginsmanager.model.system.system_port_mixing import SystemPortMixing
+from abc import ABCMeta
 
 
-class SystemOutput(SystemPortMixing, Output):
+class SystemPortMixing(object, metaclass=ABCMeta):
     """
-    Representation of a System output audio port instance.
-
-    For general input use, see :class:`.Output` class documentation.
-
-    :param SystemEffect effect: Effect that contains the input
-    :param string symbol: *output audio port* symbol identifier
+    Contains the default implementation of System ports:
+    :class:`.SystemInput`, :class:`.SystemOutput`,
+    :class:`.SystemMidiInput` and :class:`.SystemMidiInput`
     """
 
-    def __init__(self, effect, symbol):
-        super(SystemOutput, self).__init__(effect)
-        self._symbol = symbol
+    def __init__(self, *args, **kwargs):
+        super(SystemPortMixing, self).__init__(*args, **kwargs)
+
+    def __str__(self):
+        return self.symbol
 
     @property
-    def symbol(self):
-        return self._symbol
+    def __dict__(self):
+        return {
+            'symbol': self.symbol,
+            'index': self.index,
+        }

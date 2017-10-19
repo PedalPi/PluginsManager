@@ -6,3 +6,4 @@ docs/build
 .eggs
 dist/
 build/
+test/autosaver_data

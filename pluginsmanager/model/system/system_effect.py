@@ -15,6 +15,8 @@
 from pluginsmanager.model.effect import Effect
 from pluginsmanager.model.system.system_input import SystemInput
 from pluginsmanager.model.system.system_output import SystemOutput
+from pluginsmanager.model.system.system_midi_input import SystemMidiInput
+from pluginsmanager.model.system.system_midi_output import SystemMidiOutput
 
 from pluginsmanager.util.dict_tuple import DictTuple
 
@@ -61,8 +63,10 @@ class SystemEffect(Effect):
                                   starts with `capture_`
     :param tuple(string) inputs: Tuple of inputs representation. Usually a input representation
                                  starts with `playback_`
+    :param tuple(string) midi_outputs: Tuple of midi outputs representation.
+    :param tuple(string) midi_inputs: Tuple of midi inputs representation.
     """
-    def __init__(self, representation, outputs, inputs):
+    def __init__(self, representation, outputs, inputs, midi_outputs=None, midi_inputs=None):
         super(SystemEffect, self).__init__()
 
         self.representation = representation
@@ -75,15 +79,16 @@ class SystemEffect(Effect):
         outputs = [SystemOutput(self, effect_output) for effect_output in outputs]
         self._outputs = DictTuple(outputs, lambda _output: str(_output))
 
+        midi_inputs = midi_inputs if midi_inputs is not None else []
+        midi_inputs = [SystemMidiInput(self, effect_input) for effect_input in midi_inputs]
+        self._midi_inputs = DictTuple(midi_inputs, lambda _input: str(_input))
+
+        midi_outputs = midi_outputs if midi_outputs is not None else []
+        midi_outputs = [SystemMidiOutput(self, effect_output) for effect_output in midi_outputs]
+        self._midi_outputs = DictTuple(midi_outputs, lambda _output: str(_output))
+
     def __str__(self):
         return self.representation
-
-    def __repr__(self):
-        return "<{} object as '{}' at 0x{:x}>".format(
-            self.__class__.__name__,
-            str(self),
-            id(self)
-        )
 
     @property
     def __dict__(self):
@@ -95,5 +100,13 @@ class SystemEffect(Effect):
     def is_possible_connect_itself(self):
         """
         return bool: Is possible connect the with it self?
+        """
+        return True
+
+    @property
+    def is_unique_for_all_pedalboards(self):
+        """
+        return bool: Is unique for all pedalboards?
+                     Example: :class:`.SystemEffect` is unique for all pedalboards
         """
         return True

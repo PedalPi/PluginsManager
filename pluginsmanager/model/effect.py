@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from abc import ABCMeta, abstractmethod
-
 from unittest.mock import MagicMock
+
+from pluginsmanager.util.dict_tuple import DictTuple
 
 
 class Effect(metaclass=ABCMeta):
@@ -53,8 +54,10 @@ class Effect(metaclass=ABCMeta):
         self._active = True
 
         self._params = ()
-        self._inputs = ()
-        self._outputs = ()
+        self._inputs = DictTuple([], lambda: None)
+        self._outputs = DictTuple([], lambda: None)
+        self._midi_inputs = DictTuple([], lambda: None)
+        self._midi_outputs = DictTuple([], lambda: None)
 
         self._observer = MagicMock()
 
@@ -89,6 +92,20 @@ class Effect(metaclass=ABCMeta):
         :return list[Output]: Outputs of effect
         """
         return self._outputs
+
+    @property
+    def midi_inputs(self):
+        """
+        :return list[MidiInput]: MidiInputs of effect
+        """
+        return self._midi_inputs
+
+    @property
+    def midi_outputs(self):
+        """
+        :return list[MidiOutput]: MidiOutputs of effect
+        """
+        return self._midi_outputs
 
     @property
     def active(self):
@@ -155,3 +172,18 @@ class Effect(metaclass=ABCMeta):
         return bool: Is possible connect the with it self?
         """
         return False
+
+    @property
+    def is_unique_for_all_pedalboards(self):
+        """
+        return bool: Is unique for all pedalboards?
+                     Example: :class:`.SystemEffect` is unique for all pedalboards
+        """
+        return False
+
+    def __repr__(self):
+        return "<{} object as '{}' at 0x{:x}>".format(
+            self.__class__.__name__,
+            str(self),
+            id(self)
+        )

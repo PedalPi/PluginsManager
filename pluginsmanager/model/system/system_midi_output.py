@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.model.output import Output
+from pluginsmanager.model.midi_output import MidiOutput
 from pluginsmanager.model.system.system_port_mixing import SystemPortMixing
 
 
-class SystemOutput(SystemPortMixing, Output):
+class SystemMidiOutput(SystemPortMixing, MidiOutput):
     """
-    Representation of a System output audio port instance.
+    Representation of a System midi output port instance.
 
-    For general input use, see :class:`.Output` class documentation.
+    For general input use, see :class:`.Output` and
+    :class:`.MidiOutput` classes documentation.
 
     :param SystemEffect effect: Effect that contains the input
-    :param string symbol: *output audio port* symbol identifier
+    :param string symbol: *midi output port* symbol identifier
     """
 
     def __init__(self, effect, symbol):
-        super(SystemOutput, self).__init__(effect)
+        super(SystemMidiOutput, self).__init__(effect)
         self._symbol = symbol
 
     @property
