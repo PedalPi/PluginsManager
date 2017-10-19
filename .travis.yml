@@ -12,14 +12,19 @@ sudo: required
 install:
   - sudo apt-get install -y portaudio19-dev python-all-dev --no-install-recommends
   - sudo apt-get install -y lilv-utils calf-plugins guitarix --no-install-recommends
+  - sudo apt-get install -y lv2-dev --no-install-recommends
   - pip3 install sphinx
-  - pip3 install coveralls
   - pip3 install cffi
-  - pip3 install JACK-Client
+  - python setup.py develop
+  - pip3 install pytest pytest-cov
+  - make install-tests-requirements
 
 script:
   - lv2ls
   - make test
   - make docs
+  - #make test-docs
+  - #pytest --doctest-modules
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)

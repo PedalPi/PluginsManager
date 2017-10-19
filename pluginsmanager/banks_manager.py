@@ -47,8 +47,9 @@ class BanksManager(object):
         """
         Iterates banks of the banksmanager::
 
+            >>> banks_manager = BanksManager()
             >>> for index, bank in enumerate(banks_manager):
-            >>>     print(index, '-', bank)
+            ...     print(index, '-', bank)
 
         :return: Iterator for banks list
         """
