@@ -100,15 +100,15 @@ class ModHostTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
         filter.toggle()
         filter.params[0].value = (filter.params[0].maximum - filter.params[0].minimum) / 2
 
-        filter.outputs[0].disconnect(reverb2.inputs[0])
+        pedalboard.disconnect(filter.outputs[0], reverb2.inputs[0])
         filter.toggle()
 
         pedalboard.effects.remove(filter)
@@ -217,4 +217,4 @@ class ModHostTest(unittest.TestCase):
 
         mod_host.pedalboard = pedalboard
 
-        pedalboard2.effects[0].outputs[0].connect(pedalboard2.effects[1].inputs[0])
+        pedalboard2.connect(pedalboard2.effects[0].outputs[0], pedalboard2.effects[1].inputs[0])

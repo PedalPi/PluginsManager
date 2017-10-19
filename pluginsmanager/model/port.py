@@ -76,3 +76,11 @@ class Port(metaclass=ABCMeta):
             str(self),
             id(self)
         )
+
+    @property
+    @abstractmethod
+    def connection_class(self):
+        """
+        :return: Class used for connections in this port
+        """
+        pass

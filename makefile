@@ -49,7 +49,7 @@ test-details: test
 
 help:
     @echo "    clean"
-    @echo "          Clean the files"
+    @echo "          Clean files"
     @echo "    docs"
     @echo "          Make the docs"
     @echo "    docs-see"

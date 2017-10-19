@@ -43,14 +43,10 @@ This page contains the model classes.
         graph [rankdir=BT];
         node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-        Lv2Effect->Lv2Plugin[
-            dir="backward", arrowhead="diamond", arrowtail="normal"
-        ];
-        Lv2Effect->Effect;
-        SystemEffect->Effect;
+        AudioPort->Port;
 
-        Input->Port;
-        Output->Port;
+        Input->AudioPort;
+        Output->AudioPort;
 
         MidiPort->Port;
         MidiInput->MidiPort;
@@ -66,7 +62,23 @@ This page contains the model classes.
         SystemMidiInput->MidiInput;
         SystemMidiOutput->MidiOutput;
 
+    }
+
+.. graphviz::
+
+    digraph classes {
+        graph [rankdir=BT];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+
+        Lv2Effect->Lv2Plugin[
+            dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
+        Lv2Effect->Effect;
+        SystemEffect->Effect;
+
         Lv2Param->Param;
+
+        MidiConnection->Connection;
     }
 
 .. graphviz::
@@ -103,10 +115,26 @@ Bank
    :special-members:
    :exclude-members: __weakref__
 
+Pedalboard
+----------
+
+.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Connection
 ----------
 
 .. autoclass:: pluginsmanager.model.connection.Connection
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+MidiConnection
+--------------
+
+.. autoclass:: pluginsmanager.model.midi_connection.MidiConnection
    :members:
    :special-members:
    :exclude-members: __weakref__
@@ -123,6 +151,14 @@ Port
 ----
 
 .. autoclass:: pluginsmanager.model.port.Port
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+AudioPort
+---------
+
+.. autoclass:: pluginsmanager.model.audio_port.AudioPort
    :members:
    :special-members:
    :exclude-members: __weakref__
@@ -176,10 +212,3 @@ Param
    :special-members:
    :exclude-members: __weakref__
 
-Pedalboard
-----------
-
-.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
-   :members:
-   :special-members:
-   :exclude-members: __weakref__

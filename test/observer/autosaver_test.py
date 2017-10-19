@@ -64,16 +64,16 @@ class AutoSaverTest(unittest.TestCase):
         save_mock.assert_called_with(bank)
         save_mock.reset_mock()
 
-        reverb.outputs[0].connect(filter.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
         save_mock.assert_called_with(bank)
         save_mock.reset_mock()
-        reverb.outputs[1].connect(filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
         save_mock.assert_called_with(bank)
         save_mock.reset_mock()
-        filter.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
         save_mock.assert_called_with(bank)
         save_mock.reset_mock()
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
         save_mock.assert_called_with(bank)
         save_mock.reset_mock()
 
@@ -198,8 +198,8 @@ class AutoSaverTest(unittest.TestCase):
         bank.append(pedalboard)
         pedalboard.append(reverb)
 
-        reverb.outputs[0].connect(system_effect.inputs[0])
-        reverb.outputs[0].connect(system_effect.inputs[1])
+        pedalboard.connect(reverb.outputs[0], system_effect.inputs[0])
+        pedalboard.connect(reverb.outputs[0], system_effect.inputs[1])
 
         pedalboard.effects.remove(reverb)
 

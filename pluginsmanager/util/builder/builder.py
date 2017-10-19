@@ -34,7 +34,21 @@ class AudioPortBuilder(metaclass=ABCMeta):
     @abstractmethod
     def build_output(self, json):
         """
-        :return Output: Input of an effect defined in json
+        :return Output: Output of an effect defined in json
+        """
+        pass
+
+    @abstractmethod
+    def build_midi_input(self, json):
+        """
+        :return MidiInput: MidiInput of an effect defined in json
+        """
+        pass
+
+    @abstractmethod
+    def build_midi_output(self, json):
+        """
+        :return MidiOutput: MidiOutput of an effect defined in json
         """
         pass
 

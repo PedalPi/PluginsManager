@@ -17,16 +17,15 @@ from abc import ABCMeta
 from pluginsmanager.model.port import Port
 
 
-class MidiPort(Port, metaclass=ABCMeta):
+class AudioPort(Port, metaclass=ABCMeta):
     """
-    Port is a parent abstraction for midi inputs and midi outputs
+    Port is a parent abstraction for audio inputs and audio outputs
     """
-    pass
 
     @property
     def connection_class(self):
         """
-        :return MidiConnection: Class used for connections in this port
+        :return Connection: Class used for connections in this port
         """
-        from pluginsmanager.model.midi_connection import MidiConnection
-        return MidiConnection
+        from pluginsmanager.model.connection import Connection
+        return Connection

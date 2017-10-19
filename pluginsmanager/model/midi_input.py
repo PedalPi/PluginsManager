@@ -40,7 +40,8 @@ class MidiInput(MidiPort, metaclass=ABCMeta):
         >>> cctonode.midi_inputs[symbol] == midi_input
         True
 
-    For connections between effects, view :class:`pluginsmanager.model.connection.Connection`.
+    For connections between effects, see :meth:`~pluginsmanager.model.pedalboard.Pedalboard.connect()`
+    and :meth:`~pluginsmanager.model.pedalboard.Pedalboard.disconnect()` :class:`.Pedalboard` class methods.
 
     :param Effect effect: Effect of midi input
     """

@@ -23,7 +23,7 @@ class Effect(metaclass=ABCMeta):
     Representation of a audio plugin instance - LV2 plugin encapsulated as a jack client.
 
     Effect contains a `active` status (off=bypass), a list of :class:`.Param`,
-    a list of :class:`.Input` and a list of :class:`pluginsmanager.mod_host.connection.Connection`::
+    a list of :class:`.Input` and a list of :class:`~pluginsmanager.model.connection.Connection`::
 
         >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         >>> pedalboard.append(reverb)

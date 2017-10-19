@@ -17,17 +17,24 @@ from unittest.mock import MagicMock
 
 from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
-from pluginsmanager.model.pedalboard import Pedalboard
+from pluginsmanager.model.pedalboard import Pedalboard, PedalboardError
+from pluginsmanager.model.system.system_effect import SystemEffect
 from pluginsmanager.observer.update_type import UpdateType
 
 
 class PedalboardTest(unittest.TestCase):
 
+    @property
+    def mock_effect(self):
+        effect = MagicMock()
+        effect.is_unique_for_all_pedalboards = False
+        return effect
+
     def test_add_effect_by_effects(self):
         pedalboard = Pedalboard('Pedalboard 1')
 
-        effect1 = MagicMock()
-        effect2 = MagicMock()
+        effect1 = self.mock_effect
+        effect2 = self.mock_effect
 
         pedalboard.observer = MagicMock()
 
@@ -44,8 +51,8 @@ class PedalboardTest(unittest.TestCase):
     def test_add_effect(self):
         pedalboard = Pedalboard('Pedalboard 1')
 
-        effect1 = MagicMock()
-        effect2 = MagicMock()
+        effect1 = self.mock_effect
+        effect2 = self.mock_effect
 
         pedalboard.observer = MagicMock()
 
@@ -62,8 +69,8 @@ class PedalboardTest(unittest.TestCase):
     def test_update_effect(self):
         pedalboard = Pedalboard('Pedalboard 1')
 
-        effect1 = MagicMock()
-        effect2 = MagicMock()
+        effect1 = self.mock_effect
+        effect2 = self.mock_effect
 
         pedalboard.append(effect1)
 
@@ -77,8 +84,8 @@ class PedalboardTest(unittest.TestCase):
     def test_delete_effect(self):
         pedalboard = Pedalboard('Bank 1')
 
-        effect = MagicMock()
-        effect2 = MagicMock()
+        effect = self.mock_effect
+        effect2 = self.mock_effect
 
         pedalboard.append(effect)
         pedalboard.append(effect2)
@@ -152,15 +159,14 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
         self.assertEqual(4, len(pedalboard.connections))
 
         pedalboard.observer = MagicMock()
-        fuzz_connections = filter.connections
 
         pedalboard.effects.remove(filter)
 
@@ -198,3 +204,8 @@ class PedalboardTest(unittest.TestCase):
 
         with self.assertRaises(IndexError):
             pedalboard2.index
+
+    def test_add_system_effect(self):
+        pedalboard = Pedalboard('test_add_system_effect')
+        with self.assertRaises(PedalboardError):
+            pedalboard.append(SystemEffect('System Effect', (), ()))

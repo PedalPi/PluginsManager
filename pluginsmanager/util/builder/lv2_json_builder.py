@@ -30,6 +30,14 @@ class Lv2AudioPortBuilder(AudioPortBuilder):
         symbol = json['symbol']
         return self.get_effect(json).outputs[symbol]
 
+    def build_midi_input(self, json):
+        symbol = json['symbol']
+        return self.get_effect(json).midi_inputs[symbol]
+
+    def build_midi_output(self, json):
+        symbol = json['symbol']
+        return self.get_effect(json).midi_outputs[symbol]
+
     def get_effect(self, json):
         effect_index = json['effect']
         return self.pedalboard.effects[effect_index]
@@ -51,4 +59,3 @@ class Lv2EffectBuilder(EffectBuilder):
         effect.active = json['active']
 
         return effect
-
