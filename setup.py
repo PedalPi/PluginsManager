@@ -22,58 +22,60 @@ def readme():
     with open(path.join(here, 'README.rst'), encoding='UTF-8') as f:
         return f.read()
 
-setup(
-    name='PedalPi-PluginsManager',
-    version='0.6.0',
 
-    description='Pythonic management of LV2 audio plugins with mod-host.',
-    long_description=readme(),
+if __name__ == '__main__':
+    setup(
+        name='PedalPi-PluginsManager',
+        version='0.6.0',
 
-    url='https://github.com/PedalPi/PluginsManager',
+        description='Pythonic management of LV2 audio plugins with mod-host.',
+        long_description=readme(),
 
-    author='Paulo Mateus Moura da Silva (SrMouraSilva)',
-    author_email='mateus.moura@hotmail.com',
-    maintainer='Paulo Mateus Moura da Silva (SrMouraSilva)',
-    maintainer_email='mateus.moura@hotmail.com',
+        url='https://github.com/PedalPi/PluginsManager',
 
-    license="Apache Software License v2",
+        author='Paulo Mateus Moura da Silva (SrMouraSilva)',
+        author_email='mateus.moura@hotmail.com',
+        maintainer='Paulo Mateus Moura da Silva (SrMouraSilva)',
+        maintainer_email='mateus.moura@hotmail.com',
 
-    packages=[
-        'pluginsmanager',
-        'pluginsmanager/jack',
+        license="Apache Software License v2",
 
-        'pluginsmanager/model',
-        'pluginsmanager/model/lv2',
-        'pluginsmanager/model/system',
+        packages=[
+            'pluginsmanager',
+            'pluginsmanager/jack',
 
-        'pluginsmanager/observer',
-        'pluginsmanager/observer/autosaver',
-        'pluginsmanager/observer/mod_host',
+            'pluginsmanager/model',
+            'pluginsmanager/model/lv2',
+            'pluginsmanager/model/system',
 
-        'pluginsmanager/util',
-        'pluginsmanager/util/builder',
-    ],
-    package_data={
-        'pluginsmanager/model/lv2': ['plugins.json']
-    },
-    install_requires=[
-        'JACK-Client',
-        'pyaudio'
-    ],
+            'pluginsmanager/observer',
+            'pluginsmanager/observer/autosaver',
+            'pluginsmanager/observer/mod_host',
 
-    test_suite='test',
-    tests_require=['JACK-Client', 'pytest', 'pytest-cov'],
+            'pluginsmanager/util',
+            'pluginsmanager/util/builder',
+        ],
+        package_data={
+            'pluginsmanager/model/lv2': ['plugins.json']
+        },
+        install_requires=[
+            'JACK-Client',
+            'pyaudio'
+        ],
 
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Topic :: Multimedia :: Sound/Audio',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
-    ],
-    keywords='pedal-pi mod-host lv2 audio plugins-manager',
+        test_suite='test',
+        tests_require=['JACK-Client', 'pytest', 'pytest-cov'],
 
-    platforms='Linux',
-)
+        classifiers=[
+            'Development Status :: 3 - Alpha',
+            'Intended Audience :: Developers',
+            'License :: OSI Approved :: Apache Software License',
+            'Topic :: Multimedia :: Sound/Audio',
+            'Programming Language :: Python :: 3.4',
+            'Programming Language :: Python :: 3.5',
+            'Programming Language :: Python :: 3.6'
+        ],
+        keywords='pedal-pi mod-host lv2 audio plugins-manager',
+
+        platforms='Linux',
+    )
