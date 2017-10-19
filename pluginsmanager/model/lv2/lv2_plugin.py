@@ -43,3 +43,7 @@ class Lv2Plugin(object):
             str(self),
             id(self)
         )
+
+    @property
+    def version(self):
+        return '' if 'version' not in self.json else self.json['version']

@@ -187,3 +187,10 @@ class Effect(metaclass=ABCMeta):
             str(self),
             id(self)
         )
+
+    @property
+    def version(self):
+        """
+        :return string: Effect version
+        """
+        return ''
