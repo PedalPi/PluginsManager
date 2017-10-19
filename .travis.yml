@@ -22,10 +22,9 @@ install:
 script:
   - lv2ls
   - make test
-  - bash <(curl -s https://codecov.io/bash)
   - make docs
-  - make test-docd
+  - #make test-docs
   - #pytest --doctest-modules
 
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash)
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
