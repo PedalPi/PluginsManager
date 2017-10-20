@@ -23,9 +23,11 @@ Version 0.6.0 -- released 10/?/17
  - `Issue #65`_ - Fix documentation bug `SystemEffectBuilder(client).build()` instead `SystemEffectBuilder(client)`;
  - `Issue #68`_ - Remove current mod-host pedalboard don't removes systems connection (system.output to system.input);
  - `Issue #66`_ - JSON effect improviments: Add plugin version. Remove `min` and `max`;
+ - `Issue #62`_ - Create a converter MOD pedalboard -> PluginsManager pedalboard.
 
 .. _Issue #38: https://github.com/PedalPi/PluginsManager/issues/38
 .. _Issue #57: https://github.com/PedalPi/PluginsManager/issues/57
+.. _Issue #62: https://github.com/PedalPi/PluginsManager/issues/65
 .. _Issue #65: https://github.com/PedalPi/PluginsManager/issues/65
 .. _Issue #66: https://github.com/PedalPi/PluginsManager/issues/66
 .. _Issue #67: https://github.com/PedalPi/PluginsManager/issues/67

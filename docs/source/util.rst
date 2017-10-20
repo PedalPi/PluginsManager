@@ -1,32 +1,40 @@
 PedalPi - PluginsManager - Util
 ===============================
 
-pluginsmanager.util.dict_tuple.DictTuple
-----------------------------------------
+DictTuple
+---------
 
 .. autoclass:: pluginsmanager.util.dict_tuple.DictTuple
    :members:
    :special-members:
    :exclude-members: __weakref__
 
-pluginsmanager.util.pairs_list.PairsList
-----------------------------------------
+ModPedalboardConverter
+----------------------
+
+.. autoclass:: pluginsmanager.util.mod_pedalboard_converter.ModPedalboardConverter
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+PairsList
+---------
 
 .. autoclass:: pluginsmanager.util.pairs_list.PairsList
    :members:
    :special-members:
    :exclude-members: __weakref__
 
-pluginsmanager.util.pairs_list.PairsListResult
-----------------------------------------------
+PairsListResult
+---------------
 
 .. autoclass:: pluginsmanager.util.pairs_list.PairsListResult
    :members:
    :special-members:
    :exclude-members: __weakref__
 
-pluginsmanager.util.persistence_decoder
----------------------------------------
+persistence_decoder
+-------------------
 
 .. autoclass:: pluginsmanager.util.persistence_decoder.PersistenceDecoderError
    :members:
