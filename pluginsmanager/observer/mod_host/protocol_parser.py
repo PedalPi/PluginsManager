@@ -80,22 +80,22 @@ class ProtocolParser:
         return 'connect {} {}'.format(origin_port, destination_port)
 
     @staticmethod
-    def _get_out_name_of(effect_output):
-        effect = effect_output.effect
+    def _get_out_name_of(output_of_effect):
+        effect = output_of_effect.effect
 
-        if isinstance(effect_output, SystemOutput):
-            return '{}:{}'.format(effect, effect_output)
+        if effect.use_real_identifier:
+            return '{}:{}'.format(effect, output_of_effect)
 
-        return 'effect_{}:{}'.format(effect.instance, effect_output.symbol)
+        return 'effect_{}:{}'.format(effect.instance, output_of_effect.symbol)
 
     @staticmethod
-    def _get_in_name_of(effect_input):
-        effect = effect_input.effect
+    def _get_in_name_of(input_of_effect):
+        effect = input_of_effect.effect
 
-        if isinstance(effect_input, SystemInput):
-            return '{}:{}'.format(effect, effect_input)
+        if effect.use_real_identifier:
+            return '{}:{}'.format(effect, input_of_effect)
 
-        return 'effect_{}:{}'.format(effect.instance, effect_input.symbol)
+        return 'effect_{}:{}'.format(effect.instance, input_of_effect.symbol)
 
     @staticmethod
     def disconnect(connection):

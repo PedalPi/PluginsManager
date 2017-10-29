@@ -181,6 +181,20 @@ class Effect(metaclass=ABCMeta):
         """
         return False
 
+    @property
+    def use_real_identifier(self):
+        """
+        Instances of audio plugins are dynamically created, so the effect identifier for the jack can be set.
+
+        However, SystemEffect correspond (mostly) to the audio interfaces already present in the computational system.
+        The identifier for their jack has already been set.
+
+        return bool: For this audio plugin, is necessary use the real effect identifier?
+                     Example: :class:`.Lv2Effect` is False
+                     Example: :class:`.SystemEffect` is True
+        """
+        return False
+
     def __repr__(self):
         return "<{} object as '{}' at 0x{:x}>".format(
             self.__class__.__name__,

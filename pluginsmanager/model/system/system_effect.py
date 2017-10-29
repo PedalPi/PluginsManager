@@ -110,3 +110,10 @@ class SystemEffect(Effect):
                      Example: :class:`.SystemEffect` is unique for all pedalboards
         """
         return True
+
+    @property
+    def use_real_identifier(self):
+        """
+        return bool: For this audio plugin, is necessary use the real effect identifier?
+        """
+        return True
