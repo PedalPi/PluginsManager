@@ -23,7 +23,7 @@ from pluginsmanager.util.dict_tuple import DictTuple
 
 class SystemEffect(Effect):
     """
-    Representation of the system instance (audio cards).
+    Representation of the system instance: audio and/or midi interfaces.
 
     System output is equivalent with audio input: You connect the
     instrument in the audio card input and it captures and send the
@@ -49,33 +49,78 @@ class SystemEffect(Effect):
 
     However the pedalboard must have the connections::
 
-    >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], reverb.inputs[0]))
+    >>> pedalboard.connect(sys_effect.outputs[0], reverb.inputs[0])
 
     An bypass example::
 
     >>> pedalboard = Pedalboard('Bypass example')
     >>> sys_effect = SystemEffect('system', ('capture_1', 'capture_2'), ('playback_1', 'playback_2'))
-    >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))
-    >>> pedalboard.connections.append(Connection(sys_effect.outputs[1], sys_effect.inputs[1]))
+    >>> pedalboard.connect(sys_effect.outputs[0], sys_effect.inputs[0])
+    >>> pedalboard.connect(sys_effect.outputs[1], sys_effect.inputs[1])
+
+    You can create multiple SystemEffect for multiple audio/midi interfaces. In the following example,
+    exists Jack provides audio system ports and two midi ports are added by I/O ports::
+
+    >>> audio_system = SystemEffect('system', inputs=['playback_1', 'playback_2'])
+    >>> midi_system = SystemEffect('ttymidi', midi_outputs=['MIDI_in'], midi_inputs=['MIDI_out'])
+    >>> pedalboard = Pedalboard('MDA-EP')
+    >>> ep = builder.build('http://moddevices.com/plugins/mda/EPiano')
+    >>> pedalboard.connect(ep.outputs[0], audio_system.inputs[0])
+    >>> pedalboard.connect(ep.outputs[1], audio_system.inputs[1])
+    >>> pedalboard.connect(audio_system.midi_outputs[0], ep.midi_inputs[0])
+
+    You can check the audio/midi ports defined in your environment using `jack_lsp`_::
+
+        root@zynthian:~ # As example in Zynthian project: http://zynthian.org
+        root@zynthian:~ jack_lsp -A
+        system:playback_1
+           alsa_pcm:hw:0:in1
+        system:playback_2
+           alsa_pcm:hw:0:in2
+        ttymidi:MIDI_in
+        ttymidi:MIDI_out
+        Zyncoder:output
+        Zyncoder:input
+
+    .. _jack_lsp: http://manpages.ubuntu.com/manpages/xenial/man1/jack_lsp.1.html
+
+    If you prefer, you can use a unique SystemEffect if `alias` the ports::
+
+        localhost@localdomain:~ jack_alias system:midi_capture1 ttymidi:MIDI_in
+        localhost@localdomain:~ jack_alias system:midi_playback1 ttymidi:MIDI_out
+
+    >>> sys_effect = SystemEffect(
+    ...     'system',
+    ...     inputs=['playback_1', 'playback_2'],
+    ...     midi_outputs=['midi_capture1'],
+    ...     midi_inputs=['midi_playback1']
+    ... )
+    >>> pedalboard = Pedalboard('MDA-EP')
+    >>> ep = builder.build('http://moddevices.com/plugins/mda/EPiano')
+    >>> pedalboard.connect(ep.outputs[0], sys_effect.inputs[0])
+    >>> pedalboard.connect(ep.outputs[1], sys_effect.inputs[1])
+    >>> pedalboard.connect(sys_effect.midi_outputs[0], ep.midi_inputs[0])
 
     :param string representation: Audio card representation. Usually 'system'
     :param tuple(string) outputs: Tuple of outputs representation. Usually a output representation
-                                  starts with `capture_`
+                                  starts with ``capture_``
     :param tuple(string) inputs: Tuple of inputs representation. Usually a input representation
-                                 starts with `playback_`
+                                 starts with ``playback_``
     :param tuple(string) midi_outputs: Tuple of midi outputs representation.
     :param tuple(string) midi_inputs: Tuple of midi inputs representation.
     """
-    def __init__(self, representation, outputs, inputs, midi_outputs=None, midi_inputs=None):
+    def __init__(self, representation, outputs=None, inputs=None, midi_outputs=None, midi_inputs=None):
         super(SystemEffect, self).__init__()
 
         self.representation = representation
 
         self._params = tuple()
 
+        inputs = inputs if inputs is not None else []
         inputs = [SystemInput(self, effect_input) for effect_input in inputs]
         self._inputs = DictTuple(inputs, lambda _input: str(_input))
 
+        outputs = outputs if outputs is not None else []
         outputs = [SystemOutput(self, effect_output) for effect_output in outputs]
         self._outputs = DictTuple(outputs, lambda _output: str(_output))
 
