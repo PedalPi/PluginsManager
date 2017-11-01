@@ -219,7 +219,7 @@ class ModHostTest(unittest.TestCase):
 
         pedalboard2.connect(pedalboard2.effects[0].outputs[0], pedalboard2.effects[1].inputs[0])
 
-    #@unittest.skip
+    @unittest.skip
     def test_system_midi_port(self):
         from pluginsmanager.observer.mod_host.mod_host import ModHost
         from pluginsmanager.model.pedalboard import Pedalboard
