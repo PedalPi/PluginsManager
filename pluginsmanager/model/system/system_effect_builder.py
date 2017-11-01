@@ -18,7 +18,13 @@ from pluginsmanager.model.system.system_effect import SystemEffect
 
 class SystemEffectBuilder(object):
     """
-    Automatic system physical ports detection
+    Automatic system physical ports detection.
+
+    Maybe the midi ports not will recognize. In these cases,
+    you need to start `a2jmidid`_ to get MIDI-ALSA ports automatically
+    mapped to JACK-MIDI ports.
+
+    .. _a2jmidid: http://manual.ardour.org/setting-up-your-system/setting-up-midi/midi-on-linux/
 
     :param JackClient jack_client: :class:`.JackClient` instance that will get the information to
                                    generate :class:`.SystemEffect`
