@@ -23,6 +23,7 @@ from pluginsmanager.util.mod_pedalboard_converter import ModPedalboardConverter
 
 class ModPedalboardConverterTest(unittest.TestCase):
 
+
     @unittest.skipIf('TRAVIS' in os.environ, 'Mod-ui not configured in Travis build')
     def test_all(self):
         path = Path('/home/paulo/git/mod/mod_ui/')
@@ -31,9 +32,23 @@ class ModPedalboardConverterTest(unittest.TestCase):
 
         converter = ModPedalboardConverter(path, builder)
 
-        pedalboard_path = Path('/home/paulo/.pedalboards/teste.pedalboard')
+        here = os.path.abspath(os.path.dirname(__file__))
+        pedalboard_path = Path(here+'/teste.pedalboard')
         system_effect = SystemEffect('system', ['capture_1', 'capture_2'], ['playback_1', 'playback_2'])
 
         print(converter.get_pedalboard_info(pedalboard_path))
         pedalboard = converter.convert(pedalboard_path, system_effect)
+        print(pedalboard.json)
+
+    @unittest.skipIf('TRAVIS' in os.environ, 'Mod-ui not configured in Travis build')
+    def test_discover_system_effect(self):
+        path = Path('/home/paulo/git/mod/mod_ui/')
+        builder = Lv2EffectBuilder()
+
+        converter = ModPedalboardConverter(path, builder)
+        here = os.path.abspath(os.path.dirname(__file__))
+        pedalboard_path = Path(here + '/teste.pedalboard')
+
+        print(converter.get_pedalboard_info(pedalboard_path))
+        pedalboard = converter.convert(pedalboard_path)
         print(pedalboard.json)

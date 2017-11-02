@@ -21,21 +21,31 @@ from pluginsmanager.model.system.system_effect import SystemEffect
 
 class ModPedalboardConverter(object):
     """
-    ModPedalboardConverter is a utility to convert MOD pedalboards structure
+    ModPedalboardConverter is a utility to convert MOD [#]_ pedalboards structure
     in plugins manager pedalboard.
 
-    `MOD`_, an awesome music enterprise, create the `mod-ui`_, a visual interface
-    that enable create pedalboards in a simple way.
+    For use, is necessary that the computer system contains the mod_ui with your codes compiled [#]_
+    and the pedalboard::
+
+    >>> path = Path('/home/user/git/mod/mod_ui/')
+    >>> builder = Lv2EffectBuilder()
+    >>> converter = ModPedalboardConverter(path, builder)
+    >>> pedalboard_path = Path('/home/user/.pedalboards/pedalboard_name.pedalboard')
+    >>> system_effect = SystemEffect('system', ['capture_1', 'capture_2'], ['playback_1', 'playback_2'])
+    >>> pedalboard = converter.convert(pedalboard_path, system_effect)
+
+    .. [#] `MOD`_, an awesome music enterprise, create the `mod-ui`_, a visual interface
+           that enable create pedalboards in a simple way.
+    .. [#] See the docs: https://github.com/moddevices/mod-ui#install
 
     .. _MOD: http://moddevices.com/
     .. _mod-ui: https://github.com/moddevices/mod-ui
+
+    :param Path mod_ui_path: path that mod_ui has in the computer.
+    :param Lv2EffectBuilder builder: Builder for generate the lv2 effects
     """
 
     def __init__(self, mod_ui_path, builder):
-        """
-        :param Path mod_ui_path: path that mod_ui has in the computer.
-        :param Lv2EffectBuilder builder: Builder for generate the lv2 effects
-        """
         self._load_mod_ui_libraries(mod_ui_path)
         self.builder = builder
 
@@ -49,21 +59,25 @@ class ModPedalboardConverter(object):
     def get_pedalboard_info(self, path):
         """
         :param Path path: Path that the pedalboard has been persisted.
-                          Generally is in format `path/to/pedalboard/name.pedalboard`
+                          Generally is in format ``path/to/pedalboard/name.pedalboard``
         :return dict: pedalboard persisted configurations
         """
         from utils import get_pedalboard_info
 
         return get_pedalboard_info(str(path))
 
-    def convert(self, pedalboard_path, system_effect):
+    def convert(self, pedalboard_path, system_effect=None):
         """
         :param Path pedalboard_path: Path that the pedalboard has been persisted.
                                      Generally is in format `path/to/pedalboard/name.pedalboard`
         :param SystemEffect system_effect: Effect that contains the audio interface outputs and inputs
+                                           or None for auto discover
         :return Pedalboard: Pedalboard loaded
         """
         info = self.get_pedalboard_info(pedalboard_path)
+
+        if system_effect is None:
+            system_effect = self._discover_system_effect(info['hardware'])
 
         pedalboard = Pedalboard(info['title'])
 
@@ -107,3 +121,8 @@ class ModPedalboardConverter(object):
         ports = list(filtered)[0]
         return ports[port]
 
+    def _discover_system_effect(self, hardware):
+        outputs = ['capture_{}'.format(i) for i in range(1, hardware['audio_outs']+1)]
+        inputs = ['playback_{}'.format(i) for i in range(1, hardware['audio_ins']+1)]
+
+        return SystemEffect('system', outputs, inputs)
