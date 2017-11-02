@@ -39,7 +39,7 @@ class ObservableList(object):
         """
         See :meth:`list.__repr__()` method
         """
-        return "ObservableList: " + repr(self.real_list)
+        return repr(self.real_list)
 
     def append(self, item):
         """

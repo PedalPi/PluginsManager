@@ -124,3 +124,6 @@ class Connection(object):
             'input': self.input.json,
             'type': 'audio'
         }
+
+    def __hash__(self):
+        return '{} x {}'.format(self.output, self.input).__hash__()

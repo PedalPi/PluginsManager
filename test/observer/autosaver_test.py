@@ -26,6 +26,7 @@ from pluginsmanager.observer.autosaver.autosaver import Autosaver
 class AutoSaverTest(unittest.TestCase):
 
     def autosaver(self, auto_save=True):
+        #return Autosaver('/home/paulo/PycharmProjects/PedalPi-Raspberry/pluginsmanager/test/autosaver_data/', auto_save=auto_save)
         return Autosaver('test/autosaver_data/', auto_save=auto_save)
 
     def test_observers(self):
