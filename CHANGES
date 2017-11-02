@@ -1,4 +1,12 @@
-Version 0.6.0 -- released 10/?/17
+Version 0.7.0 -- released 11/??/17
+**********************************
+ - `Issue #83`_ - Add EffectsList for raises errors:
+   - Error when add twice the effect instance;
+   - Error when add any ``effect.is_unique_for_all_pedalboards == True``.
+
+.. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
+
+Version 0.6.0 -- released 11/02/17
 **********************************
  - Add makefile. Now is possible run tests and generate docs easly (`make help`);
  - Improve :class:`.SystemInput` and :class:`.SystemOutputs` documentation;

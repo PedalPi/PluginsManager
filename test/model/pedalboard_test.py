@@ -16,8 +16,9 @@ import unittest
 from unittest.mock import MagicMock
 
 from pluginsmanager.model.bank import Bank
+from pluginsmanager.model.effects_list import NotAddableError
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
-from pluginsmanager.model.pedalboard import Pedalboard, PedalboardError
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
 from pluginsmanager.observer.update_type import UpdateType
 
@@ -77,6 +78,7 @@ class PedalboardTest(unittest.TestCase):
         pedalboard.observer = MagicMock()
         pedalboard.effects[0] = effect2
 
+        self.assertEqual(effect1.pedalboard, None)
         self.assertEqual(effect2.pedalboard, pedalboard)
         self.assertEqual(pedalboard.effects[0], effect2)
         pedalboard.observer.on_effect_updated.assert_called_with(effect2, UpdateType.UPDATED, index=0, origin=pedalboard)
@@ -207,5 +209,5 @@ class PedalboardTest(unittest.TestCase):
 
     def test_add_system_effect(self):
         pedalboard = Pedalboard('test_add_system_effect')
-        with self.assertRaises(PedalboardError):
+        with self.assertRaises(NotAddableError):
             pedalboard.append(SystemEffect('System Effect', (), ()))

@@ -18,6 +18,7 @@ install:
   - python setup.py develop
   - pip3 install pytest pytest-cov
   - make install-tests-requirements
+  - make install-docs-requirements
 
 script:
   - lv2ls

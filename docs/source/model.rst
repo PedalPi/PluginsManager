@@ -147,6 +147,14 @@ Effect
    :special-members:
    :exclude-members: __weakref__
 
+EffectsList
+-----------
+
+.. autoclass:: pluginsmanager.model.effects_list.EffectsList
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Port
 ----
 
