@@ -71,13 +71,13 @@ class ModPedalboardConverter(object):
         :param Path pedalboard_path: Path that the pedalboard has been persisted.
                                      Generally is in format `path/to/pedalboard/name.pedalboard`
         :param SystemEffect system_effect: Effect that contains the audio interface outputs and inputs
-                                           or None for auto discover
+                                           or None for **auto discover**
         :return Pedalboard: Pedalboard loaded
         """
         info = self.get_pedalboard_info(pedalboard_path)
 
         if system_effect is None:
-            system_effect = self._discover_system_effect(info['hardware'])
+            system_effect = self.discover_system_effect(info)
 
         pedalboard = Pedalboard(info['title'])
 
@@ -121,8 +121,19 @@ class ModPedalboardConverter(object):
         ports = list(filtered)[0]
         return ports[port]
 
-    def _discover_system_effect(self, hardware):
+    def discover_system_effect(self, pedalboard_info):
+        """
+        Generate the system effect based in pedalboard_info
+
+        :param dict pedalboard_info: For obtain this, see
+            :meth:`~pluginsmanager.util.mod_pedalboard_converter.ModPedalboardConvert.get_pedalboard_info()`
+        :return SystemEffect: SystemEffect generated based in pedalboard_info
+        """
+        hardware = pedalboard_info['hardware']
+
         outputs = ['capture_{}'.format(i) for i in range(1, hardware['audio_outs']+1)]
         inputs = ['playback_{}'.format(i) for i in range(1, hardware['audio_ins']+1)]
+        midi_outputs = [midi_out['symbol'] for midi_out in hardware['midi_outs'] if midi_out['valid']]
+        midi_inputs = [midi_in['symbol'] for midi_in in hardware['midi_ins'] if midi_in['valid']]
 
-        return SystemEffect('system', outputs, inputs)
+        return SystemEffect('system', outputs, inputs, midi_outputs, midi_inputs)

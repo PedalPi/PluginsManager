@@ -52,3 +52,45 @@ class ModPedalboardConverterTest(unittest.TestCase):
         print(converter.get_pedalboard_info(pedalboard_path))
         pedalboard = converter.convert(pedalboard_path)
         print(pedalboard.json)
+
+    #@unittest.skipIf('TRAVIS' in os.environ, 'Mod-ui not configured in Travis build')
+    @unittest.skip
+    def test_discover_system_effect_midi(self):
+        path = Path('/home/paulo/git/mod/mod_ui/')
+        builder = Lv2EffectBuilder()
+
+        converter = ModPedalboardConverter(path, builder)
+        here = os.path.abspath(os.path.dirname(__file__))
+        pedalboard_path = Path(here + '/EPiano.pedalboard')
+
+        print(converter.get_pedalboard_info(pedalboard_path))
+        pedalboard = converter.convert(pedalboard_path)
+        print(pedalboard.json)
+
+    #@unittest.skipIf('TRAVIS' in os.environ, 'Mod-ui not configured in Travis build')
+    @unittest.skip
+    def test_discover_system_effect_midi_serial(self):
+        path = Path('/home/paulo/git/mod/mod_ui/')
+        builder = Lv2EffectBuilder()
+
+        converter = ModPedalboardConverter(path, builder)
+        here = os.path.abspath(os.path.dirname(__file__))
+        pedalboard_path = Path(here + '/EPiano_simple_tt.pedalboard')
+
+        print(converter.get_pedalboard_info(pedalboard_path))
+        pedalboard = converter.convert(pedalboard_path)
+        print(pedalboard.json)
+
+    #@unittest.skipIf('TRAVIS' in os.environ, 'Mod-ui not configured in Travis build')
+    @unittest.skip
+    def test_discover_system_effect_midi_serial_2(self):
+        path = Path('/home/paulo/git/mod/mod_ui/')
+        builder = Lv2EffectBuilder()
+
+        converter = ModPedalboardConverter(path, builder)
+        here = os.path.abspath(os.path.dirname(__file__))
+        pedalboard_path = Path(here + '/setBfree_ttymidi.pedalboard')
+
+        print(converter.get_pedalboard_info(pedalboard_path))
+        pedalboard = converter.convert(pedalboard_path)
+        print(pedalboard.json)
