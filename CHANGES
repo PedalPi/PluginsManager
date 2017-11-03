@@ -12,6 +12,10 @@ Version 0.7.0 -- released 11/??/17
      not in perdalboard if ``effect.is_unique_for_all_pedalboards == False``
      (e.g.: is not :class:`.SystemEffect`).
 
+ - `Issue #64`_ - Start process to add Carla support:
+
+   - Create :class:`.HostObserver` that :class:`.ModHost` and :class:`.Carla` extends;
+
 .. _Issue #80: https://github.com/PedalPi/PluginsManager/issues/80
 .. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
 

@@ -48,6 +48,7 @@ setup(
 
         'pluginsmanager/observer',
         'pluginsmanager/observer/autosaver',
+        'pluginsmanager/observer/host_observer',
         'pluginsmanager/observer/mod_host',
 
         'pluginsmanager/util',
