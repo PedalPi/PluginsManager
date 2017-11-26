@@ -104,7 +104,7 @@ class Carla(HostObserver):
                 0,
                 None,
                 0):
-            print("Failed to load plugin, possible reasons:\n%s" % self.host.get_last_error())
+            CarlaError("Failed to load plugin, possible reasons:\n%s" % self.host.get_last_error())
 
     def _remove_effect(self, effect):
         self.host.add_plugin(effect.index)
