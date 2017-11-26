@@ -16,6 +16,8 @@ Version 0.7.0 -- released 11/??/17
 
    - Create :class:`.HostObserver` that :class:`.ModHost` and :class:`.Carla` extends;
 
+ - Defined pattern: Access json metadata (liblilv) from lv2 classes using lv2instance.data attribute.
+
 .. _Issue #80: https://github.com/PedalPi/PluginsManager/issues/80
 .. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
 

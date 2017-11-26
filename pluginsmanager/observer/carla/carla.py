@@ -98,7 +98,7 @@ class Carla(HostObserver):
         if not self.host.add_plugin(
                 BINARY_NATIVE,
                 PLUGIN_LV2,
-                "/usr/lib/lv2/gx_echo.lv2/gx_echo.so",  # Fixme
+                None,#"/usr/lib/lv2/gx_echo.lv2/gx_echo.so",  # Fixme
                 "effect_{}".format(effect.index),
                 effect.plugin.json['uri'],
                 0,
@@ -114,5 +114,5 @@ class Carla(HostObserver):
 
     def _set_param_value(self, param):
         effect_index = param.effect.index
-        param_index = param._param['index']
+        param_index = param.data['index']
         self.host.set_parameter_value(effect_index, param_index, param.value)
