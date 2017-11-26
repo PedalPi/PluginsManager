@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from collections import defaultdict
 
 
 class PairsList(object):
@@ -36,11 +37,6 @@ class PairsList(object):
 
         # Pairs
         for key in keys:
-            if not key in hash_elements_a:
-                hash_elements_a[key] = []
-            if not key in hash_elements_b:
-                hash_elements_b[key] = []
-
             while hash_elements_a[key] and hash_elements_b[key]:
                 element_a = hash_elements_a[key].pop(0)
                 element_b = hash_elements_b[key].pop(0)
@@ -53,14 +49,13 @@ class PairsList(object):
         return result
 
     def _generate_hash(self, lista):
-        hash_elements = {}
+        """
+        :return: defaultdict(list)
+        """
+        hash_elements = defaultdict(list)
 
-        for index, element in enumerate(lista):
+        for element in lista:
             key = self.similarity_key(element)
-
-            if key not in hash_elements:
-                hash_elements[key] = []
-
             hash_elements[key].append(element)
 
         return hash_elements
