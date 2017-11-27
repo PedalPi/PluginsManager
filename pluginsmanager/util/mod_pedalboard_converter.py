@@ -19,6 +19,10 @@ from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
 
 
+class PortNotFoundError(Exception):
+    pass
+
+
 class ModPedalboardConverter(object):
     """
     ModPedalboardConverter is a utility to convert MOD [#]_ pedalboards structure
@@ -106,20 +110,31 @@ class ModPedalboardConverter(object):
         return effect
 
     def _get_port(self, name, effects_instance, system_effect):
-        effect, port = None, None
+        effect, port = self.filter_effect_port_symbol(name, effects_instance, system_effect)
 
-        if name.startswith('capture_') or name.startswith('playback_'):
-            effect = system_effect
-            port = name
-        else:
-            instance, port = name.split('/')
-            effect = effects_instance[instance]
-
-        possible_ports = (effect.outputs, effect.inputs, effect.midi_outputs, effect.midi_inputs)
+        possible_ports = (effect.outputs, effect.midi_outputs, effect.inputs, effect.midi_inputs)
         filtered = filter(lambda ports: port in ports, possible_ports)
 
         ports = list(filtered)[0]
         return ports[port]
+
+    def filter_effect_port_symbol(self, name, effects_instance, system_effect):
+        if '/' in name:
+            instance, port = name.split('/')
+            effect = effects_instance[instance]
+        elif self._is_system_effect(name, system_effect):
+            effect = system_effect
+            port = name
+        else:
+            raise PortNotFoundError("Port '{}' registered in system_effect?".format(name))
+
+        return effect, port
+
+    def _is_system_effect(self, name, system_effect):
+        return name in system_effect.inputs or \
+               name in system_effect.midi_inputs or \
+               name in system_effect.outputs or \
+               name in system_effect.midi_outputs
 
     def discover_system_effect(self, pedalboard_info):
         """
