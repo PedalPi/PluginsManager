@@ -15,6 +15,7 @@
 import os
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock
 
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.system.system_effect import SystemEffect
@@ -25,6 +26,7 @@ class ModPedalboardConverterTest(unittest.TestCase):
     @property
     def mod_converter(self):
         path = Path('/home/paulo/git/mod/mod_ui/')
+        #builder = MagicMock()
         builder = Lv2EffectBuilder()
         # builder.reload(builder.lv2_plugins_data())
 
@@ -70,6 +72,14 @@ class ModPedalboardConverterTest(unittest.TestCase):
         converter = self.mod_converter
         pedalboard_path = self.here / Path('EPiano_simple_tt.pedalboard')
 
+        system_effect = SystemEffect(
+            'system',
+            ['capture_1', 'capture_2'],
+            ['playback_1', 'playback_2'],
+            ['midi_playback_1'],
+            ['midi_capture_1']
+        )
+
         print(converter.get_pedalboard_info(pedalboard_path))
         pedalboard = converter.convert(pedalboard_path)
         print(pedalboard.json)
@@ -80,6 +90,8 @@ class ModPedalboardConverterTest(unittest.TestCase):
         converter = self.mod_converter
         pedalboard_path = self.here / Path('setBfree_ttymidi.pedalboard')
 
+        system_effect = None
+        '''
         system_effect = SystemEffect(
             'system',
             ['capture_1', 'capture_2'],
@@ -87,6 +99,7 @@ class ModPedalboardConverterTest(unittest.TestCase):
             ['serial_midi_in'],
             ['serial_midi_out']
         )
+        '''
 
         print(converter.get_pedalboard_info(pedalboard_path))
         # Serial midi out raises error

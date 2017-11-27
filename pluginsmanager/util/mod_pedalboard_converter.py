@@ -146,9 +146,20 @@ class ModPedalboardConverter(object):
         """
         hardware = pedalboard_info['hardware']
 
-        outputs = ['capture_{}'.format(i) for i in range(1, hardware['audio_outs']+1)]
-        inputs = ['playback_{}'.format(i) for i in range(1, hardware['audio_ins']+1)]
-        midi_outputs = [midi_out['symbol'] for midi_out in hardware['midi_outs'] if midi_out['valid']]
-        midi_inputs = [midi_in['symbol'] for midi_in in hardware['midi_ins'] if midi_in['valid']]
+        # MOD swap ins and outs
+        total_audio_outs = hardware['audio_ins']
+        total_audio_ins = hardware['audio_outs']
+
+        outputs = ['capture_{}'.format(i) for i in range(1, total_audio_outs+1)]
+        inputs = ['playback_{}'.format(i) for i in range(1, total_audio_ins+1)]
+
+        midi_outputs = [
+            'serial_midi_out' if hardware['serial_midi_out'] else midi_out['symbol']
+            for midi_out in hardware['midi_outs'] if midi_out['valid']
+        ]
+        midi_inputs = [
+            'serial_midi_in' if hardware['serial_midi_in'] else midi_in['symbol']
+            for midi_in in hardware['midi_ins'] if midi_in['valid']
+        ]
 
         return SystemEffect('system', outputs, inputs, midi_outputs, midi_inputs)
