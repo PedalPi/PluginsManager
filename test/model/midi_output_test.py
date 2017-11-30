@@ -15,7 +15,6 @@
 import unittest
 from unittest.mock import MagicMock
 
-from pluginsmanager.model.connection import ConnectionError
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
