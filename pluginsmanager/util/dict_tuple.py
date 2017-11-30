@@ -41,3 +41,6 @@ class DictTuple(tuple):
 
         else:
             return self._dict[index]
+
+    def __contains__(self, item):
+        return item in self._dict
