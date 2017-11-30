@@ -24,6 +24,8 @@ Version 0.6.0 -- released 11/30/17
  - `Issue #68`_ - Remove current mod-host pedalboard don't removes systems connection (system.output to system.input);
  - `Issue #66`_ - JSON effect improviments: Add plugin version. Remove `min` and `max`;
  - `Issue #62`_ - Create a converter MOD pedalboard -> PluginsManager pedalboard;
+ - `Issue #77`_ - Fix MidiConnection bugs (:class:`SystemMidiInput` and :class:`SystemMidiOutput` doesn't works in :class:`ModHost`);
+ - `Issue #78`_ - Improve lv2 effect builder error message when plugin not exists;
  - :class:`.Lv2EffectBuilder` - Add parameter `ignore_unsupported_plugins` for ignore audio plugins errors if it doesn't installed in the system.
    The previous versions raises error if a audio plugin hasn't installed in the system.
    Now, is possible use it if `plugins_json` parameter contains your metadata.
@@ -36,6 +38,8 @@ Version 0.6.0 -- released 11/30/17
 .. _Issue #66: https://github.com/PedalPi/PluginsManager/issues/66
 .. _Issue #67: https://github.com/PedalPi/PluginsManager/issues/67
 .. _Issue #68: https://github.com/PedalPi/PluginsManager/issues/68
+.. _Issue #77: https://github.com/PedalPi/PluginsManager/issues/77
+.. _Issue #78: https://github.com/PedalPi/PluginsManager/issues/78
 
 Version 0.5.1 -- released 08/16/17
 **********************************

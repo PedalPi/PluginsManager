@@ -218,3 +218,46 @@ class ModHostTest(unittest.TestCase):
         mod_host.pedalboard = pedalboard
 
         pedalboard2.connect(pedalboard2.effects[0].outputs[0], pedalboard2.effects[1].inputs[0])
+
+    @unittest.skip
+    def test_system_midi_port(self):
+        from pluginsmanager.observer.mod_host.mod_host import ModHost
+        from pluginsmanager.model.pedalboard import Pedalboard
+        from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
+        from pluginsmanager.model.system.system_effect import SystemEffect
+
+        jack_system = SystemEffect(
+            'system',
+            [],  # audio inputs
+            ['playback_1', 'playback_2'],  # audio output
+            [],  # midi inputs
+            []  # midi outputs
+        )
+        jack_ttymidi = SystemEffect(
+            'ttymidi',
+            [],  # audio inputs
+            [],  # audio output
+            ['MIDI_in'],  # midi inputs
+            ['MIDI_out']  # midi outputs
+        )
+
+        modhost = ModHost('localhost')
+        modhost.connect()
+
+        pedalboard = Pedalboard('MDA-EP')
+        builder = Lv2EffectBuilder()
+        ep = builder.build('http://guitarix.sourceforge.net/plugins/gx_oc_2_#_oc_2_')
+
+        pedalboard.append(ep)
+
+        # REMEMBER: FIRST OUTPUT, SECOND INPUT
+        # EPiano contains two audio output ports and one midi input port
+        pedalboard.connect(ep.outputs[0], jack_system.inputs[0])
+        pedalboard.connect(jack_ttymidi.midi_outputs[0], ep.midi_inputs[0])
+
+        # If not using banks manager, the changes will not be applied automatically
+        # then, is necessary changes the pedalboard at the end
+        modhost.pedalboard = pedalboard
+
+        # Safe close
+        modhost.close()

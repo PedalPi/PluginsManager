@@ -20,6 +20,10 @@ from pluginsmanager.model.lv2.lv2_plugin import Lv2Plugin
 from pluginsmanager.model.lv2.lv2_effect import Lv2Effect
 
 
+class Lv2EffectBuilderError(Exception):
+    pass
+
+
 class Lv2EffectBuilder(object):
     """
     Generates lv2 audio plugins instance (as :class:`.Lv2Effect` object).
@@ -82,7 +86,15 @@ class Lv2EffectBuilder(object):
         :param string lv2_uri:
         :return Lv2Effect: Effect created
         """
-        return Lv2Effect(self._plugins[lv2_uri])
+        try:
+            plugin = self._plugins[lv2_uri]
+        except KeyError:
+            raise Lv2EffectBuilderError(
+                "Lv2EffectBuilder not contains metadata information about the plugin '{}'. \n"
+                "Try re-scan the installed plugins using the reload method::\n"
+                "   >>> lv2_effect_builder.reload(lv2_effect_builder.lv2_plugins_data())".format(lv2_uri))
+
+        return Lv2Effect(plugin)
 
     def lv2_plugins_data(self):
         """
