@@ -38,6 +38,23 @@ class ModPedalboardConverter(object):
     >>> system_effect = SystemEffect('system', ['capture_1', 'capture_2'], ['playback_1', 'playback_2'])
     >>> pedalboard = converter.convert(pedalboard_path, system_effect)
 
+    ModPedalboardConverter can try discover the `system_pedalboard` by the pedalboard::
+
+    >>> path = Path('/home/user/git/mod/mod_ui/')
+    >>> builder = Lv2EffectBuilder()
+    >>> converter = ModPedalboardConverter(path, builder)
+    >>> pedalboard_path = Path('/home/user/.pedalboards/pedalboard_name.pedalboard')
+    >>> pedalboard = converter.convert(pedalboard_path)
+
+    If you needs only obtain the system effect::
+
+    >>> path = Path('/home/user/git/mod/mod_ui/')
+    >>> builder = Lv2EffectBuilder()
+    >>> converter = ModPedalboardConverter(path, builder)
+    >>> pedalboard_path = Path('/home/user/.pedalboards/pedalboard_name.pedalboard')
+    >>> pedalboard_info = converter.get_pedalboard_info(pedalboard_path)
+    >>> system_effect = converter.discover_system_effect(pedalboard_info)
+
     .. [#] `MOD`_, an awesome music enterprise, create the `mod-ui`_, a visual interface
            that enable create pedalboards in a simple way.
     .. [#] See the docs: https://github.com/moddevices/mod-ui#install
