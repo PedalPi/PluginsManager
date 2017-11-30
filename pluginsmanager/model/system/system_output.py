@@ -13,32 +13,23 @@
 # limitations under the License.
 
 from pluginsmanager.model.output import Output
+from pluginsmanager.model.system.system_port_mixing import SystemPortMixing
 
 
-class SystemOutput(Output):
+class SystemOutput(SystemPortMixing, Output):
+    """
+    Representation of a System output audio port instance.
 
-    def __init__(self, effect, output):
+    For general input use, see :class:`.Output` class documentation.
+
+    :param SystemEffect effect: Effect that contains the input
+    :param string symbol: *output audio port* symbol identifier
+    """
+
+    def __init__(self, effect, symbol):
         super(SystemOutput, self).__init__(effect)
-        self._output = output
-        self._unique_for_all_pedalboards = True
-
-    def __str__(self):
-        return self._output
-
-    def __repr__(self):
-        return "<{} object as {} at 0x{:x}>".format(
-            self.__class__.__name__,
-            str(self),
-            id(self)
-        )
+        self._symbol = symbol
 
     @property
     def symbol(self):
-        return str(self)
-
-    @property
-    def __dict__(self):
-        return {
-            'symbol': self.symbol,
-            'index': self.effect.outputs.index(self),
-        }
+        return self._symbol

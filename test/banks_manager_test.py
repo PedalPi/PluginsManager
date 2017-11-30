@@ -51,25 +51,25 @@ class BanksManagerTest(unittest.TestCase):
         pedalboard.append(reverb2)
         observer.on_effect_updated.assert_called_with(reverb2, UpdateType.CREATED, index=reverb2.index, origin=pedalboard)
 
-        reverb.outputs[0].connect(filter.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], filter.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
-        reverb.outputs[1].connect(filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[1], filter.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
-        filter.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(filter.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
             pedalboard=pedalboard
         )
-        reverb.outputs[0].connect(reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
         observer.on_connection_updated.assert_called_with(
             Connection(reverb.outputs[0], reverb2.inputs[0]),
             UpdateType.CREATED,
@@ -139,3 +139,13 @@ class BanksManagerTest(unittest.TestCase):
         manager.register(observer2)
 
         self.assertListEqual([observer1, observer2], manager.observers)
+
+    def test_unregister(self):
+        observer = MagicMock()
+
+        manager = BanksManager()
+        manager.register(observer)
+
+        self.assertIn(observer, manager.observers)
+        manager.unregister(observer)
+        self.assertNotIn(observer, manager.observers)

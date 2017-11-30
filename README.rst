@@ -157,7 +157,7 @@ It requires a `JackClient` instance, that uses `JACK-Client`_.
     client = JackClient()
 
     from pluginsmanager.model.system.system_effect_builder import SystemEffectBuilder
-    sys_effect = SystemEffectBuilder(client)
+    sys_effect = SystemEffectBuilder(client).build()
 
 For manual input and output sound card definition, use:
 
@@ -261,42 +261,19 @@ library can be accessed in the `Observer section <observer.html>`__.
 
 .. _Carla: https://github.com/falkTX/Carla
 
-Changelog
----------
-
-..include:: ../../CHANGES
 
 Maintenance
 -----------
 
-Test
-****
+Makefile
+********
 
-It is not necessary for the mod_host process to be running
-
-.. code-block:: bash
-
-    coverage3 run --source=pluginsmanager setup.py test
-
-    coverage3 report
-    coverage3 html
-    firefox htmlcov/index.html
+Execute ``make help`` for see the options
 
 Generate documentation
 **********************
 
 This project uses `Sphinx`_ + `Read the Docs`_.
-
-You can generate the documentation in your local machine:
-
-.. code-block:: bash
-
-    pip3 install sphinx
-
-    cd docs
-    make html
-
-    firefox build/html/index.html
 
 .. _Sphinx: http://www.sphinx-doc.org/
 .. _Read the Docs: http://readthedocs.org

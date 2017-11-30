@@ -18,10 +18,14 @@ from pluginsmanager.observer.update_type import UpdateType
 from unittest.mock import MagicMock
 
 
+class PedalboardError(Exception):
+    pass
+
+
 class Pedalboard(object):
     """
     Pedalboard is a patch representation: your structure contains
-    :class:`.Effect` and :class:`pluginsmanager.mod_host.connection.Connection`::
+    :class:`.Effect` and :class:`~pluginsmanager.model.connection.Connection`::
 
         >>> pedalboard = Pedalboard('Rocksmith')
         >>> bank.append(pedalboard)
@@ -42,7 +46,8 @@ class Pedalboard(object):
         >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], fuzz.inputs[0])) # View SystemEffect for more details
         >>> pedalboard.connections.append(Connection(fuzz.outputs[0], reverb.inputs[0]))
         >>> # It works too
-        >>> reverb.outputs[1].connect(sys_effect.inputs[0])
+        >>> pedalboard.connect(reverb.outputs[1], sys_effect.inputs[0])
+        >>> pedalboard.connections
         ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
 
         >>> pedalboard.data
@@ -150,6 +155,10 @@ class Pedalboard(object):
 
         :param Effect effect: Effect that will be added
         """
+        if effect.is_unique_for_all_pedalboards:
+            raise PedalboardError("The effect '{}' is unique for all pedalboards. "
+                                  "Then, isn't allowed add it in any pedalboard.".format(str(effect)))
+
         self.effects.append(effect)
 
     @property
@@ -187,3 +196,46 @@ class Pedalboard(object):
             raise IndexError('Pedalboard not contains a bank')
 
         return self.bank.pedalboards.index(self)
+
+    def connect(self, output_port, input_port):
+        """
+        Connect two :class:`.Effect` instances in this pedalboard.
+        For this, is necessary informs the output port origin and the input port destination::
+
+            >>> pedalboard.append(driver)
+            >>> pedalboard.append(reverb)
+            >>> driver_output = driver.outputs[0]
+            >>> reverb_input = reverb.inputs[0]
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            False
+            >>> pedalboard.connect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            True
+
+        :param Port output_port: Effect output port
+        :param Port input_port: Effect input port
+        """
+        ConnectionClass = output_port.connection_class
+        self.connections.append(ConnectionClass(output_port, input_port))
+
+    def disconnect(self, output_port, input_port):
+        """
+        Remove a connection between (two ports of) :class:`.Effect` instances.
+        For this, is necessary informs the output port origin and the input port destination::
+
+            >>> pedalboard.append(driver)
+            >>> pedalboard.append(reverb)
+            >>> driver_output = driver.outputs[0]
+            >>> reverb_input = reverb.inputs[0]
+            >>> pedalboard.connect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            True
+            >>> pedalboard.disconnect(driver_output, reverb_input)
+            >>> Connection(driver_output, reverb_input) in driver.connections
+            False
+
+        :param Port output_port: Effect output port
+        :param Port input_port: Effect input port
+        """
+        ConnectionClass = output_port.connection_class
+        self.connections.remove(ConnectionClass(output_port, input_port))

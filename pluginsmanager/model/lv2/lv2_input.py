@@ -13,9 +13,10 @@
 # limitations under the License.
 
 from pluginsmanager.model.input import Input
+from pluginsmanager.model.lv2.lv2_port_mixing import Lv2PortMixing
 
 
-class Lv2Input(Input):
+class Lv2Input(Lv2PortMixing, Input):
     """
     Representation of a Lv2 `input audio port`_ instance.
 
@@ -24,30 +25,13 @@ class Lv2Input(Input):
     .. _input audio port: http://lv2plug.in/ns/lv2core/#InputPort
 
     :param Lv2Effect effect: Effect that contains the input
-    :param dict effect_input: *input audio port* json representation
+    :param dict data: *input audio port* json representation
     """
 
-    def __init__(self, effect, effect_input):
+    def __init__(self, effect, data):
         super(Lv2Input, self).__init__(effect)
-        self._input = effect_input
-
-    def __str__(self):
-        return self._input['name']
-
-    def __repr__(self):
-        return "<{} object as {} at 0x{:x}>".format(
-            self.__class__.__name__,
-            str(self),
-            id(self)
-        )
+        self._data = data
 
     @property
-    def symbol(self):
-        return self._input['symbol']
-
-    @property
-    def __dict__(self):
-        dictionary = super(Lv2Input, self).__dict__
-        dictionary['index'] = self._input['index']
-
-        return dictionary
+    def data(self):
+        return self._data

@@ -13,6 +13,9 @@
 # limitations under the License.
 
 
+from pluginsmanager.model.audio_port import AudioPort
+
+
 class ConnectionError(Exception):
     def __init__(self, message):
         super(ConnectionError, self).__init__(message)
@@ -21,9 +24,10 @@ class ConnectionError(Exception):
 
 class Connection(object):
     """
-    :class:`pluginsmanager.model.connection.Connection` represents a connection between two
-    distinct effects by your ports (effect :class:`.Output` with effect :class:`.Input`)::
+    :class:`~pluginsmanager.model.connection.Connection` represents a connection between two
+    distinct effects by your :class:`.AudioPort` (effect :class:`.Output` with effect :class:`.Input`)::
 
+    >>> from pluginsmanager.model.pedalboard import Pedalboard
     >>> californication = Pedalboard('Californication')
     >>> californication.append(driver)
     >>> californication.append(reverb)
@@ -42,21 +46,38 @@ class Connection(object):
 
     Another way to use implicitly connections::
 
-    >>> guitar_output.connect(driver_input)
-    >>> driver_output.connect(reverb_input)
-    >>> reverb_output.connect(amp_input)
+    >>> californication.connect(guitar_output, driver_input)
+    >>> californication.connect(driver_output, reverb_input)
+    >>> californication.connect(reverb_output, amp_input)
 
-    :param Output effect_output: Output port that will be connected with input port
-    :param Input effect_input: Input port that will be connected with output port
+    :param Output output_port: Audio output port that will be connected with audio input port
+    :param Input input_port: Audio input port that will be connected with audio output port
     """
 
-    def __init__(self, effect_output, effect_input):
-        if effect_output.effect == effect_input.effect\
-        and not effect_output.effect.is_possible_connect_itself:
-            raise ConnectionError('Effect of output and effect of input are equals')
+    def __init__(self, output_port, input_port):
+        if not self._valid_instance(output_port)\
+        or not self._valid_instance(input_port):
+            raise ConnectionError("'{}' only accepts ports that inherits {}".format(self.__class__.__name__, self.ports_class.__name__))
 
-        self._output = effect_output
-        self._input = effect_input
+        if output_port.effect == input_port.effect\
+        and not output_port.effect.is_possible_connect_itself:
+            effect_name = str(input_port.effect)
+            raise ConnectionError("The output {} and input {} are from the same effect {}. "
+                                  "This effect doesn't accept connections between itself instance."
+                                  .format(effect_name, str(output_port), str(input_port)))
+
+        self._output = output_port
+        self._input = input_port
+
+    def _valid_instance(self, port):
+        return isinstance(port, self.ports_class)
+
+    @property
+    def ports_class(self):
+        """
+        :return class: Port class that this connection only accepts
+        """
+        return AudioPort
 
     @property
     def output(self):
@@ -101,4 +122,5 @@ class Connection(object):
         return {
             'output': self.output.json,
             'input': self.input.json,
+            'type': 'audio'
         }

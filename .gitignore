@@ -2,7 +2,9 @@
 *.egg-info
 htmlcov
 .coverage
+.cache
 docs/build
 .eggs
 dist/
 build/
+test/autosaver_data

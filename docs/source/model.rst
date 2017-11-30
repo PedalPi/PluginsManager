@@ -39,24 +39,47 @@ This page contains the model classes.
 
 .. graphviz::
 
-   digraph classes {
-       graph [rankdir=BT];
-       node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+    digraph classes {
+        graph [rankdir=BT];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
 
-       Lv2Effect->Lv2Plugin[
-           dir="backward", arrowhead="diamond", arrowtail="normal"
-       ];
-       Lv2Effect->Effect;
-       SystemEffect->Effect;
+        AudioPort->Port;
 
-       Lv2Input->Input;
-       SystemInput->Input;
+        Input->AudioPort;
+        Output->AudioPort;
 
-       Lv2Output->Output;
-       SystemOutput->Output;
+        MidiPort->Port;
+        MidiInput->MidiPort;
+        MidiOutput->MidiPort;
 
-       Lv2Param->Param;
-   }
+        Lv2Input->Input;
+        Lv2Output->Output;
+        Lv2MidiInput->MidiInput;
+        Lv2MidiOutput->MidiOutput;
+
+        SystemInput->Input;
+        SystemOutput->Output;
+        SystemMidiInput->MidiInput;
+        SystemMidiOutput->MidiOutput;
+
+    }
+
+.. graphviz::
+
+    digraph classes {
+        graph [rankdir=BT];
+        node [shape=rect, style=filled, color="#298029", fontname=Sans, fontcolor="#ffffff", fontsize=10];
+
+        Lv2Effect->Lv2Plugin[
+            dir="backward", arrowhead="diamond", arrowtail="normal"
+        ];
+        Lv2Effect->Effect;
+        SystemEffect->Effect;
+
+        Lv2Param->Param;
+
+        MidiConnection->Connection;
+    }
 
 .. graphviz::
 
@@ -70,6 +93,11 @@ This page contains the model classes.
         ModHost->UpdatesObserver
         AutoSaver->UpdatesObserver
     }
+
+.. .. inheritance-diagram::
+    pluginsmanager.model.output.Output
+    pluginsmanager.model.input.Input
+
 
 BanksManager
 ------------
@@ -87,6 +115,14 @@ Bank
    :special-members:
    :exclude-members: __weakref__
 
+Pedalboard
+----------
+
+.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Connection
 ----------
 
@@ -95,10 +131,34 @@ Connection
    :special-members:
    :exclude-members: __weakref__
 
+MidiConnection
+--------------
+
+.. autoclass:: pluginsmanager.model.midi_connection.MidiConnection
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Effect
 ------
 
 .. autoclass:: pluginsmanager.model.effect.Effect
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+Port
+----
+
+.. autoclass:: pluginsmanager.model.port.Port
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+AudioPort
+---------
+
+.. autoclass:: pluginsmanager.model.audio_port.AudioPort
    :members:
    :special-members:
    :exclude-members: __weakref__
@@ -119,6 +179,31 @@ Output
    :special-members:
    :exclude-members: __weakref__
 
+MidiPort
+--------
+
+.. autoclass:: pluginsmanager.model.midi_port.MidiPort
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+
+MidiInput
+---------
+
+.. autoclass:: pluginsmanager.model.midi_input.MidiInput
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+MidiOutput
+----------
+
+.. autoclass:: pluginsmanager.model.midi_output.MidiOutput
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Param
 -----
 
@@ -127,10 +212,3 @@ Param
    :special-members:
    :exclude-members: __weakref__
 
-Pedalboard
-----------
-
-.. autoclass:: pluginsmanager.model.pedalboard.Pedalboard
-   :members:
-   :special-members:
-   :exclude-members: __weakref__

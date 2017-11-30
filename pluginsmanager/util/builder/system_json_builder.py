@@ -30,3 +30,11 @@ class SystemAudioPortBuilder(AudioPortBuilder):
     def build_output(self, json):
         symbol = json['symbol']
         return self.system_effect.outputs[symbol]
+
+    def build_midi_input(self, json):
+        symbol = json['symbol']
+        return self.system_effect.midi_inputs[symbol]
+
+    def build_midi_output(self, json):
+        symbol = json['symbol']
+        return self.system_effect.midi_outputs[symbol]

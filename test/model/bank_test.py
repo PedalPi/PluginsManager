@@ -105,12 +105,12 @@ class BankTest(unittest.TestCase):
         pedalboard.append(filter)
         pedalboard.append(reverb2)
 
-        system_effect.outputs[0].connect(reverb.inputs[0])
-        reverb.outputs[0].connect(filter.inputs[0])
-        reverb.outputs[1].connect(filter.inputs[0])
-        filter.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(reverb2.inputs[0])
-        reverb.outputs[0].connect(system_effect.inputs[0])
+        pedalboard.connect(system_effect.outputs[0], reverb.inputs[0])
+        pedalboard.connect(reverb.outputs[0], filter.inputs[0])
+        pedalboard.connect(reverb.outputs[1], filter.inputs[0])
+        pedalboard.connect(filter.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
+        pedalboard.connect(reverb.outputs[0], system_effect.inputs[0])
 
         bank.append(pedalboard)
 

@@ -29,3 +29,4 @@ class SystemEffectBuilderTest(unittest.TestCase):
 
         self.assertEqual((), system_effect.inputs)
         self.assertTupleEqual((), system_effect.outputs)
+        self.assertEqual('', system_effect.version)

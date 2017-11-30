@@ -13,8 +13,9 @@
 # limitations under the License.
 
 from abc import ABCMeta, abstractmethod
-
 from unittest.mock import MagicMock
+
+from pluginsmanager.util.dict_tuple import DictTuple
 
 
 class Effect(metaclass=ABCMeta):
@@ -22,7 +23,7 @@ class Effect(metaclass=ABCMeta):
     Representation of a audio plugin instance - LV2 plugin encapsulated as a jack client.
 
     Effect contains a `active` status (off=bypass), a list of :class:`.Param`,
-    a list of :class:`.Input` and a list of :class:`pluginsmanager.mod_host.connection.Connection`::
+    a list of :class:`.Input` and a list of :class:`~pluginsmanager.model.connection.Connection`::
 
         >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         >>> pedalboard.append(reverb)
@@ -53,8 +54,10 @@ class Effect(metaclass=ABCMeta):
         self._active = True
 
         self._params = ()
-        self._inputs = ()
-        self._outputs = ()
+        self._inputs = DictTuple([], lambda: None)
+        self._outputs = DictTuple([], lambda: None)
+        self._midi_inputs = DictTuple([], lambda: None)
+        self._midi_outputs = DictTuple([], lambda: None)
 
         self._observer = MagicMock()
 
@@ -89,6 +92,20 @@ class Effect(metaclass=ABCMeta):
         :return list[Output]: Outputs of effect
         """
         return self._outputs
+
+    @property
+    def midi_inputs(self):
+        """
+        :return list[MidiInput]: MidiInputs of effect
+        """
+        return self._midi_inputs
+
+    @property
+    def midi_outputs(self):
+        """
+        :return list[MidiOutput]: MidiOutputs of effect
+        """
+        return self._midi_outputs
 
     @property
     def active(self):
@@ -155,3 +172,39 @@ class Effect(metaclass=ABCMeta):
         return bool: Is possible connect the with it self?
         """
         return False
+
+    @property
+    def is_unique_for_all_pedalboards(self):
+        """
+        return bool: Is unique for all pedalboards?
+                     Example: :class:`.SystemEffect` is unique for all pedalboards
+        """
+        return False
+
+    @property
+    def use_real_identifier(self):
+        """
+        Instances of audio plugins are dynamically created, so the effect identifier for the jack can be set.
+
+        However, SystemEffect correspond (mostly) to the audio interfaces already present in the computational system.
+        The identifier for their jack has already been set.
+
+        return bool: For this audio plugin, is necessary use the real effect identifier?
+                     Example: :class:`.Lv2Effect` is False
+                     Example: :class:`.SystemEffect` is True
+        """
+        return False
+
+    def __repr__(self):
+        return "<{} object as '{}' at 0x{:x}>".format(
+            self.__class__.__name__,
+            str(self),
+            id(self)
+        )
+
+    @property
+    def version(self):
+        """
+        :return string: Effect version
+        """
+        return ''

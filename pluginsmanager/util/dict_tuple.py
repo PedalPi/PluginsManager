@@ -16,7 +16,7 @@
 class DictTuple(tuple):
     """
     Dict tuple is a union with dicts and tuples. It's possible obtains an element
-    by index or by a key.
+    by index or by a key
 
     The key is not been a int or long instance
 
@@ -41,3 +41,6 @@ class DictTuple(tuple):
 
         else:
             return self._dict[index]
+
+    def __contains__(self, item):
+        return item in self._dict

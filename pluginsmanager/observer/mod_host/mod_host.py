@@ -292,6 +292,7 @@ class ModHost(UpdatesObserver):
 
     def _remove_pedalboard(self, pedalboard):
         self._remove_effects(pedalboard.effects)
+        self._remove_connections_of(pedalboard)
 
     def _remove_connections_of(self, pedalboard):
         for connection in pedalboard.connections:

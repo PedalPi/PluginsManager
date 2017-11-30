@@ -13,10 +13,8 @@
 # limitations under the License.
 
 from pluginsmanager.model.bank import Bank
-from pluginsmanager.model.pedalboard import Pedalboard
-from pluginsmanager.model.connection import Connection
-
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder as Lv2LilvEffectBuilder
+from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.util.builder.lv2_json_builder import Lv2AudioPortBuilder, Lv2EffectBuilder
 from pluginsmanager.util.builder.system_json_builder import SystemAudioPortBuilder
 
@@ -67,7 +65,8 @@ class PedalboardReader(Reader):
 
         connection_reader = ConnectionReader(pedalboard, self.system_effect)
         for connection_json in json['connections']:
-            pedalboard.connections.append(connection_reader.read(connection_json))
+            port_output, port_input = connection_reader.read(connection_json)
+            pedalboard.connect(port_output, port_input)
 
         if 'data' in json:
             pedalboard.data = json['data']
@@ -100,10 +99,14 @@ class ConnectionReader(Reader):
         self.pedalboard = pedalboard
 
     def read(self, json):
-        connection_output = self.generate_builder(json, 'output').build_output(json['output'])
-        connection_input = self.generate_builder(json, 'input').build_input(json['input'])
+        if json['type'] == 'audio':
+            connection_output = self.generate_builder(json, 'output').build_output(json['output'])
+            connection_input = self.generate_builder(json, 'input').build_input(json['input'])
+        else:
+            connection_output = self.generate_builder(json, 'output').build_midi_output(json['output'])
+            connection_input = self.generate_builder(json, 'input').build_midi_input(json['input'])
 
-        return Connection(connection_output, connection_input)
+        return connection_output, connection_input
 
     def generate_builder(self, json, audio_port):
         """
