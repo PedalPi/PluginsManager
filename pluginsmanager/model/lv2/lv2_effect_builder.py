@@ -34,6 +34,7 @@ class Lv2EffectBuilder(object):
         in *plugins.json*.
 
     :param Path plugins_json: Plugins json path file
+    :param bool ignore_unsupported_plugins: Not allows instantiation of uninstalled or unrecognized audio plugins?
     """
 
     plugins_json_file = os.path.dirname(os.path.abspath(__file__)) + '/plugins.json'
@@ -41,7 +42,7 @@ class Lv2EffectBuilder(object):
     Informs the path of the `plugins.json` file. This file contains the lv2 plugins metadata info
     """
 
-    def __init__(self, plugins_json=None):
+    def __init__(self, plugins_json=None, ignore_unsupported_plugins=True):
         self._plugins = {}
 
         if plugins_json is None:
@@ -50,17 +51,20 @@ class Lv2EffectBuilder(object):
         with open(str(plugins_json)) as data_file:
             data = json.load(data_file)
 
-        self.reload(data)
+        self.reload(data, ignore_unsupported_plugins=ignore_unsupported_plugins)
 
-    def reload(self, metadata):
+    def reload(self, metadata, ignore_unsupported_plugins=True):
         """
         Loads the metadata. They will be used so that it is possible to generate lv2 audio plugins.
 
         :param list metadata: lv2 audio plugins metadata
+        :param bool ignore_unsupported_plugins: Not allows instantiation of uninstalled or unrecognized audio plugins?
         """
         supported_plugins = self._supported_plugins
+
         for plugin in metadata:
-            if plugin['uri'] in supported_plugins:
+            if not ignore_unsupported_plugins \
+            or plugin['uri'] in supported_plugins:
                 self._plugins[plugin['uri']] = Lv2Plugin(plugin)
 
     @property
