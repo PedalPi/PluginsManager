@@ -47,11 +47,13 @@ class ModPedalboardConverter(object):
 
     :param Path mod_ui_path: path that mod_ui has in the computer.
     :param Lv2EffectBuilder builder: Builder for generate the lv2 effects
+    :param bool ignore_errors: Ignore pedalboard problems like connections with undefined ports
     """
 
-    def __init__(self, mod_ui_path, builder):
+    def __init__(self, mod_ui_path, builder, ignore_errors=False):
         self._load_mod_ui_libraries(mod_ui_path)
         self.builder = builder
+        self.ignore_errors = ignore_errors
 
     def _load_mod_ui_libraries(self, path):
         """
@@ -92,11 +94,17 @@ class ModPedalboardConverter(object):
             pedalboard.append(effect)
             effects_instance[effect_data['instance']] = effect
 
-        for connection_data in info['connections']:
-            output_port = self._get_port(connection_data['source'], effects_instance, system_effect)
-            input_port = self._get_port(connection_data['target'], effects_instance, system_effect)
+        try:
+            for connection_data in info['connections']:
+                output_port = self._get_port(connection_data['source'], effects_instance, system_effect)
+                input_port = self._get_port(connection_data['target'], effects_instance, system_effect)
 
-            pedalboard.connect(output_port, input_port)
+                pedalboard.connect(output_port, input_port)
+        except PortNotFoundError as e:
+            if self.ignore_errors:
+                print("WARNING:", e)
+            else:
+                raise e
 
         return pedalboard
 
@@ -144,20 +152,20 @@ class ModPedalboardConverter(object):
             :meth:`~pluginsmanager.util.mod_pedalboard_converter.ModPedalboardConvert.get_pedalboard_info()`
         :return SystemEffect: SystemEffect generated based in pedalboard_info
         """
+        # MOD swap ins and outs!!!
         hardware = pedalboard_info['hardware']
 
-        # MOD swap ins and outs
         total_audio_outs = hardware['audio_ins']
         total_audio_ins = hardware['audio_outs']
 
         outputs = ['capture_{}'.format(i) for i in range(1, total_audio_outs+1)]
         inputs = ['playback_{}'.format(i) for i in range(1, total_audio_ins+1)]
 
-        midi_outputs = [
+        midi_inputs = [
             'serial_midi_out' if hardware['serial_midi_out'] else midi_out['symbol']
             for midi_out in hardware['midi_outs'] if midi_out['valid']
         ]
-        midi_inputs = [
+        midi_outputs = [
             'serial_midi_in' if hardware['serial_midi_in'] else midi_in['symbol']
             for midi_in in hardware['midi_ins'] if midi_in['valid']
         ]

@@ -1,4 +1,4 @@
-Version 0.6.0 -- released 10/?/17
+Version 0.6.0 -- released 11/30/17
 **********************************
  - Add makefile. Now is possible run tests and generate docs easly (`make help`);
  - Improve :class:`.SystemInput` and :class:`.SystemOutputs` documentation;
@@ -23,7 +23,11 @@ Version 0.6.0 -- released 10/?/17
  - `Issue #65`_ - Fix documentation bug `SystemEffectBuilder(client).build()` instead `SystemEffectBuilder(client)`;
  - `Issue #68`_ - Remove current mod-host pedalboard don't removes systems connection (system.output to system.input);
  - `Issue #66`_ - JSON effect improviments: Add plugin version. Remove `min` and `max`;
- - `Issue #62`_ - Create a converter MOD pedalboard -> PluginsManager pedalboard.
+ - `Issue #62`_ - Create a converter MOD pedalboard -> PluginsManager pedalboard;
+ - :class:`.Lv2EffectBuilder` - Add parameter `ignore_unsupported_plugins` for ignore audio plugins errors if it doesn't installed in the system.
+   The previous versions raises error if a audio plugin hasn't installed in the system.
+   Now, is possible use it if `plugins_json` parameter contains your metadata.
+   Observes that, how the audio plugin aren't installed, your use with mod-host or other host will raises errors.
 
 .. _Issue #38: https://github.com/PedalPi/PluginsManager/issues/38
 .. _Issue #57: https://github.com/PedalPi/PluginsManager/issues/57
