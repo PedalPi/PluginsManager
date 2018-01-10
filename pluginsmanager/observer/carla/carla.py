@@ -89,7 +89,21 @@ class Carla(HostObserver):
         self.host.set_engine_option(ENGINE_OPTION_PATH_BINARIES, 0, path)
 
     def _connect(self, connection):
-        pass
+        # TODO
+        # https://github.com/moddevices/mod-ui/blob/master/mod/host_carla.py#L185-L198
+        split_from = port_from.split("/")
+        if len(split_from) != 3:
+            return
+        if split_from[1] == "system":
+            groupIdA = self._client_id_system
+            portIdA  = int(split_from[2].rsplit("_",1)[-1])
+            instance_from, port_from = port_from.rsplit("/", 1)
+        else:
+            groupIdB = self._getPluginId(split_from[:1].join("/"))
+            portIdB  = int(split_from[2].rsplit("_",1)[-1])
+            instance_from, port_from = port_from.rsplit("/", 1)
+
+        self.host.patchbay_connect(groupIdA, portIdA, groupIdB, portIdB)
 
     def _disconnect(self, connection):
         pass
