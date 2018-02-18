@@ -9,8 +9,14 @@ Version 0.7.0 -- released 11/??/17
 
    - Error when add twice an equals connection;
    - Error when add a connection where the input or output is a effect that
-     not in perdalboard if ``effect.is_unique_for_all_pedalboards == False``
+     not in pedalboard if ``effect.is_unique_for_all_pedalboards == False``
      (e.g.: is not :class:`.SystemEffect`).
+
+ - `Issue #64`_ - Start process to add Carla support:
+
+   - Create :class:`.HostObserver` that :class:`.ModHost` and :class:`.Carla` extends;
+
+ - Defined pattern: Access json metadata (liblilv) from lv2 classes using lv2instance.data attribute.
 
 .. _Issue #80: https://github.com/PedalPi/PluginsManager/issues/80
 .. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
