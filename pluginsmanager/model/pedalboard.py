@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from pluginsmanager.model.effects_list import EffectsList
-from pluginsmanager.observer.observable_list import ObservableList
+from pluginsmanager.model.connections_list import ConnectionsList
 from pluginsmanager.observer.update_type import UpdateType
 
 from unittest.mock import MagicMock
@@ -29,23 +29,23 @@ class Pedalboard(object):
 
         >>> builder = Lv2EffectBuilder()
         >>> pedalboard.effects
-        EffectsList: ObservableList: []
+        []
         >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         >>> pedalboard.append(reverb)
         >>> pedalboard.effects
-        EffectsList: ObservableList: [<Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>]
+        [<Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>]
 
         >>> fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         >>> pedalboard.effects.append(fuzz)
 
         >>> pedalboard.connections
-        ObservableList: []
+        []
         >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], fuzz.inputs[0])) # View SystemEffect for more details
         >>> pedalboard.connections.append(Connection(fuzz.outputs[0], reverb.inputs[0]))
         >>> # It works too
         >>> pedalboard.connect(reverb.outputs[1], sys_effect.inputs[0])
         >>> pedalboard.connections
-        ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
+        [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
 
         >>> pedalboard.data
         {}
@@ -65,9 +65,9 @@ class Pedalboard(object):
     def __init__(self, name):
         self.name = name
         self._effects = EffectsList()
-        self._connections = ObservableList()
+        self._connections = ConnectionsList(self)
 
-        self.effects.real_list.observer = self._effects_observer
+        self.effects.observer = self._effects_observer
         self.connections.observer = self._connections_observer
 
         self._observer = MagicMock()
@@ -112,7 +112,7 @@ class Pedalboard(object):
 
     def _clear_effect(self, effect):
         for connection in effect.connections:
-            self.connections.real_list.remove(connection)
+            self.connections.remove_silently(connection)
 
         effect.pedalboard = None
         effect.observer = MagicMock()
