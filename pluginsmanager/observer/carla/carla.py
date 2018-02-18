@@ -14,7 +14,8 @@
 
 from pluginsmanager.observer.host_observer.host_observer import HostObserver
 
-from carla_backend import CarlaHostDLL, ENGINE_OPTION_PATH_BINARIES, BINARY_NATIVE, PLUGIN_LV2
+#FIXME
+#from carla_backend import CarlaHostDLL, ENGINE_OPTION_PATH_BINARIES, BINARY_NATIVE, PLUGIN_LV2
 
 
 class CarlaError(Exception):
@@ -27,30 +28,30 @@ class Carla(HostObserver):
         `Carla`_ is a fully-featured audio plugin host, with support for many audio drivers and plugin formats.
         It's open source and licensed under the GNU General Public License, version 2 or later.
 
-    This class offers the mod-host control in a python API::
+    This class offers the Carla control in a python API::
 
-        # Create a mod-host, connect and register it in banks_manager
-        mod_host = ModHost('localhost')
-        mod_host.connect()
-        banks_manager.register(mod_host)
+        # Create a carla, connect and register it in banks_manager
+        host = Carla('localhost')
+        host.connect()
+        banks_manager.register(host)
 
-        # Set the mod_host pedalboard for a pedalboard that the bank
+        # Set the carla.pedalboard for a pedalboard that the bank
         # has added in banks_manager
-        mod_host.pedalboard = my_awesome_pedalboard
+        host.pedalboard = my_awesome_pedalboard
 
     The changes in current pedalboard (:attr:`~pluginsmanager.observer.carla.Carla.pedalboard`
-    attribute of `mod_host`) will also result in mod-host::
+    attribute of `carla`) will also result in carla host::
 
         driver = my_awesome_pedalboard.effects[0]
         driver.active = False
 
     .. note::
 
-        For use, is necessary that the mod-host is running, for use, access
+        For use, is necessary that the carla is running, for use, access
 
-         * `Install dependencies`_
-         * `Building mod-host`_
-         * `Running mod-host`_
+         * Install dependencies
+         * Building Carla
+         * Running Carla
 
         For more JACK information, access `Demystifying JACK – A Beginners Guide to Getting Started with JACK`_
 
@@ -63,20 +64,14 @@ class Carla(HostObserver):
 
         # Starting jackdump process via console
         jackd -R -P70 -t2000 -dalsa -dhw:Series -p256 -n3 -r44100 -s &
-        # Starting mod-host
-        mod-host &
+        # Starting carla host
+        # FIXME
 
-    :param string address: Computer mod-host process address (IP). If the
-     process is running on the same computer that is running the python code
-     uses `localhost`.
-    :param int port: Socket port on which mod-host should be running. Default is `5555`
+    :param Path path: Path that carla are persisted.
 
     .. _Carla: https://github.com/falkTX/Carla
     .. _LV2: http://lv2plug.in
-    .. _Install dependencies: https://github.com/deedos/mod-host/commit/0941d84fc48deb74e27cdcbf23a88db2007d5c6f
     .. _Zoom G3: https://www.zoom.co.jp/products/guitar/g3-guitar-effects-amp-simulator-pedal
-    .. _Building mod-host: https://github.com/moddevices/mod-host#building
-    .. _Running mod-host: https://github.com/moddevices/mod-host#running
     .. _Demystifying JACK – A Beginners Guide to Getting Started with JACK: http://libremusicproduction.com/articles/demystifying-jack-%E2%80%93-beginners-guide-getting-started-jack
     """
 

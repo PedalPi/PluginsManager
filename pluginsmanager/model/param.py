@@ -150,6 +150,8 @@ class Param(metaclass=ABCMeta):
             'index': self.index,
             'symbol': self.symbol,
             'value': self.value,
+            'minimum': self.minimum,
+            'maximum': self.maximum,
         }
 
     @property

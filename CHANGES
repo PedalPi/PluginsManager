@@ -1,4 +1,4 @@
-Version 0.7.0 -- released 11/??/17
+Version 0.7.0 -- released 02/17/18
 **********************************
  - `Issue #83`_ - Add EffectsList for raises errors:
 
@@ -17,13 +17,16 @@ Version 0.7.0 -- released 11/??/17
    - Create :class:`.HostObserver` that :class:`.ModHost` and :class:`.Carla` extends;
 
  - Defined pattern: Access json metadata (liblilv) from lv2 classes using lv2instance.data attribute.
+ - `Issue #90`_ - Reverts `Issue #66`_ - Param now informs minimum and maximum in :meth:`~pluginsmanager.model.param.Param.__dict__()`
 
+.. _Issue #64: https://github.com/PedalPi/PluginsManager/issues/64
 .. _Issue #80: https://github.com/PedalPi/PluginsManager/issues/80
 .. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
+.. _Issue #90: https://github.com/PedalPi/PluginsManager/issues/90
 
 Version 0.6.0 -- released 11/30/17
 **********************************
- - Add makefile. Now is possible run tests and generate docs easly (`make help`);
+ - Add makefile. Now is possible run tests and generate docs easily (`make help`);
  - Improve :class:`.SystemInput` and :class:`.SystemOutputs` documentation;
  - `Issue #57`_  - Implementing midi support:
 
