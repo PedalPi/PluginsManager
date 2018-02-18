@@ -46,7 +46,7 @@ class MidiOutputTest(unittest.TestCase):
         new_connection = pedalboard.connections[0]
         pedalboard.observer.on_connection_updated.assert_called_with(new_connection, UpdateType.CREATED, pedalboard=pedalboard)
 
-        pedalboard.connect(cctonode.midi_outputs[0], cctonode2.midi_inputs[0])
+        pedalboard.connect(cctonode2.midi_outputs[0], cctonode.midi_inputs[0])
         self.assertEqual(2, len(pedalboard.connections))
 
         new_connection = pedalboard.connections[-1]

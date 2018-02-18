@@ -70,3 +70,12 @@ persistence_decoder
    :members:
    :special-members:
    :exclude-members: __weakref__
+
+
+pluginsmanager.util.restriction_list.RestrictionList
+----------------------------------------------------
+
+.. autoclass:: pluginsmanager.util.restriction_list.RestrictionList
+   :members:
+   :special-members:
+   :exclude-members: __weakref__

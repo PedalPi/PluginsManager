@@ -1,8 +1,29 @@
+PedalPi - PluginsManager - Host
+===============================
+
+PedalPi - PluginsManager - HostObserver
+---------------------------------------
+
+HostObserver
+~~~~~~~~~~~~
+.. autoclass:: pluginsmanager.observer.host_observer.host_observer.HostObserver
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+HostError
+~~~~~~~~~
+.. autoclass:: pluginsmanager.observer.host_observer.host_observer.HostError
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+
 PedalPi - PluginsManager - ModHost
-==================================
+----------------------------------
 
 About `mod-host`
-----------------
+~~~~~~~~~~~~~~~~
 
 `mod-host`_ is a LV2 host for Jack controllable via socket or command line.
 With it you can load audio plugins, connect, manage plugins.
@@ -54,14 +75,14 @@ Remember that for changes to occur in `mod-host`, the `pedalboard` must belong t
 .. _mod-host: https://github.com/moddevices/mod-host
 
 ModHost
--------
+~~~~~~~
 .. autoclass:: pluginsmanager.observer.mod_host.mod_host.ModHost
    :members:
    :special-members:
    :exclude-members: __weakref__
 
 ModHost internal
-----------------
+~~~~~~~~~~~~~~~~
 
 The classes below are for internal use of mod-host
 
@@ -82,6 +103,31 @@ Host
 ProtocolParser
 **************
 .. autoclass:: pluginsmanager.observer.mod_host.protocol_parser.ProtocolParser
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+PedalPi - PluginsManager - Carla
+--------------------------------
+
+It is in alpha, some methods aren't implemented, as effects connection
+and disconnection.
+
+About `Carla`
+~~~~~~~~~~~~~
+
+In development
+
+Carla
+~~~~~
+.. autoclass:: pluginsmanager.observer.carla.carla.Carla
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+CarlaError
+~~~~~~~~~~
+.. autoclass:: pluginsmanager.observer.carla.carla.CarlaError
    :members:
    :special-members:
    :exclude-members: __weakref__

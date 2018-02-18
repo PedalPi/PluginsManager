@@ -9,10 +9,18 @@ python:
 
 sudo: required
 
+jobs:
+  include:
+    - stage: doc
+      script:
+        - make install-docs-requirements
+        - make docs
+
 install:
   - sudo apt-get install -y portaudio19-dev python-all-dev --no-install-recommends
   - sudo apt-get install -y lilv-utils calf-plugins guitarix --no-install-recommends
   - sudo apt-get install -y lv2-dev --no-install-recommends
+  - pip3 install -U setuptools
   - pip3 install sphinx
   - pip3 install cffi
   - python setup.py develop
@@ -22,7 +30,6 @@ install:
 script:
   - lv2ls
   - make test
-  - make docs
   - #make test-docs
   - #pytest --doctest-modules
 

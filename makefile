@@ -30,6 +30,9 @@ docs: clean-docs
 docs-see: docs
 	$(BROWSER) docs/build/html/index.html
 
+install-docs-requirements:
+	pip install sphinx_rtd_theme
+
 install-tests-requirements:
 	# For midi tests - https://github.com/x42/midifilter.lv2
 	cd /tmp && git clone git://github.com/x42/midifilter.lv2.git && \
@@ -61,6 +64,10 @@ help: cabecalho
 	@echo "          Make the docs"
 	@echo "    $(BOLD)docs-see$(NORMAL)"
 	@echo "          Make the docs and open it in BROWSER"
+	@echo "    $(BOLD)install-docs-requirements$(NORMAL)"
+	@echo "          Install the docs requirements"
+	@echo "    $(BOLD)install-tests-requirements$(NORMAL)"
+	@echo "          Install the tests requirements"
 	@echo "    $(BOLD)test$(NORMAL)"
 	@echo "          Execute the tests"
 	@echo "    $(BOLD)test-details$(NORMAL)"

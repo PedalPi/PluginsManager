@@ -1,8 +1,35 @@
+Version 0.7.0 -- released 02/17/18
+**********************************
+ - `Issue #83`_ - Add EffectsList for raises errors:
+
+   - Error when add twice the effect instance;
+   - Error when add any ``effect.is_unique_for_all_pedalboards == True`` (e.g.: :class:`.SystemEffect`);
+
+ - `Issue #80`_ - Add ConnectionsList for raises errors:
+
+   - Error when add twice an equals connection;
+   - Error when add a connection where the input or output is a effect that
+     not in pedalboard if ``effect.is_unique_for_all_pedalboards == False``
+     (e.g.: is not :class:`.SystemEffect`).
+
+ - `Issue #64`_ - Start process to add Carla support:
+
+   - Create :class:`.HostObserver` that :class:`.ModHost` and :class:`.Carla` extends;
+
+ - Defined pattern: Access json metadata (liblilv) from lv2 classes using lv2instance.data attribute.
+ - `Issue #90`_ - Reverts `Issue #66`_ - Param now informs minimum and maximum in :meth:`~pluginsmanager.model.param.Param.__dict__()`
+
+.. _Issue #64: https://github.com/PedalPi/PluginsManager/issues/64
+.. _Issue #80: https://github.com/PedalPi/PluginsManager/issues/80
+.. _Issue #83: https://github.com/PedalPi/PluginsManager/issues/83
+.. _Issue #90: https://github.com/PedalPi/PluginsManager/issues/90
+
 Version 0.6.0 -- released 11/30/17
 **********************************
- - Add makefile. Now is possible run tests and generate docs easly (`make help`);
+ - Add makefile. Now is possible run tests and generate docs easily (`make help`);
  - Improve :class:`.SystemInput` and :class:`.SystemOutputs` documentation;
  - `Issue #57`_  - Implementing midi support:
+
    - Now :class:`.Effect` list yours `midi_inputs` and `midi_outputs`;
    - :class:`.SystemEffect` now supports `midi_inputs` and `midi_outputs`;
    - :class:`.Lv2Effect` now supports `midi_inputs` and `midi_outputs`;
@@ -10,6 +37,7 @@ Version 0.6.0 -- released 11/30/17
    - Created :class:`.SystemMidiInput`, :class:`.SystemMidiOutput`;
    - Created :class:`.Lv2MidiInput`, :class:`.Lv2MidiOutput`;
    - :class:`.SystemEffectBuilder` now creates :class:`.SystemEffect` with your midi outputs and midi inputs;
+
  - Fix autosaver_test creation folder. Now is more easily configure test workspace;
  - Refactored :class:`.Input`, :class:`.Output`: Created :class:`.Port` for remove duplicated code;
  - Refactored :class:`.SystemInput`, :class:`.SystemOutput`: Created :class:`.SystemPortMixing` for remove duplicated code;

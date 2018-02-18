@@ -139,10 +139,26 @@ MidiConnection
    :special-members:
    :exclude-members: __weakref__
 
+ConnectionsList
+---------------
+
+.. autoclass:: pluginsmanager.model.connections_list.ConnectionsList
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
 Effect
 ------
 
 .. autoclass:: pluginsmanager.model.effect.Effect
+   :members:
+   :special-members:
+   :exclude-members: __weakref__
+
+EffectsList
+-----------
+
+.. autoclass:: pluginsmanager.model.effects_list.EffectsList
    :members:
    :special-members:
    :exclude-members: __weakref__

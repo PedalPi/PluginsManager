@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pluginsmanager.observer.observable_list import ObservableList
+from pluginsmanager.model.effects_list import EffectsList
+from pluginsmanager.model.connections_list import ConnectionsList
 from pluginsmanager.observer.update_type import UpdateType
 
 from unittest.mock import MagicMock
-
-
-class PedalboardError(Exception):
-    pass
 
 
 class Pedalboard(object):
@@ -32,23 +29,23 @@ class Pedalboard(object):
 
         >>> builder = Lv2EffectBuilder()
         >>> pedalboard.effects
-        ObservableList: []
+        []
         >>> reverb = builder.build('http://calf.sourceforge.net/plugins/Reverb')
         >>> pedalboard.append(reverb)
         >>> pedalboard.effects
-        ObservableList: [<Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>]
+        [<Lv2Effect object as 'Calf Reverb'  active at 0x7f60effb09e8>]
 
         >>> fuzz = builder.build('http://guitarix.sourceforge.net/plugins/gx_fuzzfacefm_#_fuzzfacefm_')
         >>> pedalboard.effects.append(fuzz)
 
         >>> pedalboard.connections
-        ObservableList: []
+        []
         >>> pedalboard.connections.append(Connection(sys_effect.outputs[0], fuzz.inputs[0])) # View SystemEffect for more details
         >>> pedalboard.connections.append(Connection(fuzz.outputs[0], reverb.inputs[0]))
         >>> # It works too
         >>> pedalboard.connect(reverb.outputs[1], sys_effect.inputs[0])
         >>> pedalboard.connections
-        ObservableList: [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
+        [<Connection object as 'system.capture_1 -> GxFuzzFaceFullerMod.In' at 0x7f60f45f3f60>, <Connection object as 'GxFuzzFaceFullerMod.Out -> Calf Reverb.In L' at 0x7f60f45f57f0>, <Connection object as 'Calf Reverb.Out R -> system.playback_1' at 0x7f60f45dacc0>]
 
         >>> pedalboard.data
         {}
@@ -67,8 +64,8 @@ class Pedalboard(object):
     """
     def __init__(self, name):
         self.name = name
-        self._effects = ObservableList()
-        self._connections = ObservableList()
+        self._effects = EffectsList()
+        self._connections = ConnectionsList(self)
 
         self.effects.observer = self._effects_observer
         self.connections.observer = self._connections_observer
@@ -115,7 +112,7 @@ class Pedalboard(object):
 
     def _clear_effect(self, effect):
         for connection in effect.connections:
-            self.connections.real_list.remove(connection)
+            self.connections.remove_silently(connection)
 
         effect.pedalboard = None
         effect.observer = MagicMock()
@@ -155,10 +152,6 @@ class Pedalboard(object):
 
         :param Effect effect: Effect that will be added
         """
-        if effect.is_unique_for_all_pedalboards:
-            raise PedalboardError("The effect '{}' is unique for all pedalboards. "
-                                  "Then, isn't allowed add it in any pedalboard.".format(str(effect)))
-
         self.effects.append(effect)
 
     @property

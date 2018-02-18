@@ -49,7 +49,7 @@ On Debian-based systems, run:
 
 Of course, for PluginsManager to manage Lv2 audio plugins, it is necessary that they have installed
 audio plugins to be managed. The `Guitarix`_ and `Calf Studio`_ projects provide some audio plugins.
-To install them::
+To install them:
 
 .. code-block:: bash
 
@@ -169,21 +169,21 @@ For manual input and output sound card definition, use:
 
     **NOT ADD sys_effect** in any Pedalboard
 
-Connecting *mode one*:
+Connecting:
 
 .. code-block:: python
 
-    sys_effect.outputs[0].connect(reverb.inputs[0])
+    pedalbaord.connect(sys_effect.outputs[0], reverb.inputs[0])
 
-    reverb.outputs[0].connect(fuzz.inputs[0])
-    reverb.outputs[1].connect(fuzz.inputs[0])
-    fuzz.outputs[0].connect(reverb2.inputs[0])
-    reverb.outputs[0].connect(reverb2.inputs[0])
+    pedalbaord.connect(reverb.outputs[0], fuzz.inputs[0])
+    pedalbaord.connect(reverb.outputs[1], fuzz.inputs[0])
+    pedalbaord.connect(fuzz.outputs[0], reverb2.inputs[0])
+    pedalbaord.connect(reverb.outputs[0], reverb2.inputs[0])
 
-    reverb2.outputs[0].connect(sys_effect.inputs[0])
-    reverb2.outputs[0].connect(sys_effect.inputs[1])
+    pedalbaord.connect(reverb2.outputs[0], sys_effect.inputs[0])
+    pedalbaord.connect(reverb2.outputs[0], sys_effect.inputs[1])
 
-Connecting *mode two*:
+Connecting using ``ConnectionList``:
 
 .. code-block:: python
 
@@ -196,13 +196,6 @@ Connecting *mode two*:
 
     pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[0]))
     pedalboard.connections.append(Connection(reverb2.outputs[0], sys_effect.inputs[1]))
-
-.. warning::
-
-    If you need connect system_output with system_input directly (for a bypass, as example), only the
-    second mode will works::
-
-        pedalboard.connections.append(Connection(sys_effect.outputs[0], sys_effect.inputs[0]))
 
 Set effect status (enable/disable bypass) and param value
 
@@ -232,7 +225,9 @@ Removing effects and connections:
     pedalboard.effects.remove(fuzz)
 
     for connection in list(pedalboard.connections):
-        pedalboard.connections.remove(connection)
+        pedalboard.disconnect(connection)
+        # or
+        #pedalboard.connections.remove(connection)
 
     for effect in list(pedalboard.effects):
         pedalboard.effects.remove(effect)

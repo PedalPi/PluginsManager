@@ -28,11 +28,20 @@ class Lv2Plugin(object):
     @property
     def json(self):
         """
-        Json decodable representation of this plugin based in moddevices `lilvlib`_.
+        :return: Json decodable representation of this plugin based in moddevices `lilvlib`_.
 
         .. _lilvlib: https://github.com/moddevices/lilvlib
         """
         return self._json
+
+    @property
+    def data(self):
+        """
+        :return: Json decodable representation of this plugin based in moddevices `lilvlib`_.
+
+        .. _lilvlib: https://github.com/moddevices/lilvlib
+        """
+        return self.json
 
     def __str__(self):
         return self['name']
