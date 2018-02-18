@@ -9,6 +9,13 @@ python:
 
 sudo: required
 
+jobs:
+  include:
+    - stage: doc
+      script:
+        - make install-docs-requirements
+        - make docs
+
 install:
   - sudo apt-get install -y portaudio19-dev python-all-dev --no-install-recommends
   - sudo apt-get install -y lilv-utils calf-plugins guitarix --no-install-recommends
@@ -18,12 +25,10 @@ install:
   - python setup.py develop
   - pip3 install pytest pytest-cov
   - make install-tests-requirements
-  - make install-docs-requirements
 
 script:
   - lv2ls
   - make test
-  - make docs
   - #make test-docs
   - #pytest --doctest-modules
 
