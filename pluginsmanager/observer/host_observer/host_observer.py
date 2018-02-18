@@ -24,6 +24,18 @@ class HostError(Exception):
 
 
 class HostObserver(UpdatesObserver, metaclass=ABCMeta):
+    """
+    :class:`.HostObserver` contains the basis for Host implementations, like
+    :class:`.ModHost` or :class:`.Carla`.
+
+    It is an :class:`UpdatesObserver`. With it, can be apply the current
+    pedalboard changes transparently.
+
+    HostObserver contains an algorithm for improve the change of the
+    current pedalboard. Also, HostObserver process the updates and define
+    abstract methods that hosts needs to implements, usually only with the
+    important part.
+    """
     
     def __init__(self):
         super(HostObserver, self).__init__()
@@ -60,7 +72,7 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
 
     def __del__(self):
         """
-        Calls :meth:`~pluginsmanager.observer.host_observer.HostObserver.close()` method for
+        Calls :meth:`~pluginsmanager.observer.host_observer.host_observer.HostObserver.close()` method for
         remove the audio plugins loaded and closes connection
         with the host.
         """
@@ -108,7 +120,7 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
     def _load_params_of(self, effect):
         """
         Called only when a effect has created
-        Param changes calls :meth:`~pluginsmanager.observer.host_observer.HostObserver.on_param_value_changed()`
+        Param changes calls :meth:`~pluginsmanager.observer.host_observer.host_observer.HostObserver.on_param_value_changed()`
         """
         for param in effect.params:
             if param.value != param.default:
