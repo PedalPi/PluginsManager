@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPedalPi%2FPluginsManager.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FPedalPi%2FPluginsManager?ref=badge_shield)
+
 PedalPi - PluginsManager
 ========================
 
@@ -274,3 +276,6 @@ This project uses `Sphinx`_ + `Read the Docs`_.
 .. _Read the Docs: http://readthedocs.org
 .. _Calf: http://calf-studio-gear.org/
 .. _Guitarix: http://guitarix.org/
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPedalPi%2FPluginsManager.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FPedalPi%2FPluginsManager?ref=badge_large)
