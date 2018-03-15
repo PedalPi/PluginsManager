@@ -48,7 +48,7 @@ class Persistence(object):
         """
         try:
             loop = asyncio.get_event_loop()
-            loop.run_until_complete(Persistence._save(path, json_data))
+            asyncio.run_coroutine_threadsafe(Persistence._save(path, json_data), loop)
         except AssertionError:
             Persistence._save(path, json_data)
 
@@ -62,7 +62,7 @@ class Persistence(object):
     def delete(path):
         try:
             loop = asyncio.get_event_loop()
-            loop.run_until_complete(Persistence._delete(path))
+            asyncio.run_coroutine_threadsafe(Persistence._delete(path), loop)
         except AssertionError:
             Persistence._delete(str(path))
 

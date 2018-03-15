@@ -1,3 +1,10 @@
+Version 0.7.1 -- released 03/15/18
+**********************************
+ - `Issue #97`_ - Support tornado 5 and other scripts that uses Python `asyncio`_
+
+.. _Issue #97: https://github.com/PedalPi/PluginsManager/issues/97
+.. _asyncio https://docs.python.org/3/library/asyncio.html
+
 Version 0.7.0 -- released 02/17/18
 **********************************
  - `Issue #83`_ - Add EffectsList for raises errors:
