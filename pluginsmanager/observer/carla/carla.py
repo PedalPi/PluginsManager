@@ -89,8 +89,7 @@ class Carla(HostObserver):
         self.host.connect(connection.output, connection.input)
 
     def _disconnect(self, connection):
-        #self.host.disconnect(connection.output, connection.input)
-        pass
+        self.host.disconnect(connection.output, connection.input)
 
     def _add_effect(self, effect):
         plugin_bin = f"/usr/lib/lv2/{effect.plugin.data['bundle_name']}/{effect.plugin.data['binary']}"
@@ -102,9 +101,7 @@ class Carla(HostObserver):
         self.host.add_effect(plugin_bin, plugin_uri, effect_name, effect)
 
     def _remove_effect(self, effect):
-        #raise NotImplementedError()
         self.host.remove_effect(effect)
-        pass
 
     def _set_effect_status(self, effect):
         self.host.set_active(effect, effect.active)

@@ -80,10 +80,23 @@ class CarlaHost(object):
             raise CarlaError(f"Failed to connect effects, possible reasons:\n{self.host_dll.get_last_error()}")
 
     def disconnect(self, output_port, input_port):
-        id = None
+        output_effect_name = self.pedalboard_metadata[output_port.effect]
+        output_effect_carla = self.callback_manager.elements.by_name(output_effect_name)
 
-        if not self.host_dll.patchbay_disconnect(id):
+        input_effect_name = self.pedalboard_metadata[input_port.effect]
+        input_effect_carla = self.callback_manager.elements.by_name(input_effect_name)
+
+        output_port_carla = output_effect_carla.outputs[str(output_port)]
+        input_port_carla = input_effect_carla.inputs[str(input_port)]
+
+        name = f"{output_effect_carla.identifier}:{output_port_carla.identifier}:{input_effect_carla.identifier}:{input_port_carla.identifier}"
+
+        identifier = self.callback_manager.connections[name].identifier
+
+        if not self.host_dll.patchbay_disconnect(identifier):
             raise CarlaError(f"Failed to disconnect effects ports, possible reasons:\n{self.host_dll.get_last_error()}")
+
+        del self.callback_manager.connections[name]
 
     def set_active(self, effect: Effect, active: bool):
         effect_id = self._effect_id(effect)

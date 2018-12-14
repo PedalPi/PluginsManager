@@ -3,10 +3,10 @@ class CallbackManager:
     def __init__(self, backend):
         self.backend = backend
         self.elements = Elements()
+        self.connections = {}
 
     def callback(self, *args):
         none, opcode, identifier, value1, value2, value3, value_str = args
-        #print('Args:', args)
 
         if opcode == self.backend.ENGINE_CALLBACK_PATCHBAY_CLIENT_ADDED:
             element = CarlaClient(self.backend, identifier, value_str)
@@ -21,9 +21,13 @@ class CallbackManager:
             # Audio plugin events not relevant now
             pass
 
-        elif opcode == self.backend.ENGINE_CALLBACK_PATCHBAY_CONNECTION_ADDED \
-          or opcode == self.backend.ENGINE_CALLBACK_PATCHBAY_CONNECTION_REMOVED:
-            # effect connections
+        elif opcode == self.backend.ENGINE_CALLBACK_PATCHBAY_CONNECTION_ADDED:
+            connection = CarlaConnection(self.backend, identifier=identifier, name=value_str)
+            self.connections[connection.name] = connection
+
+        elif opcode == self.backend.ENGINE_CALLBACK_PATCHBAY_CONNECTION_REMOVED:
+            # The remotion is a CarlaHost responsability
+            #del self.connections[connection.name]
             pass
 
         elif opcode == self.backend.ENGINE_CALLBACK_ENGINE_STARTED \
@@ -92,3 +96,6 @@ class CarlaPort(CarlaCallbackObject):
     def __init__(self, backend, identifier, name, type):
         super().__init__(backend, identifier, name)
         self.type = type
+
+class CarlaConnection(CarlaCallbackObject):
+    pass
