@@ -144,7 +144,7 @@ class ModHost(HostObserver):
             If the mod-host process has been created with :meth:`~pluginsmanager.observer.mod_host.ModHost.start()`
             method, it will be finished.
         """
-        self.close()
+        super().close()
 
     def close(self):
         """

@@ -162,7 +162,7 @@ class Effect(metaclass=ABCMeta):
         Returns the first occurrence of the effect in your pedalboard
         """
         if self.pedalboard is None:
-            raise IndexError('Effect not contains a pedalboard')
+            raise IndexError('Effect is not associated with a pedalboard')
 
         return self.pedalboard.effects.index(self)
 
