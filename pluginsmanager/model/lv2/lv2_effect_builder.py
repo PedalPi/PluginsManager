@@ -16,8 +16,9 @@ import os
 import json
 import subprocess
 
-from pluginsmanager.model.lv2.lv2_plugin import Lv2Plugin
 from pluginsmanager.model.lv2.lv2_effect import Lv2Effect
+from pluginsmanager.model.lv2.lv2_plugin import Lv2Plugin
+from pluginsmanager.model.lv2.lv2_plugin_info import get_plugins_info
 
 
 class Lv2EffectBuilderError(Exception):
@@ -154,13 +155,18 @@ class Lv2EffectBuilder(object):
 
         :return list: lv2 audio plugins metadata
         """
-        import lilvlib
+        return get_plugins_info()
 
-        return lilvlib.get_plugin_info_helper('')
 
 if __name__ == '__main__':
+    import json
+
     builder = Lv2EffectBuilder()
     print('Total plugins before reload:', len(builder.plugins))
 
-    builder.reload(builder.lv2_plugins_data())
+    plugins_data = builder.lv2_plugins_data()
+    builder.reload(plugins_data)
     print('Total plugins after reload:', len(builder.plugins))
+
+    with open(os.path.join(os.path.dirname(__file__), 'plugins.json'), 'w') as outfile:
+         json.dump(plugins_data, outfile, sort_keys=True)
