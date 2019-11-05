@@ -60,8 +60,11 @@ setup(
     },
     install_requires=[
         'JACK-Client',
-        'pyaudio'
     ],
+
+    extras_require={
+        'pyaudio': ['pyaudio',],
+    },
 
     test_suite='test',
     tests_require=['JACK-Client', 'pytest', 'pytest-cov'],
