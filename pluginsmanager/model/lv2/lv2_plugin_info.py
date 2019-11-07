@@ -103,7 +103,7 @@ def getfirst(obj, uri, strip=True):
 
     By default, strips whitespace surrounding string value.
 
-    If colection is empty, returns None
+    If collection is empty, returns None
 
     """
     data = obj.get_value(uri)
@@ -289,12 +289,12 @@ def _get_port_info(ctx, port):
             if "CV" not in types and designation != str(world.ns.lv2.latency):
                 errors.append("port '%s' is missing value ranges" % portname)
 
-        scale_points = port.get_scale_points()
+        scalepoints = port.get_scale_points()
 
-        if scale_points is not None:
+        if scalepoints is not None:
             scalepoints_unsorted = []
 
-            for sp in scale_points:
+            for sp in scalepoints:
                 label = node2str(sp.get_label())
                 value = sp.get_value()
 
@@ -425,13 +425,13 @@ def _get_plugin_ports(ctx, plugin):
         types, info = _get_port_info(ctx, port)
         info['index'] = i
 
-        isInput = "Input" in types
-        types.remove("Input" if isInput else "Output")
+        is_input = "Input" in types
+        types.remove("Input" if is_input else "Output")
 
         for typ in [typl.lower() for typl in types]:
             if typ not in ports.keys():
                 ports[typ] = { 'input': [], 'output': [] }
-            ports[typ]["input" if isInput else "output"].append(info)
+            ports[typ]["input" if is_input else "output"].append(info)
 
     return ports
 
