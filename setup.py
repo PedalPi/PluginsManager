@@ -67,7 +67,7 @@ setup(
     },
 
     test_suite='test',
-    tests_require=['JACK-Client', 'pytest', 'pytest-cov'],
+    tests_require=['JACK-Client', 'pyaudio', 'pytest', 'pytest-cov'],
 
     classifiers=[
         'Development Status :: 4 - Beta',
