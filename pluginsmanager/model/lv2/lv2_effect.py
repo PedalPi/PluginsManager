@@ -71,6 +71,13 @@ class Lv2Effect(Effect):
             id(self)
         )
 
+    def __getitem__(self, key):
+        """
+        :param string key: Property key
+        :return: Returns a Plugin property
+        """
+        return self.plugin[key]
+
     @property
     def __dict__(self):
         return {
