@@ -25,34 +25,25 @@ class Lv2Plugin(object):
         """
         return self.json[key]
 
-    @property
-    def json(self):
-        """
-        :return: Json decodable representation of this plugin based in moddevices `lilvlib`_.
-
-        .. _lilvlib: https://github.com/moddevices/lilvlib
-        """
-        return self._json
-
-    @property
-    def data(self):
-        """
-        :return: Json decodable representation of this plugin based in moddevices `lilvlib`_.
-
-        .. _lilvlib: https://github.com/moddevices/lilvlib
-        """
-        return self.json
-
     def __str__(self):
         return self['name']
 
     def __repr__(self):
-        return "<{} object as {} at 0x{:x}>".format(
+        return "<{} ({}) at 0x{:x}>".format(
             self.__class__.__name__,
-            str(self),
+            self,
             id(self)
         )
 
     @property
+    def json(self):
+        """
+        :return: JSON encodable representation of this plugin.
+        """
+        return self._json
+
+    data = json
+
+    @property
     def version(self):
-        return '' if 'version' not in self.json else self.json['version']
+        return self.json.get('version', '')
