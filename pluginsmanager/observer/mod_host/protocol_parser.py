@@ -308,7 +308,7 @@ class ProtocolParser:
         """
         return 'bypass {} {}'.format(
             effect.instance,
-            1 if effect.active else 0
+            0 if effect.active else 1
         )
 
     @staticmethod
