@@ -31,11 +31,12 @@ class JackClient(object):
 
         >>> client.close()
 
-    :param bool no_start_server: False if starts a new JACK server
-                                 True if uses a already started jack (ex: using `jackdump`)
     :param name: Jack client name. Default: `JackClient`
+    :param bool no_start_server: False if starts a new JACK server
+                                 True if uses a already started jack (ex: using `jackdbus`)
+
     """
-    def __init__(self, no_start_server=True, name=None):
+    def __init__(self, name=None, no_start_server=True):
         if name is None:
             name = self.__class__.__name__
 
