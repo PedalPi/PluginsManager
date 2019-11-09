@@ -37,7 +37,7 @@ class Connection(object):
 
         :param string message: Message that will be sent for *mod-host*
         """
-        print(message.encode('utf-8'))
+        #print(message.encode('utf-8'))
         self.client.send(message.encode('utf-8'))
         received = self.client.recv(1024)
 
