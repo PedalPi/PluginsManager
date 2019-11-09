@@ -72,16 +72,15 @@ class Lv2EffectBuilder(object):
 
         """
         installed_plugins = set(self.installed_plugins)
-        log.debug("Installed plugins: %r", installed_plugins)
 
         for plugin in metadata:
             uri = plugin['uri']
             msg = "Checking for '%s'... %s"
             if allow_uninstalled_plugins or uri in installed_plugins:
+                log.debug(msg, uri, "found")
                 self._plugins[uri] = Lv2Plugin(plugin)
-                log.info(msg, uri, "found")
             else:
-                log.info(msg, uri, "NOT found")
+                log.debug(msg, uri, "NOT found")
 
     @property
     def installed_plugins(self):
