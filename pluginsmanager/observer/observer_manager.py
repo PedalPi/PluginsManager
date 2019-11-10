@@ -79,4 +79,4 @@ class ObserverManager(UpdatesObserver):
     def on_custom_change(self, identifier, *args, **kwargs):
         for observer in self.observers:
             if observer != self.scope:
-                observer.on_connection_updated(identifier, *args, **kwargs)
+                observer.on_custom_change(identifier, *args, **kwargs)
