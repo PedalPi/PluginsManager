@@ -1,3 +1,10 @@
+Version 0.7.2 -- released 11/10/19
+**********************************
+ - `Issue #103`_ - Now other developers can informs custom messages notification about changes_
+
+.. _Issue #103: https://github.com/PedalPi/PluginsManager/issues/103
+
+
 Version 0.7.1 -- released 03/15/18
 **********************************
  - `Issue #97`_ - Support tornado 5 and other scripts that uses Python `asyncio`_
