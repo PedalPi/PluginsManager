@@ -105,3 +105,19 @@ class UpdatesObserver(metaclass=ABCMeta):
         :param Pedalboard pedalboard: Pedalboard that the connection is (or has) contained
         """
         pass
+
+    def on_custom_change(self, identifier, *args, **kwargs):
+        """
+        Called when any changes not officially supported by the PluginsManager library are made.
+
+        Developers can implement libraries on PluginsManager to control different equipment.
+        For example, you can implement a host that will communicate with a GT100 or Zoom G3 boss pedal.
+        If the device has any features not officially supported by the PluginsManager library, this method is useful.
+
+        For example: Zoom G3 pedalboards have level. If someone changes the level value,
+        this method can be used to communicate this information to all other observers.
+
+        :param identifier: Unique identifier to informs that which informs the type of change in which it is
+               being informed
+        """
+        pass

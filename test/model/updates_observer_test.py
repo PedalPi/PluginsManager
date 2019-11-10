@@ -41,6 +41,9 @@ class Observer(UpdatesObserver):
     def on_connection_updated(self, connection, update_type):
         pass
 
+    def on_custom_change(self, identifier, *args, **kwargs):
+        pass
+
 
 class UpdatesObserverTest(unittest.TestCase):
 
