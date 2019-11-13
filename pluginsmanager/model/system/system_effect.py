@@ -144,14 +144,14 @@ class SystemEffect(Effect):
     @property
     def is_possible_connect_itself(self):
         """
-        return bool: Is possible connect the with it self?
+        return bool: Is it possible to connect the plugin to itself?
         """
         return True
 
     @property
     def is_unique_for_all_pedalboards(self):
         """
-        return bool: Is unique for all pedalboards?
+        return bool: Is the plugin unique for all pedalboards?
                      Example: :class:`.SystemEffect` is unique for all pedalboards
         """
         return True
@@ -159,6 +159,6 @@ class SystemEffect(Effect):
     @property
     def use_real_identifier(self):
         """
-        return bool: For this audio plugin, is necessary use the real effect identifier?
+        return bool: For this plugin, is it necessary use the real effect identifier?
         """
         return True

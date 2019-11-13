@@ -107,12 +107,11 @@ class ModHost(HostObserver):
             This function is experimental. There is no guarantee that the process will actually be initiated.
         """
         if self.address != 'localhost':
-            raise ModHostError('The host configured in the constructor isn''t "localhost". '
-                               'It is not possible to start a process on another device.')
+            raise ModHostError("The host configured in the constructor is not 'localhost'. "
+                               "It is not possible to start a process on another device.")
 
         try:
             subprocess.call([self.process, '-p', str(self.port)])
-
         except FileNotFoundError as e:
             exception = ModHostError(
                 'mod-host not found. Did you install it? '
@@ -144,7 +143,8 @@ class ModHost(HostObserver):
             If the mod-host process has been created with :meth:`~pluginsmanager.observer.mod_host.ModHost.start()`
             method, it will be finished.
         """
-        self.close()
+        if getattr(self, 'host', None):
+            self.close()
 
     def close(self):
         """

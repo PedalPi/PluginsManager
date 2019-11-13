@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import logging
-import jack
+
+
+from jack import Client, JackError
 
 
 class JackClient(object):
@@ -40,7 +42,7 @@ class JackClient(object):
         if name is None:
             name = self.__class__.__name__
 
-        self.client = jack.Client(name=name, no_start_server=no_start_server)
+        self.client = Client(name=name, no_start_server=no_start_server)
 
         self.xrun_callback = lambda delay: ...
         self.shutdown_callback = lambda status, reason: ...
