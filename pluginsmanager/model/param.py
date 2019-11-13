@@ -126,14 +126,18 @@ class Param(metaclass=ABCMeta):
         """
         pass
 
-    def __repr__(self, *args, **kwargs):
-        return "<{} object as value={} [{} - {}] at 0x{:x}>".format(
+    def __repr__(self):
+        return "<{} '{}' value={} [{} - {}] at 0x{:x}>".format(
             self.__class__.__name__,
+            self.symbol,
             self.value,
             self.minimum,
             self.maximum,
             id(self)
         )
+
+    def __str__(self):
+        return "{}: {}".format(self.symbol, self.value)
 
     @property
     def json(self):
