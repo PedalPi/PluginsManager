@@ -64,10 +64,10 @@ class Lv2Effect(Effect):
         return str(self.plugin)
 
     def __repr__(self):
-        return "<{} object as '{}' {} active at 0x{:x}>".format(
+        return "<{} ('{}') {}active at 0x{:x}>".format(
             self.__class__.__name__,
-            str(self),
-            '' if self.active else 'not',
+            self['name'],
+            '' if self.active else 'not ',
             id(self)
         )
 
