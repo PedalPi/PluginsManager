@@ -112,7 +112,6 @@ class ModHost(HostObserver):
 
         try:
             subprocess.call([self.process, '-p', str(self.port)])
-
         except FileNotFoundError as e:
             exception = ModHostError(
                 'mod-host not found. Did you install it? '
@@ -144,7 +143,8 @@ class ModHost(HostObserver):
             If the mod-host process has been created with :meth:`~pluginsmanager.observer.mod_host.ModHost.start()`
             method, it will be finished.
         """
-        self.close()
+        if getattr(self, 'host', None):
+            self.close()
 
     def close(self):
         """
