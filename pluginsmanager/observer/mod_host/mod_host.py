@@ -107,8 +107,8 @@ class ModHost(HostObserver):
             This function is experimental. There is no guarantee that the process will actually be initiated.
         """
         if self.address != 'localhost':
-            raise ModHostError('The host configured in the constructor isn''t "localhost". '
-                               'It is not possible to start a process on another device.')
+            raise ModHostError("The host configured in the constructor is not 'localhost'. "
+                               "It is not possible to start a process on another device.")
 
         try:
             subprocess.call([self.process, '-p', str(self.port)])
