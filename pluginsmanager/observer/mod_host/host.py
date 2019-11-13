@@ -32,7 +32,7 @@ class Host:
         try:
             self.connection = Connection(port, address)
         except ConnectionRefusedError as e:
-            raise ConnectionRefusedError(str(e) + '. Do you starts mod-host?') from e
+            raise ConnectionRefusedError('%s. Did you start mod-host?' % e) from e
 
         #  - For callback?
         try:
