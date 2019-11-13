@@ -23,8 +23,8 @@ class Connection(object):
 
     def __init__(self, socket_port=5555, address='localhost'):
         self.client = socket.socket()
-        self.client.connect((address, socket_port))
         self.client.settimeout(5)
+        self.client.connect((address, socket_port))
 
     def send(self, message):
         """
