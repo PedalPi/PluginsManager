@@ -8,9 +8,10 @@ from os.path import dirname
 import lilv
 
 
-NS_PRESET = 'http://lv2plug.in/ns/ext/presets#'
 NS_MOD = "http://moddevices.com/ns/mod#"
+NS_PATCH = 'http://lv2plug.in/ns/ext/patch#'
 NS_PORT_PROPERTIES = "http://lv2plug.in/ns/ext/port-props#"
+NS_PRESET = 'http://lv2plug.in/ns/ext/presets#'
 NS_UNITS = "http://lv2plug.in/ns/extensions/units#"
 
 LV2_CATEGORIES = {
@@ -456,12 +457,51 @@ def _get_plugin_presets(ctx, plugin):
     return sorted(preset_list, key=lambda x: x['label'] or '')
 
 
+def _get_plugin_properties(ctx, plugin_uri):
+    world = ctx.world
+
+    properties = {}
+    readable = [(node, False)
+                for node in world.find_nodes(plugin_uri, world.ns.patch.readable, None)]
+    writeable = [(node, True)
+                 for node in world.find_nodes(plugin_uri, world.ns.patch.writable, None)]
+
+    for prop_uri, is_writable in readable + writeable:
+        prop_node = world.find_nodes(prop_uri, world.ns.rdf.type, world.ns.lv2.Parameter)
+
+        if not prop_node:
+            ctx.errors.append(
+                "Could not find defintion of property '%s'." % prop_uri)
+            continue
+
+        label = world.find_nodes(prop_uri, world.ns.rdfs.label, None)
+
+        if label:
+            label = str(label[0])
+
+        range_ = world.find_nodes(prop_uri, world.ns.rdfs.range, None)
+
+        if range_:
+            range_ = str(range_[0])
+
+        prop_uri = str(prop_uri)
+        properties[prop_uri] = {
+            'uri': prop_uri,
+            'label': label,
+            'type': range_,
+            'writable': is_writable,
+        }
+
+    return properties
+
+
 def _get_plugin_info(ctx, plugin):
     world = ctx.world
     world.ns.mod = lilv.Namespace(world, NS_MOD)
+    world.ns.patch = lilv.Namespace(world, NS_PATCH)
     world.ns.pprops = lilv.Namespace(world, NS_PORT_PROPERTIES)
-    world.ns.units = lilv.Namespace(world, NS_UNITS)
     world.ns.presets = lilv.Namespace(world, NS_PRESET)
+    world.ns.units = lilv.Namespace(world, NS_UNITS)
 
     ctx.errors = errors = []
     ctx.warnings = warnings = []
@@ -473,6 +513,9 @@ def _get_plugin_info(ctx, plugin):
         errors.append("plugin uri is missing or invalid")
     elif str(uri).startswith("file:"):
         errors.append("plugin uri is local, and thus not suitable for redistribution")
+
+    # load all resources in bundle
+    world.load_resource(uri)
 
     # name
     name = plugin.get_name()
@@ -582,6 +625,9 @@ def _get_plugin_info(ctx, plugin):
     # presets
     presets = _get_plugin_presets(ctx, plugin)
 
+    # properties
+    properties = _get_plugin_properties(ctx, uri)
+
     return {
         'uri': node2str(uri),
         'name': node2str(name),
@@ -604,6 +650,7 @@ def _get_plugin_info(ctx, plugin):
         #'ui': ui,
         'ports': ports,
         'presets': presets,
+        'properties': properties,
         'errors': sorted(errors),
         'warnings': sorted(warnings),
     }
