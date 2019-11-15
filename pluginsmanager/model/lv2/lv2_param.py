@@ -16,8 +16,7 @@ from pluginsmanager.model.param import Param
 
 
 class Lv2Param(Param):
-    """
-    Representation of a Lv2 `input control port`_ instance.
+    """Representation of a Lv2 `input control port`_ instance.
 
     For general input use, see :class:`.Param` class documentation.
 
@@ -25,8 +24,8 @@ class Lv2Param(Param):
     :param dict data: *input control port* json representation
 
     .. _input control port: http://lv2plug.in/ns/lv2core/#Parameter
-    """
 
+    """
     def __init__(self, effect, data):
         super(Lv2Param, self).__init__(effect, data['ranges']['default'])
         self._data = data
@@ -34,6 +33,7 @@ class Lv2Param(Param):
     @property
     def data(self):
         return self._data
+
     @property
     def maximum(self):
         return self.data['ranges']['maximum']

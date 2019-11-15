@@ -106,7 +106,7 @@ class Param(metaclass=ABCMeta):
     @abstractmethod
     def minimum(self):
         """
-        :return: Smaller value that the parameter can assume
+        :return: Smallest value that the parameter can assume
         """
         pass
 
@@ -114,7 +114,7 @@ class Param(metaclass=ABCMeta):
     @abstractmethod
     def maximum(self):
         """
-        :return: Greater value that the parameter can assume
+        :return: Biggest value that the parameter can assume
         """
         pass
 
