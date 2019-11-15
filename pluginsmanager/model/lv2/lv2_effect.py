@@ -13,12 +13,11 @@
 # limitations under the License.
 
 from pluginsmanager.model.effect import Effect
-from pluginsmanager.model.lv2.lv2_param import Lv2Param
 from pluginsmanager.model.lv2.lv2_input import Lv2Input
-from pluginsmanager.model.lv2.lv2_output import Lv2Output
 from pluginsmanager.model.lv2.lv2_midi_input import Lv2MidiInput
 from pluginsmanager.model.lv2.lv2_midi_output import Lv2MidiOutput
-
+from pluginsmanager.model.lv2.lv2_output import Lv2Output
+from pluginsmanager.model.lv2.lv2_param import Lv2Param
 from pluginsmanager.util.dict_tuple import DictTuple
 
 
@@ -45,6 +44,8 @@ class Lv2Effect(Effect):
 
         params = [Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]]
         self._params = DictTuple(params, lambda param: param.symbol)
+
+        self._properties = plugin['properties']
 
         inputs = [Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']]
         self._inputs = DictTuple(inputs, lambda _input: _input.symbol)
@@ -94,3 +95,14 @@ class Lv2Effect(Effect):
         :return string: Version of plugin of effect
         """
         return self.plugin.version
+
+    def set_property(self, prop):
+        property = self._properties[prop.key]
+        prop = {
+            'instance': self.instance,
+            'uri':  property['uri'],
+            'label': property['label'],
+            'type': property['type'],
+            'value': prop.value
+        }
+        self.observer.on_set_property(prop)

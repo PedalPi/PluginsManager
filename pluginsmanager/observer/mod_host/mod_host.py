@@ -172,6 +172,9 @@ class ModHost(HostObserver):
     def _set_param_value(self, param):
         self.host.set_param_value(param)
 
+    def _set_property(self, prop):
+        self.host.set_property(prop)
+
     def _remove_effect(self, effect):
         self.host.remove(effect)
 

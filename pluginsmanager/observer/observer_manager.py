@@ -71,6 +71,11 @@ class ObserverManager(UpdatesObserver):
             if observer != self.scope:
                 observer.on_param_value_changed(param, **kwargs)
 
+    def on_set_property(self, prop, **kwargs):
+        for observer in self.observers:
+            if observer != self.scope:
+                observer.on_set_property(prop, **kwargs)
+
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         for observer in self.observers:
             if observer != self.scope:

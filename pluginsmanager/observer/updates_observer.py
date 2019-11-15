@@ -95,6 +95,15 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def on_set_property(self, prop, **kwargs):
+        """
+        Called when a property is set
+
+        :param dict prop: property dict
+        """
+        pass
+
+    @abstractmethod
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         """
         Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Pedalboard

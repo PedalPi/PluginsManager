@@ -182,6 +182,21 @@ class ProtocolParser:
         return 'param_set {} {} {}'.format(instance, param.symbol, param.value)
 
     @staticmethod
+    def property_set(prop):
+        """
+        ``param_set <instance_number> <property_label> <property_value>``
+
+        send a property message to the event input port
+
+        e.g.::
+
+            param_set 0 "Blink" 1
+
+        :param dict prop: Parameter that will be updated your value
+        """
+        return 'param_set {} "{}" "{}"'.format(prop['instance'], prop['label'], prop['value'])
+
+    @staticmethod
     def param_get(param):
         """
         ``param_get <instance_number> <param_symbol>``

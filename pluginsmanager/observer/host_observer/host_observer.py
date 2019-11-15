@@ -36,7 +36,7 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
     abstract methods that hosts needs to implements, usually only with the
     important part.
     """
-    
+
     def __init__(self):
         super(HostObserver, self).__init__()
         self._pedalboard = None
@@ -112,6 +112,7 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
         if update_type == UpdateType.CREATED:
             self._add_effect(effect)
             self._load_params_of(effect)
+            self._load_properties(effect)
             self.on_effect_status_toggled(effect)
 
         if update_type == UpdateType.DELETED:
@@ -126,6 +127,14 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
             if param.value != param.default:
                 self._set_param_value(param)
 
+    def _load_properties(self, effect):
+        """
+        Called only when a effect has been created
+        """
+        pass
+        #for prop in effect.properties:
+        #    self._set_property(prop)
+
     def on_effect_status_toggled(self, effect, **kwargs):
         if effect.pedalboard != self.pedalboard:
             return
@@ -137,6 +146,9 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
             return
 
         self._set_param_value(param)
+
+    def on_set_property(self, prop):
+        self._set_property(prop)
 
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         if pedalboard != self.pedalboard:
@@ -228,6 +240,10 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
 
     @abstractmethod
     def _set_param_value(self, param):
+        pass
+
+    @abstractmethod
+    def _set_property(self, prop):
         pass
 
     @abstractmethod

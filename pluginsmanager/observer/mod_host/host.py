@@ -86,6 +86,14 @@ class Host:
         """
         self.connection.send(ProtocolParser.param_set(param))
 
+    def set_property(self, prop):
+        """
+        Send property message
+
+        :param dict prop: Property that will be sent
+        """
+        self.connection.send(ProtocolParser.property_set(prop))
+
     def set_status(self, effect):
         """
         Toggle effect processing

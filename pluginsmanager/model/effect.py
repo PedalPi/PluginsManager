@@ -54,6 +54,7 @@ class Effect(metaclass=ABCMeta):
         self._active = True
 
         self._params = ()
+        self._properties = {}
         self._inputs = DictTuple([], lambda: None)
         self._outputs = DictTuple([], lambda: None)
         self._midi_inputs = DictTuple([], lambda: None)
@@ -78,6 +79,13 @@ class Effect(metaclass=ABCMeta):
         :return list[Param]: Params of effect
         """
         return self._params
+
+    @property
+    def properties(self):
+        """
+        :return list[dict]: Properties of effect
+        """
+        return self._properties
 
     @property
     def inputs(self):
