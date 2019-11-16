@@ -35,7 +35,7 @@ install-docs-requirements:
 
 install-tests-requirements:
 	# For midi tests - https://github.com/x42/midifilter.lv2
-	cd /tmp && git clone git://github.com/x42/midifilter.lv2.git && \
+	cd /tmp && git clone git://github.com/x42/midifilter.lv2.git --depth=1 && \
 	cd midifilter.lv2 && \
 	make && \
 	sudo make install PREFIX=/usr
