@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from pluginsmanager.observer.observable_list import ObservableList
-from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.update_type import UpdateType, CustomChange
 
 from unittest.mock import MagicMock
 from pluginsmanager.observer.autosaver.indexable import Indexable
@@ -66,7 +66,7 @@ class Bank(Indexable):
     def __init__(self, name):
         super(Bank, self).__init__()
 
-        self.name = name
+        self._name = name
         self.pedalboards = ObservableList()
         self.pedalboards.observer = self._pedalboards_observer
 
@@ -119,6 +119,25 @@ class Bank(Indexable):
         :return dict: json representation
         """
         return self.__dict__
+
+    @property
+    def name(self):
+        """
+        Bank name
+
+        :getter: Bank name
+        :setter: Set the Bank name
+        :type: string
+        """
+        return self._name
+
+    @name.setter
+    def name(self, new_value):
+        if self._name == new_value:
+            return
+
+        self._name = new_value
+        self.observer.on_custom_change(CustomChange.BANK_NAME, UpdateType.UPDATED, bank=self)
 
     @property
     def __dict__(self):

@@ -1,3 +1,11 @@
+Version 0.8.0 -- released 11/16/19
+**********************************
+
+Custom change
+ - `Issue #46`_ - Notify changes: Pedalboard Name, Pedalboard Data, Bank Data
+
+.. _Issue #46: https://github.com/PedalPi/PluginsManager/issues/46
+
 Version 0.7.2 -- released 11/10/19
 **********************************
  - `Issue #103`_ - Now other developers can informs custom messages notification about changes_

@@ -14,7 +14,7 @@
 
 from pluginsmanager.model.effects_list import EffectsList
 from pluginsmanager.model.connections_list import ConnectionsList
-from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.update_type import UpdateType, CustomChange
 
 from unittest.mock import MagicMock
 
@@ -63,7 +63,7 @@ class Pedalboard(object):
     :param string name: Pedalboard name
     """
     def __init__(self, name):
-        self.name = name
+        self._name = name
         self._effects = EffectsList()
         self._connections = ConnectionsList(self)
 
@@ -74,7 +74,7 @@ class Pedalboard(object):
 
         self.bank = None
 
-        self.data = {}
+        self._data = {}
 
     @property
     def observer(self):
@@ -128,6 +128,54 @@ class Pedalboard(object):
         :return dict: json representation
         """
         return self.__dict__
+
+    @property
+    def name(self):
+        """
+        Pedalboard name
+
+        :getter: Pedalboard name
+        :setter: Set the pedalboard name
+        :type: string
+        """
+        return self._name
+
+    @name.setter
+    def name(self, new_value):
+        if self._name == new_value:
+            return
+
+        self._name = new_value
+        self.observer.on_custom_change(CustomChange.PEDALBOARD_NAME, UpdateType.UPDATED, pedalboard=self)
+
+    @property
+    def data(self):
+        """
+        Custom information about pedalboard that is necessary to be persisted.
+        Example is effects disposition in a visual modelling pedalboard.
+
+        .. note::
+
+           This operation only will notifies changes if the setter is called::
+
+              >>> data = {'level': 50}
+              >>> # This call the observer on_custom_change(CustomChange.PEDALBOARD_DATA, UpdateType.UPDATED, pedalboard=pedalboard)
+              >>> pedalboard.data = data
+              >>> # This doesn't call the observer on_custom_change(...)
+              >>> data['level'] = 80
+              >>> # But this call, even though the object is the same.
+              >>> pedalboard.data = data
+
+        :getter: Data
+        :setter: Set the data
+        :type: dict
+        """
+        return self._data
+
+    @data.setter
+    def data(self, new_value):
+        self._data = new_value
+        self.observer.on_custom_change(CustomChange.PEDALBOARD_DATA, UpdateType.UPDATED, pedalboard=self)
 
     @property
     def __dict__(self):

@@ -108,7 +108,9 @@ class UpdatesObserver(metaclass=ABCMeta):
 
     def on_custom_change(self, identifier, *args, **kwargs):
         """
-        Called when any changes not officially supported by the PluginsManager library are made.
+        Called in specific changes that do not fit the other methods. See :class:`.CustomChange` for more details.
+
+        Also, called when any changes not officially supported by the PluginsManager library are made.
 
         Developers can implement libraries on PluginsManager to control different equipment.
         For example, you can implement a host that will communicate with a GT100 or Zoom G3 boss pedal.
