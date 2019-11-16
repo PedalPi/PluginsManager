@@ -1,10 +1,16 @@
 Version 0.8.0 -- released 11/16/19
 **********************************
 
-Custom change
  - `Issue #46`_ - Notify changes: Pedalboard Name, Pedalboard Data, Bank Data
+ - `Issue #95`_ - Update readme
+
+.. note::
+
+   In the future, only python version 3.4 or higher will be supported in favor of typing (`Issue #50`_)
 
 .. _Issue #46: https://github.com/PedalPi/PluginsManager/issues/46
+.. _Issue #95: https://github.com/PedalPi/PluginsManager/issues/95
+.. _Issue #50: https://github.com/PedalPi/PluginsManager/issues/50
 
 Version 0.7.2 -- released 11/10/19
 **********************************

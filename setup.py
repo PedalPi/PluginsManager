@@ -24,7 +24,7 @@ def readme():
 
 setup(
     name='PedalPi-PluginsManager',
-    version='0.7.2',
+    version='0.8.0',
 
     description='Pythonic management of LV2 audio plugins with mod-host.',
     long_description=readme(),
@@ -71,9 +71,10 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Topic :: Multimedia :: Sound/Audio',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     keywords='pedal-pi mod-host lv2 audio plugins-manager carla',
 

@@ -125,3 +125,8 @@ class BankTest(unittest.TestCase):
 
         self.assertEqual(bank.name, new_name)
         bank.observer.on_custom_change.assert_called_with(CustomChange.BANK_NAME, UpdateType.UPDATED, bank=bank)
+
+        # Don't call if is the same name
+        bank.observer = MagicMock()
+        bank.name = new_name
+        bank.observer.on_custom_change.assert_not_called()

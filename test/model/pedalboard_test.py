@@ -222,6 +222,10 @@ class PedalboardTest(unittest.TestCase):
         self.assertEqual(pedalboard.name, new_name)
         pedalboard.observer.on_custom_change.assert_called_with(CustomChange.PEDALBOARD_NAME, UpdateType.UPDATED, pedalboard=pedalboard)
 
+        # Don't call if is the same name
+        pedalboard.observer = MagicMock()
+        pedalboard.name = new_name
+        pedalboard.observer.on_custom_change.assert_not_called()
 
     def test_update_data(self):
         pedalboard = Pedalboard('Pedalboard 1')
