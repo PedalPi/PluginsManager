@@ -20,7 +20,7 @@ from pluginsmanager.model.bank import Bank
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
-from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.update_type import UpdateType, CustomChange
 
 
 class BankTest(unittest.TestCase):
@@ -115,3 +115,18 @@ class BankTest(unittest.TestCase):
         bank.append(pedalboard)
 
         print(json.dumps(bank.json, sort_keys=True, indent=2))
+
+    def test_update_name(self):
+        bank = Bank('Bank 1')
+        new_name = 'New name of bank 1'
+
+        bank.observer = MagicMock()
+        bank.name = new_name
+
+        self.assertEqual(bank.name, new_name)
+        bank.observer.on_custom_change.assert_called_with(CustomChange.BANK_NAME, UpdateType.UPDATED, bank=bank)
+
+        # Don't call if is the same name
+        bank.observer = MagicMock()
+        bank.name = new_name
+        bank.observer.on_custom_change.assert_not_called()

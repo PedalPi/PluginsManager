@@ -173,15 +173,15 @@ Connecting:
 
 .. code-block:: python
 
-    pedalbaord.connect(sys_effect.outputs[0], reverb.inputs[0])
+    pedalboard.connect(sys_effect.outputs[0], reverb.inputs[0])
 
-    pedalbaord.connect(reverb.outputs[0], fuzz.inputs[0])
-    pedalbaord.connect(reverb.outputs[1], fuzz.inputs[0])
-    pedalbaord.connect(fuzz.outputs[0], reverb2.inputs[0])
-    pedalbaord.connect(reverb.outputs[0], reverb2.inputs[0])
+    pedalboard.connect(reverb.outputs[0], fuzz.inputs[0])
+    pedalboard.connect(reverb.outputs[1], fuzz.inputs[0])
+    pedalboard.connect(fuzz.outputs[0], reverb2.inputs[0])
+    pedalboard.connect(reverb.outputs[0], reverb2.inputs[0])
 
-    pedalbaord.connect(reverb2.outputs[0], sys_effect.inputs[0])
-    pedalbaord.connect(reverb2.outputs[0], sys_effect.inputs[1])
+    pedalboard.connect(reverb2.outputs[0], sys_effect.inputs[0])
+    pedalboard.connect(reverb2.outputs[0], sys_effect.inputs[1])
 
 Connecting using ``ConnectionList``:
 
@@ -206,16 +206,6 @@ Set effect status (enable/disable bypass) and param value
     # fuzz.active = not fuzz.active
 
     fuzz.params[0].value = fuzz.params[0].minimum / fuzz.params[0].maximum
-
-    fuzz.outputs[0].disconnect(reverb2.inputs[0])
-    # or
-    # pedalboard.connections.remove(Connection(fuzz.outputs[0], reverb2.inputs[0]))
-    # or
-    # index = pedalboard.connections.index(Connection(fuzz.outputs[0], reverb2.inputs[0]))
-    # del pedalboard.connections[index]
-
-    reverb.toggle()
-
 
 
 Removing effects and connections:

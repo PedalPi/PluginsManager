@@ -27,3 +27,14 @@ class UpdateType(Enum):
     """ Informs that the change is caused by the update of an object"""
     DELETED = 2
     """ Informs that the change is caused by the removal of an object"""
+
+
+class CustomChange:
+    """
+    Enumeration for informs the change type of custom changes.
+
+    See :class:`.UpdatesObserver` for more details
+    """
+    PEDALBOARD_NAME = 0
+    PEDALBOARD_DATA = 1
+    BANK_NAME = 2

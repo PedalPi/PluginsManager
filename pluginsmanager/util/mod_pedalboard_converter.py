@@ -85,6 +85,7 @@ class ModPedalboardConverter(object):
                           Generally is in format ``path/to/pedalboard/name.pedalboard``
         :return dict: pedalboard persisted configurations
         """
+        #from pluginsmanager.model.lv2.lilvlib import get_pedalboard_info
         from utils import get_pedalboard_info
 
         return get_pedalboard_info(str(path))

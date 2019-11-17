@@ -20,7 +20,7 @@ from pluginsmanager.model.effects_list import NotAddableError
 from pluginsmanager.model.lv2.lv2_effect_builder import Lv2EffectBuilder
 from pluginsmanager.model.pedalboard import Pedalboard
 from pluginsmanager.model.system.system_effect import SystemEffect
-from pluginsmanager.observer.update_type import UpdateType
+from pluginsmanager.observer.update_type import UpdateType, CustomChange
 
 
 class PedalboardTest(unittest.TestCase):
@@ -211,3 +211,33 @@ class PedalboardTest(unittest.TestCase):
         pedalboard = Pedalboard('test_add_system_effect')
         with self.assertRaises(NotAddableError):
             pedalboard.append(SystemEffect('System Effect', (), ()))
+
+    def test_update_name(self):
+        pedalboard = Pedalboard('Pedalboard 1')
+        new_name = 'New name of pedalboard 1'
+
+        pedalboard.observer = MagicMock()
+        pedalboard.name = new_name
+
+        self.assertEqual(pedalboard.name, new_name)
+        pedalboard.observer.on_custom_change.assert_called_with(CustomChange.PEDALBOARD_NAME, UpdateType.UPDATED, pedalboard=pedalboard)
+
+        # Don't call if is the same name
+        pedalboard.observer = MagicMock()
+        pedalboard.name = new_name
+        pedalboard.observer.on_custom_change.assert_not_called()
+
+    def test_update_data(self):
+        pedalboard = Pedalboard('Pedalboard 1')
+        pedalboard.observer = MagicMock()
+
+        data = {'level': 50}
+        pedalboard.data = data
+        pedalboard.observer.on_custom_change.assert_called_with(CustomChange.PEDALBOARD_DATA, UpdateType.UPDATED, pedalboard=pedalboard)
+
+        pedalboard.observer = MagicMock()
+        data['level'] = 80
+        pedalboard.observer.on_custom_change.assert_not_called()
+
+        pedalboard.data = data
+        pedalboard.observer.on_custom_change.assert_called_with(CustomChange.PEDALBOARD_DATA, UpdateType.UPDATED, pedalboard=pedalboard)
