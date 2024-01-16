@@ -138,6 +138,13 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
 
         self._set_param_value(param)
 
+    def on_patch_value_changed(self, patch, **kwargs):
+        if patch.effect.pedalboard != self.pedalboard:
+            return
+
+        self._set_patch_value(patch)
+
+
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         if pedalboard != self.pedalboard:
             return
@@ -229,7 +236,9 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
     @abstractmethod
     def _set_param_value(self, param):
         pass
-
+    @abstractmethod
+    def _set_patch_value(self, param):
+        pass
     @abstractmethod
     def _set_effect_status(self, effect):
         pass

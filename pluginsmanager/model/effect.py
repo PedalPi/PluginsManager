@@ -54,6 +54,7 @@ class Effect(metaclass=ABCMeta):
         self._active = True
 
         self._params = ()
+        self._patches = ()
         self._inputs = DictTuple([], lambda: None)
         self._outputs = DictTuple([], lambda: None)
         self._midi_inputs = DictTuple([], lambda: None)
@@ -71,6 +72,8 @@ class Effect(metaclass=ABCMeta):
 
         for param in self.params:
             param.observer = self.observer
+        for patch in self.patches:
+            patch.observer = self.observer
 
     @property
     def params(self):
@@ -78,6 +81,13 @@ class Effect(metaclass=ABCMeta):
         :return list[Param]: Params of effect
         """
         return self._params
+
+    @property
+    def patches(self):
+        """
+        :return list[Param]: Params of effect
+        """
+        return self._patches
 
     @property
     def inputs(self):
