@@ -82,6 +82,7 @@ class Lv2Effect(Effect):
             'plugin': self.plugin['uri'],
             'active': self.active,
             'params': [param.json for param in self.params],
+            'patches': [patch.json for patch in self.patches],
             'version': self.version
         }
 

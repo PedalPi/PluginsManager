@@ -55,6 +55,8 @@ class Lv2EffectBuilder(EffectBuilder):
 
         for param, param_json in zip(effect.params, json['params']):
             param.value = param_json['value']
+        for patch, patch_json in zip(effect.patches, json['patches']):
+            patch.value = patch_json['value']            
 
         effect.active = json['active']
 

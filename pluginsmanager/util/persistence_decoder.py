@@ -44,10 +44,14 @@ class Reader(object):
 
 class BankReader(Reader):
 
+    def __init__(self, system_effect, builder):
+        super(BankReader, self).__init__(system_effect)
+        self.builder = builder
+
     def read(self, json):
         bank = Bank(json['name'])
 
-        pedalboard_reader = PedalboardReader(self.system_effect)
+        pedalboard_reader = PedalboardReader(self.system_effect, self.builder)
         for pedalboard_json in json['pedalboards']:
             bank.append(pedalboard_reader.read(pedalboard_json))
 
@@ -56,10 +60,14 @@ class BankReader(Reader):
 
 class PedalboardReader(Reader):
 
+    def __init__(self, system_effect, builder):
+        super(PedalboardReader, self).__init__(system_effect)
+        self.builder = builder
+
     def read(self, json):
         pedalboard = Pedalboard(json['name'])
 
-        effect_reader = EffectReader(self.system_effect)
+        effect_reader = EffectReader(self.system_effect, self.builder)
         for effect_json in json['effects']:
             pedalboard.append(effect_reader.read(effect_json))
 
@@ -76,9 +84,9 @@ class PedalboardReader(Reader):
 
 class EffectReader(Reader):
 
-    def __init__(self, system_effect):
+    def __init__(self, system_effect, builder):
         super(EffectReader, self).__init__(system_effect)
-        self.builder = Lv2LilvEffectBuilder()
+        self.builder = builder
 
     def read(self, json):
         return self.generate_builder(json).build(json)

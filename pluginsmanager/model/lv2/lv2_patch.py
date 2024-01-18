@@ -28,17 +28,13 @@ class Lv2Patch(Patch):
     """
 
     def __init__(self, effect, uri, default):
-        super(Lv2Patch, self).__init__(effect, default)
-        self._uri = uri
+        super(Lv2Patch, self).__init__(effect, uri, default)
+
         self._name = uri.rsplit('#', 1)[-1]
 
     @property
     def name(self):
         return self._name
-
-    @property
-    def uri(self):
-        return self._uri
 
     @property
     def __dict__(self):

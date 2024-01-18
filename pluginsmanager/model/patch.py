@@ -46,7 +46,8 @@ class Patch(metaclass=ABCMeta):
     :param Effect effect: Effect in which this parameter belongs
     """
 
-    def __init__(self, effect, default):
+    def __init__(self, effect, uri, default):
+        self._uri = uri
         self._effect = effect
         self._default = default
         self._value = default
@@ -71,6 +72,16 @@ class Patch(metaclass=ABCMeta):
         return self._default
     
     @property
+    def uri(self):
+        """
+        Parameter uri
+
+        :getter: Current uri
+        :setter: Set the current uri
+        """
+        return self._uri
+    
+    @property
     def value(self):
         """
         Parameter value
@@ -87,18 +98,11 @@ class Patch(metaclass=ABCMeta):
         self._value = new_value
         self.observer.on_patch_value_changed(self)
 
-    @property
-    @abstractmethod
-    def uri(self):
-        """
-        :return: Patch identifier
-        """
-        pass
-
     def __repr__(self, *args, **kwargs):
-        return "<{} object as value={} at 0x{:x}>".format(
+        return "<{} object as uri={}, value={} at 0x{:x}>".format(
             self.__class__.__name__,
-            self.value,
+            self._uri,
+            self._value,
             id(self)
         )
 
@@ -114,5 +118,6 @@ class Patch(metaclass=ABCMeta):
     @property
     def __dict__(self):
         return {
-            'value': self.value,
+            'uri': self._uri,
+            'value': self._value
         }
