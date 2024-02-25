@@ -11,15 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from pathlib import Path
 
+from pluginsmanager.observer.carla.carla_host import CarlaHost, CarlaError
 from pluginsmanager.observer.host_observer.host_observer import HostObserver
-
-#FIXME
-#from carla_backend import CarlaHostDLL, ENGINE_OPTION_PATH_BINARIES, BINARY_NATIVE, PLUGIN_LV2
-
-
-class CarlaError(Exception):
-    pass
 
 
 class Carla(HostObserver):
@@ -75,53 +70,41 @@ class Carla(HostObserver):
     .. _Demystifying JACK – A Beginners Guide to Getting Started with JACK: http://libremusicproduction.com/articles/demystifying-jack-%E2%80%93-beginners-guide-getting-started-jack
     """
 
-    def __init__(self, path):
+    def __init__(self, path: Path):
         super(Carla, self).__init__()
 
-        self.index = 0
+        self.host = CarlaHost(path, 'Pedal Pi')
+        self.index = 0  # Needs to start with zero to works correctly (carlaHostDLL.carla_get_current_plugin_count())
 
-        self.host = CarlaHostDLL(path / "libcarla_standalone2.so", False)
-        self.host.set_engine_option(ENGINE_OPTION_PATH_BINARIES, 0, path)
+    def connect(self):
+        raise CarlaError("Please, call start instead connect")
+
+    def start(self):
+        self.host.start()
+
+    def close(self):
+        self.host.stop()
 
     def _connect(self, connection):
-        # TODO
-        # https://github.com/moddevices/mod-ui/blob/master/mod/host_carla.py#L185-L198
-        split_from = port_from.split("/")
-        if len(split_from) != 3:
-            return
-        if split_from[1] == "system":
-            groupIdA = self._client_id_system
-            portIdA  = int(split_from[2].rsplit("_",1)[-1])
-            instance_from, port_from = port_from.rsplit("/", 1)
-        else:
-            groupIdB = self._getPluginId(split_from[:1].join("/"))
-            portIdB  = int(split_from[2].rsplit("_",1)[-1])
-            instance_from, port_from = port_from.rsplit("/", 1)
-
-        self.host.patchbay_connect(groupIdA, portIdA, groupIdB, portIdB)
+        self.host.connect(connection.output, connection.input)
 
     def _disconnect(self, connection):
-        pass
+        self.host.disconnect(connection.output, connection.input)
 
     def _add_effect(self, effect):
-        if not self.host.add_plugin(
-                BINARY_NATIVE,
-                PLUGIN_LV2,
-                None,#"/usr/lib/lv2/gx_echo.lv2/gx_echo.so",  # Fixme
-                "effect_{}".format(effect.index),
-                effect.plugin.json['uri'],
-                0,
-                None,
-                0):
-            CarlaError("Failed to load plugin, possible reasons:\n%s" % self.host.get_last_error())
+        plugin_bin = f"/usr/lib/lv2/{effect.plugin.data['bundle_name']}/{effect.plugin.data['binary']}"
+        plugin_uri = effect.plugin.data['uri']
+        effect_name = f"effect_{self.index}"
+
+        self.index += 1
+
+        self.host.add_effect(plugin_bin, plugin_uri, effect_name, effect)
 
     def _remove_effect(self, effect):
-        self.host.add_plugin(effect.index)
+        self.host.remove_effect(effect)
 
     def _set_effect_status(self, effect):
-        self.host.set_active(effect.index, effect.active)
+        self.host.set_active(effect, effect.active)
 
     def _set_param_value(self, param):
-        effect_index = param.effect.index
-        param_index = param.data['index']
-        self.host.set_parameter_value(effect_index, param_index, param.value)
+        self.host.set_parameter_value(param)
