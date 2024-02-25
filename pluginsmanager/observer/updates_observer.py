@@ -95,6 +95,16 @@ class UpdatesObserver(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def on_patch_value_changed(self, patch, **kwargs):
+        """
+        Called when a param value change
+
+        :param Param param: Param with value changed
+        """
+        pass
+
+
+    @abstractmethod
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         """
         Called when changes occurs in any :class:`pluginsmanager.model.connection.Connection` of Pedalboard

@@ -14,6 +14,7 @@
 
 from pluginsmanager.model.effect import Effect
 from pluginsmanager.model.lv2.lv2_param import Lv2Param
+from pluginsmanager.model.lv2.lv2_patch import Lv2Patch
 from pluginsmanager.model.lv2.lv2_input import Lv2Input
 from pluginsmanager.model.lv2.lv2_output import Lv2Output
 from pluginsmanager.model.lv2.lv2_midi_input import Lv2MidiInput
@@ -45,6 +46,9 @@ class Lv2Effect(Effect):
 
         params = [Lv2Param(self, param) for param in plugin["ports"]["control"]["input"]]
         self._params = DictTuple(params, lambda param: param.symbol)
+
+        patches = [Lv2Patch(self, patch, None) for patch in plugin["patches"]['writable']]
+        self._patches = DictTuple(patches, lambda patch: patch.name)
 
         inputs = [Lv2Input(self, effect_input) for effect_input in plugin['ports']['audio']['input']]
         self._inputs = DictTuple(inputs, lambda _input: _input.symbol)
@@ -78,6 +82,7 @@ class Lv2Effect(Effect):
             'plugin': self.plugin['uri'],
             'active': self.active,
             'params': [param.json for param in self.params],
+            'patches': [patch.json for patch in self.patches],
             'version': self.version
         }
 

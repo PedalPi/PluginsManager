@@ -86,6 +86,14 @@ class Host:
         """
         self.connection.send(ProtocolParser.param_set(param))
 
+    def set_patch_value(self, patch):
+        """
+        Set a value to given patch
+
+        :param Lv2Patch patch: Patch that the value will be updated
+        """
+        self.connection.send(ProtocolParser.patch_set(patch))
+
     def set_status(self, effect):
         """
         Toggle effect processing

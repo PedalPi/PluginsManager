@@ -172,6 +172,9 @@ class ModHost(HostObserver):
     def _set_param_value(self, param):
         self.host.set_param_value(param)
 
+    def _set_patch_value(self, patch):
+        self.host.set_patch_value(patch)
+
     def _remove_effect(self, effect):
         self.host.remove(effect)
 

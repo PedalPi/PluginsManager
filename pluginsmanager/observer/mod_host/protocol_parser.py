@@ -219,6 +219,13 @@ class ProtocolParser:
         pass
 
     @staticmethod
+    def patch_set(patch):
+        """
+            ``patch_set 0 nam#model "amp.nam"``
+        """
+        return 'patch_set {} {} "{}"'.format(patch.effect.instance, patch.uri, patch.value)  
+    
+    @staticmethod
     def monitor():
         """
         ``monitor <addr> <port> <status>``

@@ -66,6 +66,8 @@ class Lv2EffectBuilder(object):
             if not ignore_unsupported_plugins \
             or plugin['uri'] in supported_plugins:
                 self._plugins[plugin['uri']] = Lv2Plugin(plugin)
+            else:
+                print(f"Ignoring plugin: {plugin['uri']}")
 
     @property
     def _supported_plugins(self):

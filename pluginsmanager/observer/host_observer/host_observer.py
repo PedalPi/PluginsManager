@@ -112,6 +112,7 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
         if update_type == UpdateType.CREATED:
             self._add_effect(effect)
             self._load_params_of(effect)
+            self._load_patches_of(effect)
             self.on_effect_status_toggled(effect)
 
         if update_type == UpdateType.DELETED:
@@ -126,6 +127,15 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
             if param.value != param.default:
                 self._set_param_value(param)
 
+    def _load_patches_of(self, effect):
+        """
+        Called only when a effect has created
+        Patches changes calls :meth:`~pluginsmanager.observer.host_observer.host_observer.HostObserver.on_patch_value_changed()`
+        """
+        for patch in effect.patches:
+            if patch.value != patch.default:
+                self._set_patch_value(patch)
+
     def on_effect_status_toggled(self, effect, **kwargs):
         if effect.pedalboard != self.pedalboard:
             return
@@ -137,6 +147,13 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
             return
 
         self._set_param_value(param)
+
+    def on_patch_value_changed(self, patch, **kwargs):
+        if patch.effect.pedalboard != self.pedalboard:
+            return
+
+        self._set_patch_value(patch)
+
 
     def on_connection_updated(self, connection, update_type, pedalboard, **kwargs):
         if pedalboard != self.pedalboard:
@@ -229,7 +246,9 @@ class HostObserver(UpdatesObserver, metaclass=ABCMeta):
     @abstractmethod
     def _set_param_value(self, param):
         pass
-
+    @abstractmethod
+    def _set_patch_value(self, param):
+        pass
     @abstractmethod
     def _set_effect_status(self, effect):
         pass
